@@ -1,0 +1,1 @@
+export const getLoggedIn = (state: { test: { loggedIn: any; }; }) => state.test.loggedIn;
