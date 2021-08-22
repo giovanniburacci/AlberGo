@@ -1,6 +1,5 @@
 import {testReducer} from './test/test.reducer';
 import {combineReducers} from 'redux'
-import {store} from './store.config';
 const appReducer = combineReducers({
     ...testReducer
 
@@ -16,6 +15,5 @@ export const rootReducer = (state:any, action: any) => {
 }
 
 export type RootState = ReturnType<typeof rootReducer>;
-
 
 export default rootReducer;
