@@ -10,9 +10,12 @@ interface LoginData {
     username: string,
     password: string
 }
-
+interface LoginProps {
+    hasLogged: boolean,
+    setHasLogged: (state:boolean) => void
+}
 const componentClassName = 'login'
-export const Login = () => {
+export const Login = (props:LoginProps) => {
     const {Text, Title} = Typography;
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isLogging,setIsLogging] = useState<boolean>(true);
@@ -34,7 +37,10 @@ export const Login = () => {
     const login = () => {
         setIsLoading(true);
         if(loginData.password === 'admin' && loginData.username === 'admin') {
+            props.setHasLogged(true);
+            localStorage.setItem('logged','y');
             history.replace('/');
+
         } else {
             alert('wrong credentials')
         }

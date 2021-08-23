@@ -1,6 +1,5 @@
 import React, {ReactNode} from 'react';
 import {ContactsOutlined, ControlOutlined, HomeOutlined, UsergroupAddOutlined} from '@ant-design/icons';
-import {Menu} from 'antd';
 import './menuContainer.scss'
 import MenuItem from 'antd/es/menu/MenuItem';
 
