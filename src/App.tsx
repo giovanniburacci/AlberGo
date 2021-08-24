@@ -14,60 +14,56 @@ function App() {
     const { Header, Content, Sider } = Layout;
     const [isDrawerVisible,setIsDrawerVisible] = useState<boolean>(false);
     const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
-    const history = useHistory();
     const token = useSelector(loginSelector.getToken)
-    let screenToRender: ReactNode = null;
 
     return (
         <div className={`${componentClassName}`}>
-            { !token && (
+            { !token ? (
                 <Switch>
                     <Route path='/*'>
                         <Login />
                     </Route>
                 </Switch>
-            )}
-            {
-                token && (
-                    <Layout style={{ minHeight: '100vh' }}>
-                        <Sider
-                            theme={'dark'}
-                            collapsible
-                            trigger={null}
-                            collapsed={isCollapsed}>
-                            <Menu theme={'dark'}
-                                  defaultSelectedKeys={['0']}
-                                  className={`${componentClassName}__menu`}>
-                                <MenuContainer isCollapsed={isCollapsed}/>
-                            </Menu>
-                        </Sider>
-                        <Layout>
-                            <Header className={`${componentClassName}__header`}>
-                                <HeaderContainer
-                                    isCollapsed={isCollapsed}
-                                    setCollapsed={(value) => {setIsCollapsed(value)}}/>
-                            </Header>
-                            <Content>
-                                <Switch>
-                                    <Route path='/' exact>
-                                        Prenotazioni
-                                    </Route>
-                                    <Route path='/stanze'>
-                                        Stanze
-                                    </Route>
-                                    <Route path='/*'>
-                                        <Redirect to='/' />
-                                    </Route>
-                                </Switch>
-                                <Drawer visible={isDrawerVisible} onClose={() => {
-                                    setIsDrawerVisible(false)
-                                }}>
-                                    <p>Prova drawer</p>
-                                </Drawer>
-                            </Content>
-                        </Layout>
+            ) : (
+                <Layout style={{ minHeight: '100vh' }}>
+                    <Sider
+                        theme={'dark'}
+                        collapsible
+                        trigger={null}
+                        collapsed={isCollapsed}>
+                        <Menu theme={'dark'}
+                              defaultSelectedKeys={['0']}
+                              className={`${componentClassName}__menu`}>
+                            <MenuContainer isCollapsed={isCollapsed}/>
+                        </Menu>
+                    </Sider>
+                    <Layout>
+                        <Header className={`${componentClassName}__header`}>
+                            <HeaderContainer
+                                isCollapsed={isCollapsed}
+                                setCollapsed={(value) => {setIsCollapsed(value)}}/>
+                        </Header>
+                        <Content>
+                            <Switch>
+                                <Route path='/' exact>
+                                    Prenotazioni
+                                </Route>
+                                <Route path='/stanze'>
+                                    Stanze
+                                </Route>
+                                <Route path='/*'>
+                                    <Redirect to='/' />
+                                </Route>
+                            </Switch>
+                            <Drawer visible={isDrawerVisible} onClose={() => {
+                                setIsDrawerVisible(false)
+                            }}>
+                                <p>Prova drawer</p>
+                            </Drawer>
+                        </Content>
                     </Layout>
-                )
+                </Layout>
+            )
             }
         </div>
     );
