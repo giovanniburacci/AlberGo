@@ -1,5 +1,5 @@
 import React, {ReactNode, useEffect, useState} from 'react';
-import {Switch, Route} from 'react-router-dom'
+import {Switch, Route, Redirect} from 'react-router-dom'
 import {Drawer, Layout, Menu} from 'antd';
 import { Login } from './screens/login/login';
 import './App.scss'
@@ -22,13 +22,13 @@ function App() {
         <div className={`${componentClassName}`}>
             { !token && (
                 <Switch>
-                    <Route path='/login'>
+                    <Route path='/*'>
                         <Login />
                     </Route>
                 </Switch>
             )}
             {
-                token ? (
+                token && (
                     <Layout style={{ minHeight: '100vh' }}>
                         <Sider
                             theme={'dark'}
@@ -56,9 +56,7 @@ function App() {
                                         Stanze
                                     </Route>
                                     <Route path='/*'>
-                                        <>
-                                            {history.replace('/')}
-                                        </>
+                                        <Redirect to='/' />
                                     </Route>
                                 </Switch>
                                 <Drawer visible={isDrawerVisible} onClose={() => {
@@ -69,12 +67,6 @@ function App() {
                             </Content>
                         </Layout>
                     </Layout>
-                ) : (
-                    <Route path='/*'>
-                        <>
-                            {history.replace('/login')}
-                        </>
-                    </Route>
                 )
             }
         </div>
