@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {ReactNode, useEffect, useState} from 'react';
 import {Switch, Route} from 'react-router-dom'
 import {Drawer, Layout, Menu} from 'antd';
 import { Login } from './screens/login/login';
@@ -6,25 +6,29 @@ import './App.scss'
 import { MenuContainer } from './containers/menuContainer/menuContainer';
 import {useHistory } from 'react-router-dom'
 import HeaderContainer from './containers/headerContainer/headerContainer';
+import {useSelector} from 'react-redux';
+import {loginSelector} from './store/login/login.selector';
 
 const componentClassName = 'App';
 function App() {
     const { Header, Content, Sider } = Layout;
     const [isDrawerVisible,setIsDrawerVisible] = useState<boolean>(false);
-    const [hasLogged,setHasLogged] = useState<boolean>(!!localStorage.getItem('logged'));
     const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
     const history = useHistory();
+    const token = useSelector(loginSelector.getToken)
+    let screenToRender: ReactNode = null;
+
     return (
         <div className={`${componentClassName}`}>
-            { !hasLogged && (
+            { !token && (
                 <Switch>
                     <Route path='/login'>
-                        <Login hasLogged={hasLogged} setHasLogged={(value) => {setHasLogged(value)}}/>
+                        <Login />
                     </Route>
                 </Switch>
             )}
             {
-                hasLogged ? (
+                token ? (
                     <Layout style={{ minHeight: '100vh' }}>
                         <Sider
                             theme={'dark'}

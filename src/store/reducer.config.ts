@@ -1,8 +1,9 @@
 import {testReducer} from './test/test.reducer';
 import {combineReducers} from 'redux'
+import {loginReducer} from './login/login.reducer';
 const appReducer = combineReducers({
-    ...testReducer
-
+    ...testReducer,
+    ...loginReducer
 });
 export const RESET_STORE = 'RESET_STORE';
 

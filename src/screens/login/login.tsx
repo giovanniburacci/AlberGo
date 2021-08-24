@@ -5,25 +5,26 @@ import landing from '../../assets/landing.jpg'
 import polimi from '../../assets/polimi.png'
 import './login.scss'
 import {useHistory} from 'react-router-dom';
+import {useDispatch} from 'react-redux';
+import {loginRequest} from '../../store/login/login.action';
+import {testActionRequest} from '../../store/test/test.action';
 
 interface LoginData {
     username: string,
     password: string
 }
-interface LoginProps {
-    hasLogged: boolean,
-    setHasLogged: (state:boolean) => void
-}
+
 const componentClassName = 'login'
-export const Login = (props:LoginProps) => {
+export const Login = () => {
     const {Text, Title} = Typography;
-    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isLogging,setIsLogging] = useState<boolean>(true);
     const [isShowingSkeleton, setIsShowingSkeleton] = useState<boolean>(false);
     const [loginData,setLoginData] = useState<LoginData>({
         username: '',
         password: ''
     });
+
+    const dispatch = useDispatch();
 
     const history = useHistory();
 
@@ -35,17 +36,10 @@ export const Login = (props:LoginProps) => {
     }, [isLogging]);
 
     const login = () => {
-        setIsLoading(true);
-        if(loginData.password === 'admin' && loginData.username === 'admin') {
-            props.setHasLogged(true);
-            localStorage.setItem('logged','y');
-            history.replace('/');
 
-        } else {
-            alert('wrong credentials')
-        }
+        dispatch(loginRequest(loginData));
+        // history.replace('/');
     }
-
 
     return (
         <div className={`${componentClassName}`}>
@@ -101,7 +95,7 @@ export const Login = (props:LoginProps) => {
                                             <Text type={'secondary'}>Non hai un account?</Text>
                                         </div>
                                     </div>
-                                    <Button type="primary" loading={isLoading} onClick={login}>
+                                    <Button type="primary" onClick={login}>
                                         Login
                                     </Button>
                                 </div>
@@ -116,14 +110,14 @@ export const Login = (props:LoginProps) => {
                                 <Input className={`${componentClassName}__col__card__input`} type={'password'} size="large" placeholder="Password" prefix={<LockOutlined />} />
                                 <div className={`${componentClassName}__col__card__dialog`}>
                                     <div>
-                                        <Button type="primary" loading={false} onClick={() => {setIsLogging(true)}}>
+                                        <Button type="primary" onClick={() => {setIsLogging(true)}}>
                                             Login
                                         </Button>
                                         <div>
                                             <Text type={'secondary'}>Hai già un account?</Text>
                                         </div>
                                     </div>
-                                    <Button type="primary" loading={isLoading} onClick={() => {setIsLoading(true)}}>
+                                    <Button type="primary">
                                         Registrati
                                     </Button>
                                 </div>
