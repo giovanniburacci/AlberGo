@@ -26,8 +26,14 @@ function App() {
             {
                 hasLogged ? (
                     <Layout style={{ minHeight: '100vh' }}>
-                        <Sider theme={'dark'} collapsible trigger={null} collapsed={isCollapsed}>
-                            <Menu theme={'dark'} defaultSelectedKeys={['0']}>
+                        <Sider
+                            theme={'dark'}
+                            collapsible
+                            trigger={null}
+                            collapsed={isCollapsed}>
+                            <Menu theme={'dark'}
+                                  defaultSelectedKeys={['0']}
+                                  className={`${componentClassName}__menu`}>
                                 <MenuContainer isCollapsed={isCollapsed}/>
                             </Menu>
                         </Sider>
