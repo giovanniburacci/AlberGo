@@ -4,10 +4,8 @@ import {LockOutlined, UserOutlined } from '@ant-design/icons';
 import landing from '../../assets/landing.jpg'
 import polimi from '../../assets/polimi.png'
 import './login.scss'
-import {useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
-import {loginRequest} from '../../store/login/login.action';
-import {testActionRequest} from '../../store/test/test.action';
+import loginActions from '../../store/login/login.action';
 
 interface LoginData {
     username: string,
@@ -16,6 +14,7 @@ interface LoginData {
 
 const componentClassName = 'login'
 export const Login = () => {
+
     const {Text, Title} = Typography;
     const [isLogging,setIsLogging] = useState<boolean>(true);
     const [isShowingSkeleton, setIsShowingSkeleton] = useState<boolean>(false);
@@ -23,10 +22,7 @@ export const Login = () => {
         username: '',
         password: ''
     });
-
     const dispatch = useDispatch();
-
-    const history = useHistory();
 
     useEffect(() => {
         setIsShowingSkeleton(true);
@@ -36,9 +32,7 @@ export const Login = () => {
     }, [isLogging]);
 
     const login = () => {
-
-        dispatch(loginRequest(loginData));
-        // history.replace('/');
+        dispatch(loginActions.loginRequest(loginData));
     }
 
     return (

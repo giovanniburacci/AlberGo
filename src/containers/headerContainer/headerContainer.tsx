@@ -1,8 +1,9 @@
 import React from 'react';
 import {MenuUnfoldOutlined, MenuFoldOutlined, LogoutOutlined} from '@ant-design/icons';
-
+import loginActions from '../../store/login/login.action'
 import './headerContainer.scss'
 import {Button} from 'antd';
+import {useDispatch} from 'react-redux';
 const componentClassName = 'HeaderContainer'
 
 interface HeaderContainerProps {
@@ -11,6 +12,7 @@ interface HeaderContainerProps {
 }
 export const HeaderContainer = (props:HeaderContainerProps) => {
     const {setCollapsed, isCollapsed } = props;
+    const dispatch = useDispatch();
     return (
         <div className={`${componentClassName}`}>
             <>
@@ -22,7 +24,10 @@ export const HeaderContainer = (props:HeaderContainerProps) => {
                     )
                 }
             </>
-            <Button type="primary" icon={<LogoutOutlined />} size={'large'}>Esci</Button>
+            <Button type="primary"
+                    icon={<LogoutOutlined />}
+                    size={'large'}
+                    onClick={() => {dispatch(loginActions.logoutAction())}}>Esci</Button>
         </div>
     )
 }

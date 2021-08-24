@@ -1,10 +1,9 @@
-import React, {ReactNode, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Switch, Route, Redirect} from 'react-router-dom'
 import {Drawer, Layout, Menu} from 'antd';
 import { Login } from './screens/login/login';
 import './App.scss'
 import { MenuContainer } from './containers/menuContainer/menuContainer';
-import {useHistory } from 'react-router-dom'
 import HeaderContainer from './containers/headerContainer/headerContainer';
 import {useSelector} from 'react-redux';
 import {loginSelector} from './store/login/login.selector';
@@ -14,7 +13,8 @@ function App() {
     const { Header, Content, Sider } = Layout;
     const [isDrawerVisible,setIsDrawerVisible] = useState<boolean>(false);
     const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
-    const token = useSelector(loginSelector.getToken)
+    const [isLogged, setIsLogged] = useState<boolean>();
+    const token = useSelector(loginSelector.getToken);
 
     return (
         <div className={`${componentClassName}`}>

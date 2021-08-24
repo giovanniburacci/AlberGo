@@ -1,6 +1,6 @@
 import {createReducer} from '@reduxjs/toolkit';
 import {AmministratoreLogin} from './types';
-import {loginRequest} from './login.action';
+import loginActions from './login.action';
 
 const storedData = localStorage.getItem('AlberGOData');
 
@@ -22,7 +22,7 @@ const initialState:AmministratoreLogin = {
 
 export const loginReducer = {
     login: createReducer(initialState, (builder) => {
-        builder.addCase(loginRequest.fulfilled, (state,action) => {
+        builder.addCase(loginActions.loginRequest.fulfilled, (state,action) => {
             const {idHotel,idAmministratore, token } = action.payload
             localStorage.setItem('AlberGOData', JSON.stringify({
                 idHotel,
@@ -35,13 +35,19 @@ export const loginReducer = {
                 idAmministratore,
                 token
             }
-        }).addCase(loginRequest.rejected, (state,action) => {
+        }).addCase(loginActions.loginRequest.rejected, (state,action) => {
             return {
                 ...state
             }
-        }).addCase(loginRequest.pending, (state,action) => {
+        }).addCase(loginActions.loginRequest.pending, (state,action) => {
             return {
                 ...state
+            }
+        }).addCase(loginActions.logoutAction, (state) => {
+            return {
+                idAmministratore: undefined,
+                idHotel: undefined,
+                token: undefined
             }
         })
     })

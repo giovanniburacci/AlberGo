@@ -1,5 +1,4 @@
 import {RootState} from '../reducer.config';
-import {loginReducer} from './login.reducer';
 
 const getToken = (state:RootState) => state.login.token;
 

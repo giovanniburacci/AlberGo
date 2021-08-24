@@ -2,7 +2,7 @@ import React, {ReactNode} from 'react';
 import {ContactsOutlined, ControlOutlined, HomeOutlined, UsergroupAddOutlined} from '@ant-design/icons';
 import './menuContainer.scss'
 import MenuItem from 'antd/es/menu/MenuItem';
-import {Tag, Typography} from 'antd';
+import {Tag} from 'antd';
 
 interface Option {
     title: String,
@@ -14,7 +14,6 @@ const componentClassName = 'MenuContainer'
 interface MenuContainerProps {
     isCollapsed: boolean
 }
-const {Text} = Typography;
 
 export const MenuContainer = (props:MenuContainerProps) => {
     const {isCollapsed} = props;

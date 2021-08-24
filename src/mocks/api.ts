@@ -2,7 +2,6 @@ import {AdminData} from '../models/login';
 import {AmministratoreLogin} from '../store/login/types';
 
 export const login = async (data:AdminData):Promise<Partial<AmministratoreLogin>> => {
-    console.log('baobab');
     return await new Promise((resolve,reject) => {
         setTimeout(() => {
             resolve({
