@@ -5,13 +5,17 @@ import { Login } from './screens/login/login';
 import './App.scss'
 import { MenuContainer } from './containers/menuContainer/menuContainer';
 import {useHistory } from 'react-router-dom'
+import HeaderContainer from './containers/headerContainer/headerContainer';
+
+const componentClassName = 'App';
 function App() {
     const { Header, Content, Sider } = Layout;
     const [isDrawerVisible,setIsDrawerVisible] = useState<boolean>(false);
     const [hasLogged,setHasLogged] = useState<boolean>(!!localStorage.getItem('logged'));
+    const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
     const history = useHistory();
     return (
-        <>
+        <div className={`${componentClassName}`}>
             { !hasLogged && (
                 <Switch>
                     <Route path='/login'>
@@ -22,18 +26,16 @@ function App() {
             {
                 hasLogged ? (
                     <Layout style={{ minHeight: '100vh' }}>
-                        <Sider theme={'dark'} collapsible trigger={null}>
-                            <Menu theme={'dark'}>
-                                <MenuContainer/>
+                        <Sider theme={'dark'} collapsible trigger={null} collapsed={isCollapsed}>
+                            <Menu theme={'dark'} defaultSelectedKeys={['0']}>
+                                <MenuContainer isCollapsed={isCollapsed}/>
                             </Menu>
                         </Sider>
                         <Layout>
-                            <Header>
-                                <div>
-                                    <h2 style={{color: 'white'}}>
-                                        AlberGO.
-                                    </h2>
-                                </div>
+                            <Header className={`${componentClassName}__header`}>
+                                <HeaderContainer
+                                    isCollapsed={isCollapsed}
+                                    setCollapsed={(value) => {setIsCollapsed(value)}}/>
                             </Header>
                             <Content>
                                 <Switch>
@@ -65,7 +67,7 @@ function App() {
                     </Route>
                 )
             }
-        </>
+        </div>
     );
 }
 

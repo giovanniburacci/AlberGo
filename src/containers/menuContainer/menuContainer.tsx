@@ -10,41 +10,55 @@ interface Option {
 }
 
 const componentClassName = 'MenuContainer'
-const menuOptions: Option[] = [{
-    key: 1,
-    title: 'Prenotazioni',
-    icon: <ContactsOutlined />
-    },
-    {
-        key: 2,
-        title: 'Stanze',
-        icon: <HomeOutlined />
-    },
-    {
-        key: 3,
-        title: 'Categorie',
-        icon: <ControlOutlined />
-    },
-    {
-        key: 4,
-        title: 'Clienti',
-        icon: <UsergroupAddOutlined />
-    }]
 
-export const MenuContainer = () => {
+interface MenuContainerProps {
+    isCollapsed: boolean
+}
+
+export const MenuContainer = (props:MenuContainerProps) => {
+    const {isCollapsed} = props;
+
+    const menuOptions: Option[] = [{
+        key: 1,
+        title: 'Prenotazioni',
+        icon: <ContactsOutlined style={{fontSize: isCollapsed ? '32px' : 'unset'}}/>
+    },
+        {
+            key: 2,
+            title: 'Stanze',
+            icon: <HomeOutlined style={{fontSize: isCollapsed ? '32px' : 'unset'}}/>
+        },
+        {
+            key: 3,
+            title: 'Categorie',
+            icon: <ControlOutlined style={{fontSize: isCollapsed ? '32px' : 'unset'}}/>
+        },
+        {
+            key: 4,
+            title: 'Clienti',
+            icon: <UsergroupAddOutlined style={{fontSize: isCollapsed ? '32px' : 'unset'}}/>
+        }];
 
     return (
         <div className={`${componentClassName}`}>
             {
                 menuOptions.map( (option,index) => {
                     return (
-                        <MenuItem
-                            eventKey={String(index)}
-                            onClick={() => {console.log('hey')}}
-                            icon={option.icon}>
-
-                            {option.title}
-                        </MenuItem>
+                        <>
+                            <MenuItem
+                                style={isCollapsed ? {
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                } : undefined }
+                                eventKey={String(index)}
+                                onClick={() => {console.log('hey')}}
+                                icon={option.icon}>
+                                {
+                                    !isCollapsed && option.title
+                                }
+                            </MenuItem>
+                        </>
                     )
                 })
             }
