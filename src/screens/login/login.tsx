@@ -4,8 +4,9 @@ import {LockOutlined, UserOutlined } from '@ant-design/icons';
 import landing from '../../assets/landing.jpg'
 import polimi from '../../assets/polimi.png'
 import './login.scss'
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import loginActions from '../../store/login/login.action';
+import {loginSelector} from '../../store/login/login.selector';
 
 interface LoginData {
     username: string,
@@ -34,6 +35,8 @@ export const Login = () => {
     const login = () => {
         dispatch(loginActions.loginRequest(loginData));
     }
+
+    const isLoadingLogin = useSelector(loginSelector.getIsLoading)
 
     return (
         <div className={`${componentClassName}`}>
@@ -89,7 +92,7 @@ export const Login = () => {
                                             <Text type={'secondary'}>Non hai un account?</Text>
                                         </div>
                                     </div>
-                                    <Button type="primary" onClick={login}>
+                                    <Button type="primary" loading={isLoadingLogin} onClick={login}>
                                         Login
                                     </Button>
                                 </div>

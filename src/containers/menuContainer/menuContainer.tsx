@@ -61,7 +61,7 @@ export const MenuContainer = (props:MenuContainerProps) => {
             </div>
                     <div className={`${componentClassName}__badges`}>
                         <Tag color={'default'}
-                             style={{background: '#9EDE73',
+                             style={{background: '#7bc74c',
                                      color: '#ffffff'}}
                              className={!isCollapsed ? `${componentClassName}__badges__tag` : `${componentClassName}__badges__tag__collapsed`}>
                             X {!isCollapsed && <>Stanze totali</>}

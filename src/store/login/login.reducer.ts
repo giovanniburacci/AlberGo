@@ -17,7 +17,9 @@ if(storedData) {
 const initialState:AmministratoreLogin = {
     token,
     idAmministratore,
-    idHotel
+    idHotel,
+    isLoading: false,
+    isError: false
 }
 
 export const loginReducer = {
@@ -33,21 +35,30 @@ export const loginReducer = {
                 ...state,
                 idHotel,
                 idAmministratore,
-                token
+                token,
+                isLoading: false,
+                isError: false
             }
         }).addCase(loginActions.loginRequest.rejected, (state,action) => {
             return {
-                ...state
+                ...state,
+                isLoading: false,
+                isError: true
             }
         }).addCase(loginActions.loginRequest.pending, (state,action) => {
             return {
-                ...state
+                ...state,
+                isLoading: true,
+                isError: false
             }
         }).addCase(loginActions.logoutAction, (state) => {
             return {
+                ...state,
                 idAmministratore: undefined,
                 idHotel: undefined,
-                token: undefined
+                token: undefined,
+                isError: false,
+                isLoading: false
             }
         })
     })

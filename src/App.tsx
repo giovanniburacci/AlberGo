@@ -43,18 +43,20 @@ function App() {
                                 isCollapsed={isCollapsed}
                                 setCollapsed={(value) => {setIsCollapsed(value)}}/>
                         </Header>
-                        <Content>
-                            <Switch>
-                                <Route path='/' exact>
-                                    Prenotazioni
-                                </Route>
-                                <Route path='/stanze'>
-                                    Stanze
-                                </Route>
-                                <Route path='/*'>
-                                    <Redirect to='/' />
-                                </Route>
-                            </Switch>
+                        <Content className={`${componentClassName}__content`}>
+                            <div className={`${componentClassName}__content__box`}>
+                                <Switch>
+                                    <Route path='/' exact>
+                                        Prenotazioni
+                                    </Route>
+                                    <Route path='/stanze'>
+                                        Stanze
+                                    </Route>
+                                    <Route path='/*'>
+                                        <Redirect to='/' />
+                                    </Route>
+                                </Switch>
+                            </div>
                             <Drawer visible={isDrawerVisible} onClose={() => {
                                 setIsDrawerVisible(false)
                             }}>

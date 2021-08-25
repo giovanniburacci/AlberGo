@@ -6,7 +6,7 @@
   &__badges {
     padding: 0 12px 0 12px;
     color: #ffffff !important;
-
+    font-weight: 600;
     &__tag {
       padding: 12px;
       margin-bottom: 16px;
@@ -15,7 +15,6 @@
       font-size: 16px;
       border: 0;
       border-radius: 16px;
-      box-shadow: 0px 0px 5px 0px white;
 
       &__collapsed {
         padding: 12px;
@@ -25,9 +24,9 @@
         background: #ffffffc2;
         font-size: 16px;
         border: 0;
-        box-shadow: 0px 0px 5px 0px white;
         text-align: center;
       }
+
     }
   }
 }
