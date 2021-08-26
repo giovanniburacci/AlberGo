@@ -2,17 +2,23 @@ import React from 'react';
 import {MenuUnfoldOutlined, MenuFoldOutlined, LogoutOutlined} from '@ant-design/icons';
 import loginActions from '../../store/login/login.action'
 import './headerContainer.scss'
-import {Button} from 'antd';
+import {Button, Typography} from 'antd';
 import {useDispatch} from 'react-redux';
 const componentClassName = 'HeaderContainer'
 
 interface HeaderContainerProps {
     setCollapsed: (value:boolean) => void,
-    isCollapsed: boolean
+    isCollapsed: boolean,
+    selectedKey: string
 }
+
+const screens = ['Prenotazioni', 'Stanze', 'Categorie', 'Clienti']
+
 export const HeaderContainer = (props:HeaderContainerProps) => {
-    const {setCollapsed, isCollapsed } = props;
+    const {Title} = Typography;
+    const {setCollapsed, isCollapsed,selectedKey } = props;
     const dispatch = useDispatch();
+
     return (
         <div className={`${componentClassName}`}>
             <>
@@ -23,6 +29,9 @@ export const HeaderContainer = (props:HeaderContainerProps) => {
                         <MenuFoldOutlined style={{fontSize: '32px'}} onClick={() => {setCollapsed(true)}}/>
                     )
                 }
+                <Title level={2} style={{margin: '0'}}>
+                    {screens[Number(selectedKey)]}
+                </Title>
             </>
             <Button type="primary"
                     icon={<LogoutOutlined />}

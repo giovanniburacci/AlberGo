@@ -1,4 +1,4 @@
-export interface Cliente {
+export interface ClienteDTO {
     idCliente: String,
     nome: String,
     cognome: String,
@@ -8,7 +8,7 @@ export interface Cliente {
     idHotel: String
 }
 
-export interface Prenotazione {
+export interface PrenotazioneDTO {
     idPrenotazione: String,
     dataInizio: Date,
     dataFine: Date,
@@ -17,7 +17,7 @@ export interface Prenotazione {
     idHotel: String
 }
 
-export interface Stanza {
+export interface StanzaDTO {
     idStanza: String,
     numStanza: number,
     fuoriServizio: boolean,
@@ -27,7 +27,7 @@ export interface Stanza {
     idHotel: String
 }
 
-export interface Categoria {
+export interface CategoriaDTO {
     idCategoria: String,
     nome: String,
     prezzo: number,
@@ -35,7 +35,7 @@ export interface Categoria {
     idHotel: String
 }
 
-export interface Amministratore {
+export interface AmministratoreDTO {
     idAmministratore: String,
     nome: String,
     cognome: String,
@@ -45,7 +45,7 @@ export interface Amministratore {
     idHotel: String
 }
 
-export interface Hotel {
+export interface HotelDTO {
     idHotel: String,
     indirizzo: String,
     stelle: Stelle

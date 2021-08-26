@@ -14,7 +14,7 @@ interface LoginData {
 }
 
 const componentClassName = 'login'
-export const Login = () => {
+export const LoginComponent = () => {
 
     const {Text, Title} = Typography;
     const [isLogging,setIsLogging] = useState<boolean>(true);
@@ -127,4 +127,4 @@ export const Login = () => {
         )
 }
 
-export default Login;
+export default LoginComponent;

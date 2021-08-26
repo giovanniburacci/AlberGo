@@ -3,10 +3,12 @@ import {ContactsOutlined, ControlOutlined, HomeOutlined, UsergroupAddOutlined} f
 import './menuContainer.scss'
 import MenuItem from 'antd/es/menu/MenuItem';
 import {Tag} from 'antd';
+import {useHistory} from 'react-router-dom';
 
 interface Option {
     title: String,
-    icon: ReactNode
+    icon: ReactNode,
+    path: string
 }
 
 const componentClassName = 'MenuContainer'
@@ -17,22 +19,26 @@ interface MenuContainerProps {
 
 export const MenuContainer = (props:MenuContainerProps) => {
     const {isCollapsed} = props;
-
+    const history = useHistory();
     const menuOptions: Option[] = [{
         title: 'Prenotazioni',
-        icon: <ContactsOutlined style={{fontSize: isCollapsed ? '32px' : 'unset'}}/>
+        icon: <ContactsOutlined style={{fontSize: isCollapsed ? '32px' : 'unset'}}/>,
+        path: '/'
     },
         {
             title: 'Stanze',
-            icon: <HomeOutlined style={{fontSize: isCollapsed ? '32px' : 'unset'}}/>
+            icon: <HomeOutlined style={{fontSize: isCollapsed ? '32px' : 'unset'}}/>,
+            path: '/stanze'
         },
         {
             title: 'Categorie',
-            icon: <ControlOutlined style={{fontSize: isCollapsed ? '32px' : 'unset'}}/>
+            icon: <ControlOutlined style={{fontSize: isCollapsed ? '32px' : 'unset'}}/>,
+            path: '/categorie'
         },
         {
             title: 'Clienti',
-            icon: <UsergroupAddOutlined style={{fontSize: isCollapsed ? '32px' : 'unset'}}/>
+            icon: <UsergroupAddOutlined style={{fontSize: isCollapsed ? '32px' : 'unset'}}/>,
+            path: '/clienti'
         }];
 
     return (
@@ -48,8 +54,8 @@ export const MenuContainer = (props:MenuContainerProps) => {
                                         justifyContent: 'center'
                                     } : undefined }
                                     eventKey={String(index)}
-                                    onClick={() => {console.log('hey')}}
                                     icon={option.icon}
+                                    onClick={() => {history.push(option.path)}}
                                     key={index}>
                                     {
                                         !isCollapsed && option.title

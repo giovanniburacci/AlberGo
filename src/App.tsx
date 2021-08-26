@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Switch, Route, Redirect} from 'react-router-dom'
 import {Drawer, Layout, Menu} from 'antd';
-import { Login } from './screens/login/login';
+import { LoginComponent } from './screens/login/login.component';
 import './App.scss'
-import { MenuContainer } from './containers/menuContainer/menuContainer';
-import HeaderContainer from './containers/headerContainer/headerContainer';
+import { MenuContainer } from './containers/menuContainer/menuContainer.container';
+import HeaderContainer from './containers/headerContainer/headerContainer.container';
 import {useSelector} from 'react-redux';
 import {loginSelector} from './store/login/login.selector';
 
@@ -13,7 +13,7 @@ function App() {
     const { Header, Content, Sider } = Layout;
     const [isDrawerVisible,setIsDrawerVisible] = useState<boolean>(false);
     const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
-    const [isLogged, setIsLogged] = useState<boolean>();
+    const [selectedKey,setSelectedKey] = useState<string>('0');
     const token = useSelector(loginSelector.getToken);
 
     return (
@@ -21,7 +21,7 @@ function App() {
             { !token ? (
                 <Switch>
                     <Route path='/*'>
-                        <Login />
+                        <LoginComponent />
                     </Route>
                 </Switch>
             ) : (
@@ -33,7 +33,10 @@ function App() {
                         collapsed={isCollapsed}>
                         <Menu theme={'dark'}
                               defaultSelectedKeys={['0']}
-                              className={`${componentClassName}__menu`}>
+                              className={`${componentClassName}__menu`}
+                              selectedKeys={[selectedKey]}
+                              onSelect={(key) => {setSelectedKey(key.key)}}
+                        >
                             <MenuContainer isCollapsed={isCollapsed}/>
                         </Menu>
                     </Sider>
@@ -41,7 +44,8 @@ function App() {
                         <Header className={`${componentClassName}__header`}>
                             <HeaderContainer
                                 isCollapsed={isCollapsed}
-                                setCollapsed={(value) => {setIsCollapsed(value)}}/>
+                                setCollapsed={(value) => {setIsCollapsed(value)}}
+                                selectedKey={selectedKey}/>
                         </Header>
                         <Content className={`${componentClassName}__content`}>
                             <div className={`${componentClassName}__content__box`}>
@@ -51,6 +55,12 @@ function App() {
                                     </Route>
                                     <Route path='/stanze'>
                                         Stanze
+                                    </Route>
+                                    <Route path='/categorie'>
+                                        Categorie
+                                    </Route>
+                                    <Route path='/clienti'>
+                                        Clienti
                                     </Route>
                                     <Route path='/*'>
                                         <Redirect to='/' />
