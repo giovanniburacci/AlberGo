@@ -7,6 +7,7 @@ import { MenuContainer } from './containers/menuContainer/menuContainer.containe
 import HeaderContainer from './containers/headerContainer/headerContainer.container';
 import {useSelector} from 'react-redux';
 import {loginSelector} from './store/login/login.selector';
+import Prenotazioni from './screens/prenotazioni/prenotazioni.component';
 
 const componentClassName = 'App';
 function App() {
@@ -51,7 +52,7 @@ function App() {
                             <div className={`${componentClassName}__content__box`}>
                                 <Switch>
                                     <Route path='/' exact>
-                                        Prenotazioni
+                                        <Prenotazioni />
                                     </Route>
                                     <Route path='/stanze'>
                                         Stanze
