@@ -6,7 +6,9 @@ interface TableSorter<E> {
 export interface PrenotazioniColumns<E> {
     title: string,
     dataIndex: string,
-    sorter?: TableSorter<E>
+    multipleSorter?: TableSorter<E>,
+    sorter?: (a:E,b:E) => number
+    width?: number
 }
 
 export interface PrenotazioneMapper {
