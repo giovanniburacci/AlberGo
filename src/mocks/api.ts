@@ -5,11 +5,10 @@ export const login = async (data:AdminData):Promise<Partial<AmministratoreLogin>
     return await new Promise((resolve,reject) => {
         setTimeout(() => {
             resolve({
-                idAmministratore: '0',
+                id: '0',
                 nome: 'Pippo',
                 cognome: 'Baudo',
                 username: 'pippobaudo69',
-                email: 'pippo.baudo@hotmail.com',
                 idHotel: '0',
                 token: 'tokenprova'
             })

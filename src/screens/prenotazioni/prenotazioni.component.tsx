@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {getPrenotazioniMapped} from '../../mocks/stubs/stubs';
 import './prenotazioni.scss'
-import {Button, Table} from 'antd';
+import {Button, Table, message} from 'antd';
 import {PrenotazioneMapper, PrenotazioniColumns} from '../../models/table';
 const componentClassName = 'Prenotazioni';
 
@@ -9,6 +9,11 @@ const Prenotazioni = () => {
 
     const prenotazioni = getPrenotazioniMapped();
 
+    useEffect(() => {
+        if(prenotazioni) {
+            message.success('Hey fatto fatto')
+        }
+    },[prenotazioni])
     const columns:PrenotazioniColumns<PrenotazioneMapper>[] = [{
         title: 'Stanza',
         dataIndex: 'idStanza',
@@ -36,7 +41,7 @@ const Prenotazioni = () => {
 
     return (
         <div className={`${componentClassName}`}>
-                <Table dataSource={prenotazioni} columns={columns} rowKey={(a) => ''+a.idPrenotazione}/>
+                <Table dataSource={prenotazioni} columns={columns} rowKey={(a) => ''+a.id}/>
         </div>
     )
 }

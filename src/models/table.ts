@@ -10,7 +10,7 @@ export interface PrenotazioniColumns<E> {
 }
 
 export interface PrenotazioneMapper {
-    idPrenotazione: string,
+    id: string,
     idStanza: string,
     dataInizio: string,
     dataFine: string

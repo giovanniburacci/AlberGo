@@ -1,15 +1,14 @@
 export interface ClienteDTO {
-    idCliente: String,
+    id: String,
     nome: String,
     cognome: String,
-    email: String,
     telefono: String,
     documento: String,
     idHotel: String
 }
 
 export interface PrenotazioneDTO {
-    idPrenotazione: String,
+    id: String,
     dataInizio: Date,
     dataFine: Date,
     idCliente: String,
@@ -18,11 +17,11 @@ export interface PrenotazioneDTO {
 }
 
 export interface StanzaDTO {
-    idStanza: String,
-    numStanza: number,
+    id: String,
+    numeroStanza: number,
     fuoriServizio: boolean,
-    descrizioneStanza: String,
-    mq: number,
+    descrizione: String,
+    metriQuadri: number,
     idCategoria: String,
     idHotel: String
 }
@@ -36,21 +35,21 @@ export interface CategoriaDTO {
 }
 
 export interface AmministratoreDTO {
-    idAmministratore: String,
+    id: String,
     nome: String,
     cognome: String,
     username: String,
-    email: String,
     password: String,
     idHotel: String
 }
 
 export interface HotelDTO {
-    idHotel: String,
+    id: String,
+    nome:String,
     indirizzo: String,
     stelle: Stelle
     descrizione: String,
-    telefonoReception: String
+    telefono: String
 }
 
 export enum Stelle  {

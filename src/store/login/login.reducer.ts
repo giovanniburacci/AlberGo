@@ -4,19 +4,19 @@ import loginActions from './login.action';
 
 const storedData = localStorage.getItem('AlberGOData');
 
-let token = null, idAmministratore = null, idHotel = null;
+let token = null, id = null, idHotel = null;
 if(storedData) {
     const parsedData = JSON.parse(storedData);
-    if(parsedData.token && parsedData.idAmministratore && parsedData.idHotel) {
+    if(parsedData.token && parsedData.id && parsedData.idHotel) {
         token = parsedData.token;
-        idAmministratore = parsedData.idAmministratore;
+        id = parsedData.id;
         idHotel = parsedData.idHotel;
     }
 }
 
 const initialState:AmministratoreLogin = {
     token,
-    idAmministratore,
+    id,
     idHotel,
     isLoading: false,
     isError: false
@@ -25,16 +25,16 @@ const initialState:AmministratoreLogin = {
 export const loginReducer = {
     login: createReducer(initialState, (builder) => {
         builder.addCase(loginActions.loginRequest.fulfilled, (state,action) => {
-            const {idHotel,idAmministratore, token } = action.payload
+            const {idHotel,id, token } = action.payload
             localStorage.setItem('AlberGOData', JSON.stringify({
                 idHotel,
-                idAmministratore,
+                id,
                 token
             }));
             return {
                 ...state,
                 idHotel,
-                idAmministratore,
+                id,
                 token,
                 isLoading: false,
                 isError: false

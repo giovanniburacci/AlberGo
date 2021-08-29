@@ -5,7 +5,7 @@ export const getPrenotazioniStub = ():PrenotazioneDTO[] => {
     const prenotazioniStub:PrenotazioneDTO[] = [];
     for(let i=0;i<10;i++) {
         prenotazioniStub.push({
-            idPrenotazione: ''+i,
+            id: ''+i,
             dataInizio: new Date('2020-7-18'),
             dataFine: new Date('2020-7-25'),
             idCliente: '0',
@@ -19,7 +19,7 @@ export const getPrenotazioniMapped = () => {
     const prenotazioni: PrenotazioneDTO[] = getPrenotazioniStub();
     const prenotazioniMapped: PrenotazioneMapper[] = prenotazioni.map(
         prenotazione => ({
-            idPrenotazione: prenotazione.idPrenotazione.toString(),
+            id: prenotazione.id.toString(),
             idStanza: prenotazione.idStanza.toString(),
             dataFine: prenotazione.dataFine.toString(),
             dataInizio: prenotazione.dataInizio.toString()
