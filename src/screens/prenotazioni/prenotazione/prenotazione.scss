@@ -1,0 +1,13 @@
+.Prenotazione {
+  overflow-y: auto;
+
+  &__inputgroup {
+    margin: 0 0 24px 0;
+      h5 {
+        margin: 0 0 8px 0;
+      }
+    &__datepicker {
+      width: 100%;
+    }
+  }
+}
