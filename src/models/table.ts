@@ -11,9 +11,12 @@ export interface PrenotazioniColumns<E> {
     width?: number
 }
 
-export interface PrenotazioneMapper {
-    id: string,
-    idStanza: string,
+export interface PrenotazioneIbridaMapper {
+    nome: string,
+    cognome: string,
     dataInizio: string,
-    dataFine: string
+    dataFine: string,
+    numeroStanza: number,
+    telefono: string,
+    idPrenotazione: string
 }

@@ -2,29 +2,34 @@ import React, {useState} from 'react';
 import {getPrenotazioniMapped} from '../../mocks/stubs/stubs';
 import './prenotazioni.scss'
 import {ColumnsType} from 'antd/es/table';
-import {PrenotazioneMapper} from '../../models/table';
 import {Drawer, Table} from 'antd';
 import Prenotazione from './prenotazione/prenotazione.component';
 import PrenotazioniBar from './prenotazioniBar/prenotazioniBar.component';
 import NuovaPrenotazione from './nuovaPrenotazione/nuovaPrenotazione.component';
+import {PrenotazioneIbridaMapper} from '../../models/table';
 
 const componentClassName = 'Prenotazioni';
 
 const Prenotazioni = () => {
 
     const [isDrawerVisible,setIsDrawerVisible] = useState<boolean>(false);
-    const [selectedPrenotazione, setSelectedPrenotazione] = useState<PrenotazioneMapper>();
+    const [selectedPrenotazione, setSelectedPrenotazione] = useState<PrenotazioneIbridaMapper>();
     const prenotazioni = getPrenotazioniMapped();
 
-    const selectPrenotazione = (record:PrenotazioneMapper) => {
+    const selectPrenotazione = (record:PrenotazioneIbridaMapper) => {
         setSelectedPrenotazione(record);
         setIsDrawerVisible(true);
     }
-    const columns:ColumnsType<PrenotazioneMapper> = [{
+    const columns:ColumnsType<PrenotazioneIbridaMapper> = [{
         title: 'Stanza',
-        dataIndex: 'idStanza',
-        key: 'idStanza',
+        dataIndex: 'numeroStanza',
+        key: 'numeroStanza',
     },
+        {
+            title: 'Cognome',
+            dataIndex: 'cognome',
+            key: 'cognome'
+        },
         {
             title: 'Check-in',
             dataIndex: 'dataInizio',
@@ -49,10 +54,14 @@ const Prenotazioni = () => {
                     columns={columns}
                     dataSource={prenotazioni}
                     pagination={false}
-                    rowKey={(row) => row.id}
+                    rowKey={(row) => row.idPrenotazione}
                 />
             </div>
             <Drawer
+                headerStyle={{
+                    background: '#eb2f96',
+                    color: '#ffffff'
+                }}
                 visible={isDrawerVisible}
                 onClose={() => {
                     setSelectedPrenotazione((prevState => {
@@ -63,9 +72,13 @@ const Prenotazioni = () => {
                     setIsDrawerVisible(false);
                 }}
                 title={ selectedPrenotazione ? (
-                    'Dettaglio prenotazione'
+                    <div style={{color: '#ffffff'}}>
+                        Dettaglio prenotazione
+                    </div>
                 ) : (
-                    'Nuova prenotazione'
+                    <div style={{color: '#ffffff'}}>
+                        Nuova prenotazione
+                    </div>
                 )}
                 width={'348px'}>
                 { selectedPrenotazione ? (
