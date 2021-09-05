@@ -67,26 +67,26 @@ export const MenuContainer = (props:MenuContainerProps) => {
             </div>
                     <div className={`${componentClassName}__badges`}>
                         <Tag color={'default'}
-                             style={{background: '#7bc74c',
+                             style={{backgroundImage: 'linear-gradient( 135deg, #70F570 10%, #49C628 100%)',
                                      color: '#ffffff'}}
-                             className={!isCollapsed ? `${componentClassName}__badges__tag` : `${componentClassName}__badges__tag__collapsed`}>
+                             className={!isCollapsed ? `${componentClassName}__badges__tag green` : `${componentClassName}__badges__tag__collapsed green`}>
                             X {!isCollapsed && <>Stanze totali</>}
                         </Tag>
                         <Tag color={'default'}
-                             style={{background: '#BE0000',
+                             style={{backgroundImage: 'linear-gradient( 135deg, #F05F57 10%, #360940 100%)',
                                      color: '#ffffff'}}
                              className={!isCollapsed ? `${componentClassName}__badges__tag` : `${componentClassName}__badges__tag__collapsed`}>
                             X {!isCollapsed && <>Stanze occupate</>}
                         </Tag>
                         <Tag color={'default'}
-                             style={{background: '#E48900',
+                             style={{backgroundImage: 'linear-gradient( 135deg, #FCCF31 10%, #F55555 100%)',
                                      color: '#ffffff'}}
                              className={!isCollapsed ? `${componentClassName}__badges__tag` : `${componentClassName}__badges__tag__collapsed`}>
                             X {!isCollapsed && <>Categorie</>}
                         </Tag>
                         <Tag color={'default'}
                              className={!isCollapsed ? `${componentClassName}__badges__tag` : `${componentClassName}__badges__tag__collapsed`}
-                             style={{background: '#7e1dbb',
+                             style={{backgroundImage: 'linear-gradient( 135deg, #3B2667 10%, #BC78EC 100%)',
                                      color: '#ffffff'}}>
                             X {!isCollapsed && <>Clienti registrati</>}
                         </Tag>

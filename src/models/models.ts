@@ -1,19 +1,19 @@
 export interface ClienteDTO {
-    id: String,
-    nome: String,
-    cognome: String,
-    telefono: String,
-    documento: String,
-    idHotel: String
+    id: string,
+    nome: string,
+    cognome: string,
+    telefono: string,
+    documento: string,
+    idHotel: string
 }
 
 export interface PrenotazioneDTO {
-    id: String,
+    id: string,
     dataInizio: Date,
     dataFine: Date,
-    idCliente: String,
-    idStanza: String,
-    idHotel: String
+    idCliente: string,
+    idStanza: string,
+    idHotel: string
 }
 
 export interface PrenotazioneIbridaDTO {
@@ -25,40 +25,41 @@ export interface PrenotazioneIbridaDTO {
     telefono: string,
     idPrenotazione: string
 }
+
 export interface StanzaDTO {
-    id: String,
+    id: string,
     numeroStanza: number,
     fuoriServizio: boolean,
-    descrizione: String,
+    descrizione: string,
     metriQuadri: number,
-    idCategoria: String,
-    idHotel: String
+    idCategoria: string,
+    idHotel: string
 }
 
 export interface CategoriaDTO {
-    idCategoria: String,
-    nome: String,
+    idCategoria: string,
+    nome: string,
     prezzo: number,
-    descrizioneCategoria: String,
-    idHotel: String
+    descrizioneCategoria: string,
+    idHotel: string
 }
 
 export interface AmministratoreDTO {
-    id: String,
-    nome: String,
-    cognome: String,
-    username: String,
-    password: String,
-    idHotel: String
+    id: string,
+    nome: string,
+    cognome: string,
+    username: string,
+    password: string,
+    idHotel: string
 }
 
 export interface HotelDTO {
-    id: String,
-    nome:String,
-    indirizzo: String,
+    id: string,
+    nome:string,
+    indirizzo: string,
     stelle: Stelle
-    descrizione: String,
-    telefono: String
+    descrizione: string,
+    telefono: string
 }
 
 export enum Stelle  {

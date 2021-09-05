@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {getPrenotazioniMapped} from '../../mocks/stubs/stubs';
+import {getPrenotazioniMapped} from '../../mocks/stubs/prenotazioni';
 import './prenotazioni.scss'
 import {ColumnsType} from 'antd/es/table';
 import {Drawer, Table} from 'antd';
@@ -14,6 +14,8 @@ const Prenotazioni = () => {
 
     const [isDrawerVisible,setIsDrawerVisible] = useState<boolean>(false);
     const [selectedPrenotazione, setSelectedPrenotazione] = useState<PrenotazioneIbridaMapper>();
+    const [isCreatingPrenotazione, setIsCreatingPrenotazione] = useState<boolean>(false);
+
     const prenotazioni = getPrenotazioniMapped();
 
     const selectPrenotazione = (record:PrenotazioneIbridaMapper) => {
@@ -44,7 +46,10 @@ const Prenotazioni = () => {
     return (
         <>
             <div className={`${componentClassName}`}>
-                <PrenotazioniBar setHasClickedNew={() => {setIsDrawerVisible(true)}}/>
+                <PrenotazioniBar setHasClickedNew={() => {
+                    setIsDrawerVisible(true);
+                    setIsCreatingPrenotazione(true);
+                }}/>
                 <Table
                     onRow={(record,index) => {
                         return {
@@ -62,6 +67,7 @@ const Prenotazioni = () => {
                     background: '#eb2f96',
                     color: '#ffffff'
                 }}
+                bodyStyle={{background: '#f8f8ff'}}
                 visible={isDrawerVisible}
                 onClose={() => {
                     setSelectedPrenotazione((prevState => {
@@ -70,6 +76,7 @@ const Prenotazioni = () => {
                         }
                     }));
                     setIsDrawerVisible(false);
+                    setIsCreatingPrenotazione(false);
                 }}
                 title={ selectedPrenotazione ? (
                     <div style={{color: '#ffffff'}}>
@@ -85,7 +92,7 @@ const Prenotazioni = () => {
                     <Prenotazione
                         prenotazione={selectedPrenotazione}
                     />
-                ) : (
+                ) :  isCreatingPrenotazione && (
                     <NuovaPrenotazione />
                 )}
             </Drawer>

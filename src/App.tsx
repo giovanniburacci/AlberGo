@@ -8,13 +8,26 @@ import HeaderContainer from './containers/headerContainer/headerContainer.contai
 import {useSelector} from 'react-redux';
 import {loginSelector} from './store/login/login.selector';
 import Prenotazioni from './screens/prenotazioni/prenotazioni.component';
+import Stanze from './screens/stanze/stanze.component';
+import Categorie from './screens/categorie/categorie.component';
 
 const componentClassName = 'App';
+
+const screens = ['Prenotazioni', 'Stanze', 'Categorie', 'Clienti']
+
+const getCurrentSection = () => {
+    const currentURL = window.location.pathname;
+    const currentScreen =  ''+screens.findIndex(screen => screen.toLocaleLowerCase() === currentURL.substring(1))
+    if(currentScreen === '-1') {
+        return '0';
+    } else {
+        return currentScreen;
+    }
+}
 function App() {
     const { Header, Content, Sider } = Layout;
-    const [isDrawerVisible,setIsDrawerVisible] = useState<boolean>(false);
-    const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
-    const [selectedKey,setSelectedKey] = useState<string>('0');
+    const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
+    const [selectedKey,setSelectedKey] = useState<string>(getCurrentSection());
     const token = useSelector(loginSelector.getToken);
 
     return (
@@ -33,7 +46,7 @@ function App() {
                         trigger={null}
                         collapsed={isCollapsed}>
                         <Menu theme={'dark'}
-                              defaultSelectedKeys={['0']}
+                              defaultSelectedKeys={[selectedKey]}
                               className={`${componentClassName}__menu`}
                               selectedKeys={[selectedKey]}
                               onSelect={(key) => {setSelectedKey(key.key)}}
@@ -55,10 +68,10 @@ function App() {
                                         <Prenotazioni />
                                     </Route>
                                     <Route path='/stanze'>
-                                        Stanze
+                                        <Stanze />
                                     </Route>
                                     <Route path='/categorie'>
-                                        Categorie
+                                        <Categorie />
                                     </Route>
                                     <Route path='/clienti'>
                                         Clienti
@@ -68,11 +81,6 @@ function App() {
                                     </Route>
                                 </Switch>
                             </div>
-                            <Drawer visible={isDrawerVisible} onClose={() => {
-                                setIsDrawerVisible(false)
-                            }}>
-                                <p>Prova drawer</p>
-                            </Drawer>
                         </Content>
                     </Layout>
                 </Layout>

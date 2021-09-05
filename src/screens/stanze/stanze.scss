@@ -1,0 +1,38 @@
+.Stanze {
+  display: flex;
+  height: 100%;
+  padding: 16px 8px;
+
+  &__column {
+    width: 50%;
+    height: 100%;
+    overflow-y: auto;
+    margin: 0 auto;
+    border: 1px solid #0000001a;
+    background: white;
+
+    &__box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+
+      h3 {
+        margin: 0 !important;
+      }
+
+      &__spacing {
+        margin: 0 0 16px 0;
+      }
+    }
+
+    canvas {
+      max-height: 220px;
+      max-width: 240px;
+    }
+  }
+}
+
+.bb {
+  border-bottom: 1px solid #0000001a;
+}
