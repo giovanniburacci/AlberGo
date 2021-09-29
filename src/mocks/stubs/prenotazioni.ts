@@ -36,8 +36,9 @@ export const getPrenotazioniIbride = () => {
             idPrenotazione: ''+i,
             nome: 'Giovanni',
             numeroStanza: i,
-            telefono: '3925837092'
-
+            telefono: '3925837092',
+            nomeCategoria: 'acaso',
+            documento: 'booooh'
         })
     }
 

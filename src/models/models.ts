@@ -23,7 +23,9 @@ export interface PrenotazioneIbridaDTO {
     dataFine: Date,
     numeroStanza: number,
     telefono: string,
-    idPrenotazione: string
+    idPrenotazione: string,
+    nomeCategoria: string,
+    documento: string
 }
 
 export interface StanzaDTO {

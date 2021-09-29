@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Switch, Route, Redirect} from 'react-router-dom'
 import {Drawer, Layout, Menu} from 'antd';
 import { LoginComponent } from './screens/login/login.component';
@@ -10,6 +10,7 @@ import {loginSelector} from './store/login/login.selector';
 import Prenotazioni from './screens/prenotazioni/prenotazioni.component';
 import Stanze from './screens/stanze/stanze.component';
 import Categorie from './screens/categorie/categorie.component';
+import axios from 'axios';
 
 const componentClassName = 'App';
 
@@ -23,6 +24,10 @@ const getCurrentSection = () => {
     } else {
         return currentScreen;
     }
+}
+
+interface partResp {
+    data: {}
 }
 function App() {
     const { Header, Content, Sider } = Layout;

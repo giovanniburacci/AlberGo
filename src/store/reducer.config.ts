@@ -1,9 +1,11 @@
 import {testReducer} from './test/test.reducer';
 import {combineReducers} from 'redux'
 import {loginReducer} from './login/login.reducer';
+import {prenotazioniReducer} from './prenotazioni/prenotazioni.reducer';
 const appReducer = combineReducers({
     ...testReducer,
-    ...loginReducer
+    ...loginReducer,
+    ...prenotazioniReducer
 });
 export const RESET_STORE = 'RESET_STORE';
 

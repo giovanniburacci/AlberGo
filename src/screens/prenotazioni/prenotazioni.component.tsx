@@ -1,28 +1,37 @@
-import React, {useState} from 'react';
-import {getPrenotazioniMapped} from '../../mocks/stubs/prenotazioni';
+import React, {useEffect, useState} from 'react';
 import './prenotazioni.scss'
 import {ColumnsType} from 'antd/es/table';
 import {Drawer, Table} from 'antd';
 import Prenotazione from './prenotazione/prenotazione.component';
 import PrenotazioniBar from './prenotazioniBar/prenotazioniBar.component';
 import NuovaPrenotazione from './nuovaPrenotazione/nuovaPrenotazione.component';
-import {PrenotazioneIbridaMapper} from '../../models/table';
+import {PrenotazioneIbridaDTO} from '../../models/models';
+import {useDispatch, useSelector} from 'react-redux';
+import prenotazioniActions from '../../store/prenotazioni/prenotazioni.action';
+import {Spin} from 'antd';
+import {getIsError, getPrenotazioni, getIsLoading} from '../../store/prenotazioni/prenotazioni.selector';
 
 const componentClassName = 'Prenotazioni';
 
 const Prenotazioni = () => {
 
     const [isDrawerVisible,setIsDrawerVisible] = useState<boolean>(false);
-    const [selectedPrenotazione, setSelectedPrenotazione] = useState<PrenotazioneIbridaMapper>();
+    const [selectedPrenotazione, setSelectedPrenotazione] = useState<PrenotazioneIbridaDTO>();
     const [isCreatingPrenotazione, setIsCreatingPrenotazione] = useState<boolean>(false);
+    const listaPren = useSelector(getPrenotazioni)
+    const isLoading = useSelector(getIsLoading);
+    const isError = useSelector(getIsError);
 
-    const prenotazioni = getPrenotazioniMapped();
+    const dispatch = useDispatch();
+    useEffect( () => {
+        dispatch(prenotazioniActions.fetchPrenotazioni(1))
+    }, [])
 
-    const selectPrenotazione = (record:PrenotazioneIbridaMapper) => {
+    const selectPrenotazione = (record:PrenotazioneIbridaDTO) => {
         setSelectedPrenotazione(record);
         setIsDrawerVisible(true);
     }
-    const columns:ColumnsType<PrenotazioneIbridaMapper> = [{
+    const columns:ColumnsType<PrenotazioneIbridaDTO> = [{
         title: 'Stanza',
         dataIndex: 'numeroStanza',
         key: 'numeroStanza',
@@ -42,25 +51,39 @@ const Prenotazioni = () => {
             dataIndex: 'dataFine',
             key: 'dataFine'
         }];
-
+    useEffect(() => {
+        if(isLoading) {
+            console.log('cazzo loading')
+        }
+    }, [isLoading])
     return (
         <>
             <div className={`${componentClassName}`}>
-                <PrenotazioniBar setHasClickedNew={() => {
-                    setIsDrawerVisible(true);
-                    setIsCreatingPrenotazione(true);
-                }}/>
-                <Table
-                    onRow={(record,index) => {
-                        return {
-                            onClick: () => {selectPrenotazione(record)}
-                        }
-                    }}
-                    columns={columns}
-                    dataSource={prenotazioni}
-                    pagination={false}
-                    rowKey={(row) => row.idPrenotazione}
-                />
+                {
+                    isLoading ? (
+                        <Spin size={'large'}/>
+                    ) : isError ? (
+                        <>boh</>
+                    ) : (
+                        <>
+                            <PrenotazioniBar setHasClickedNew={() => {
+                                setIsDrawerVisible(true);
+                                setIsCreatingPrenotazione(true);
+                            }}/>
+                            <Table
+                                onRow={(record,index) => {
+                                    return {
+                                        onClick: () => {selectPrenotazione(record)}
+                                    }
+                                }}
+                                columns={columns}
+                                dataSource={listaPren}
+                                pagination={false}
+                                rowKey={(row) => row.idPrenotazione}
+                            />
+                        </>
+                    )
+                }
             </div>
             <Drawer
                 headerStyle={{

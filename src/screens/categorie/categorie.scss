@@ -17,6 +17,21 @@
       align-items: center;
       justify-content: space-between;
       padding: 8px 12px;
+      height: 50%;
+
+      &__center-margin {
+        margin: 0 auto;
+      }
+
+      canvas {
+        margin: 0 auto;
+        max-height: 220px;
+        max-width: 240px;
+      }
     }
   }
+}
+
+.text-center {
+  text-align: center;
 }

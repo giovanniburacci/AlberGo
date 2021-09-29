@@ -18,5 +18,7 @@ export interface PrenotazioneIbridaMapper {
     dataFine: string,
     numeroStanza: number,
     telefono: string,
-    idPrenotazione: string
+    idPrenotazione: string,
+    nomeCategoria: string,
+    documento: string
 }

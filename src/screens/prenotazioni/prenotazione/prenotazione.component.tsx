@@ -2,11 +2,11 @@ import React from 'react';
 import './prenotazione.scss'
 import {DatePicker, Typography} from 'antd';
 import moment from 'moment';
-import {PrenotazioneIbridaMapper} from '../../../models/table';
+import {PrenotazioneIbridaDTO} from '../../../models/models';
 const componentClassName = 'Prenotazione';
 
 interface PrenotazioneProps {
-    prenotazione: PrenotazioneIbridaMapper
+    prenotazione: PrenotazioneIbridaDTO
 }
 export const Prenotazione = (props:PrenotazioneProps) => {
     const {Title,Text} = Typography;
