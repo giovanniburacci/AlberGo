@@ -51,11 +51,7 @@ const Prenotazioni = () => {
             dataIndex: 'dataFine',
             key: 'dataFine'
         }];
-    useEffect(() => {
-        if(isLoading) {
-            console.log('cazzo loading')
-        }
-    }, [isLoading])
+
     return (
         <>
             <div className={`${componentClassName}`}>

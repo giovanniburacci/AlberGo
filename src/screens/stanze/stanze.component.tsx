@@ -1,12 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import {Table, Typography} from 'antd'
-import {Pie} from 'react-chartjs-2'
+import React, {useEffect, useMemo, useState} from 'react';
+import {Drawer, Table, Typography} from 'antd'
 import './stanze.scss';
 import {ColumnsType} from 'antd/es/table';
 import {StanzaDTO} from '../../models/models';
 import {useDispatch, useSelector} from 'react-redux';
 import stanzeActions from '../../store/stanze/stanze.action';
 import stanzeSelector from '../../store/stanze/stanze.selector';
+import StanzeBar from './stanzeBar/stanzeBar.component';
+import NewStanza from './newStanza/newStanza.component';
+import PieContainer from '../../containers/pies/pieContainer/pie.component';
 
 const componentClassName = 'Stanze';
 
@@ -14,14 +16,13 @@ const Stanze = () => {
 
     const {Title,Text} = Typography;
 
-    let data = {}
-
     const dispatch = useDispatch();
     const stanze = useSelector(stanzeSelector.getStanze)
     const isLoading = useSelector(stanzeSelector.getIsLoading);
     const isError = useSelector(stanzeSelector.getIsError); //todo gestire loading ed error
 
     const [dataPie,setDataPie] = useState<{}>();
+    const [hasClickedNew, setHasClickedNew] = useState<boolean>(false)
 
     useEffect( () => {
         dispatch(stanzeActions.fetchStanze(1))
@@ -69,6 +70,7 @@ const Stanze = () => {
     return (
         <div className={`${componentClassName}`}>
             <div className={`${componentClassName}__column`}>
+                <StanzeBar setHasClickedNew={() => {setHasClickedNew(true)}}/>
                 <Table
                     columns={columns}
                     dataSource={stanze}/>
@@ -78,7 +80,7 @@ const Stanze = () => {
                 <div className={`${componentClassName}__column__box bb`}>
                     {
                         dataPie && (
-                            <Pie data={dataPie} />
+                            <PieContainer data={dataPie}/>
                         )
                     }
                     <div>
@@ -102,10 +104,22 @@ const Stanze = () => {
                     </div>
                     {
                         dataPie && (
-                            <Pie data={dataPie} />
+                            <PieContainer data={dataPie}/>
                         )
                     }
                 </div>
+                <Drawer
+                    headerStyle={{
+                        background: '#eb2f96',
+                        color: '#ffffff'
+                    }}
+                    bodyStyle={{background: '#f8f8ff'}}
+                    visible={hasClickedNew}
+                    onClose={() => {setHasClickedNew(false)}}
+                    title={'Nuova stanza'}
+                    width={'348px'}>
+                    <NewStanza/>
+                </Drawer>
             </div>
         </div>
     )
