@@ -8,22 +8,20 @@ const initialState: PrenotazioniState = {
 export const prenotazioniReducer = {
     prenotazioni: createReducer(initialState, (builder) => {
         builder.addCase(prenotazioniActions.fetchPrenotazioni.fulfilled, (state,action) => {
-            console.log('fulfilled')
             return {
                 prenotazioni: action.payload,
                 isLoading: false,
                 isError: false
             }
         }).addCase(prenotazioniActions.fetchPrenotazioni.pending, (state,action) => {
-            console.log('pending')
             return {
-                prenotazioni: [],
+                ...state,
                 isLoading: true,
                 isError: false
             }
         }).addCase(prenotazioniActions.fetchPrenotazioni.rejected, (state,action) => {
             return {
-                prenotazioni: [],
+                ...state,
                 isLoading: false,
                 isError: true
             }

@@ -8,7 +8,7 @@ const NuovaPrenotazione = () => {
 
     const {Title} = Typography;
     const {Option} = Select;
-    // @ts-ignore
+
     return (
         <div className={`${componentClassName}`}>
             <div className={`${componentClassName}__inputgroup`}>

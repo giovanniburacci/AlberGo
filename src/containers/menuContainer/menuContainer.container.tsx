@@ -4,6 +4,9 @@ import './menuContainer.scss'
 import MenuItem from 'antd/es/menu/MenuItem';
 import {Tag} from 'antd';
 import {useHistory} from 'react-router-dom';
+import {useSelector} from 'react-redux';
+import categorieSelector from '../../store/categorie/categorie.selector';
+import stanzeSelector from '../../store/stanze/stanze.selector';
 
 interface Option {
     title: String,
@@ -41,6 +44,10 @@ export const MenuContainer = (props:MenuContainerProps) => {
             path: '/clienti'
         }];
 
+    //todo ignazio mi serve il count
+    const categorie = useSelector(categorieSelector.getCategorie);
+    const stanze = useSelector(stanzeSelector.getStanze)
+
     return (
         <div className={`${componentClassName}`}>
             <div>
@@ -70,7 +77,7 @@ export const MenuContainer = (props:MenuContainerProps) => {
                              style={{backgroundImage: 'linear-gradient( 135deg, #70F570 10%, #49C628 100%)',
                                      color: '#ffffff'}}
                              className={!isCollapsed ? `${componentClassName}__badges__tag green` : `${componentClassName}__badges__tag__collapsed green`}>
-                            X {!isCollapsed && <>Stanze totali</>}
+                            {stanze && stanze.length} {!isCollapsed && <>Stanze totali</>}
                         </Tag>
                         <Tag color={'default'}
                              style={{backgroundImage: 'linear-gradient( 135deg, #F05F57 10%, #360940 100%)',
@@ -82,7 +89,7 @@ export const MenuContainer = (props:MenuContainerProps) => {
                              style={{backgroundImage: 'linear-gradient( 135deg, #FCCF31 10%, #F55555 100%)',
                                      color: '#ffffff'}}
                              className={!isCollapsed ? `${componentClassName}__badges__tag` : `${componentClassName}__badges__tag__collapsed`}>
-                            X {!isCollapsed && <>Categorie</>}
+                            {categorie && categorie.length} {!isCollapsed && <>Categorie</>}
                         </Tag>
                         <Tag color={'default'}
                              className={!isCollapsed ? `${componentClassName}__badges__tag` : `${componentClassName}__badges__tag__collapsed`}

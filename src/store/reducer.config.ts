@@ -2,10 +2,15 @@ import {testReducer} from './test/test.reducer';
 import {combineReducers} from 'redux'
 import {loginReducer} from './login/login.reducer';
 import {prenotazioniReducer} from './prenotazioni/prenotazioni.reducer';
+import {stanzeReducer} from './stanze/stanze.reducer';
+import {categorieReducer} from './categorie/categorie.reducer';
+
 const appReducer = combineReducers({
     ...testReducer,
     ...loginReducer,
-    ...prenotazioniReducer
+    ...prenotazioniReducer,
+    ...stanzeReducer,
+    ...categorieReducer
 });
 export const RESET_STORE = 'RESET_STORE';
 

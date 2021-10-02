@@ -9,7 +9,7 @@ import {PrenotazioneIbridaDTO} from '../../models/models';
 import {useDispatch, useSelector} from 'react-redux';
 import prenotazioniActions from '../../store/prenotazioni/prenotazioni.action';
 import {Spin} from 'antd';
-import {getIsError, getPrenotazioni, getIsLoading} from '../../store/prenotazioni/prenotazioni.selector';
+import {prenotazioniSelector} from '../../store/prenotazioni/prenotazioni.selector';
 
 const componentClassName = 'Prenotazioni';
 
@@ -18,9 +18,9 @@ const Prenotazioni = () => {
     const [isDrawerVisible,setIsDrawerVisible] = useState<boolean>(false);
     const [selectedPrenotazione, setSelectedPrenotazione] = useState<PrenotazioneIbridaDTO>();
     const [isCreatingPrenotazione, setIsCreatingPrenotazione] = useState<boolean>(false);
-    const listaPren = useSelector(getPrenotazioni)
-    const isLoading = useSelector(getIsLoading);
-    const isError = useSelector(getIsError);
+    const listaPren = useSelector(prenotazioniSelector.getPrenotazioni)
+    const isLoading = useSelector(prenotazioniSelector.getIsLoading);
+    const isError = useSelector(prenotazioniSelector.getIsError);
 
     const dispatch = useDispatch();
     useEffect( () => {
