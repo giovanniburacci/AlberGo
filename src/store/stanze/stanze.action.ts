@@ -1,8 +1,10 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {searchStanze} from '../../api/stanze.service';
+import {createStanza, searchStanze} from '../../api/stanze.service';
+import {StanzaDTO} from '../../models/models';
 
 const stanzeLabels = {
-    fetchStanze: 'fetchStanze'
+    fetchStanze: 'fetchStanze',
+    addStanza: 'addStanza'
 }
 const fetchStanze = createAsyncThunk(stanzeLabels.fetchStanze, async (hotelId:number) => {
     try {
@@ -14,8 +16,20 @@ const fetchStanze = createAsyncThunk(stanzeLabels.fetchStanze, async (hotelId:nu
     }
 });
 
+const addStanza = createAsyncThunk(stanzeLabels.addStanza, async (stanza: Partial<StanzaDTO>) => {
+    try {
+        const resp = await createStanza(stanza)
+        console.log(resp);
+        return resp.data;
+    } catch(e) {
+        console.log('fetchStanze request failed')
+        throw e;
+    }
+});
+
 export const stanzeActions = {
-    fetchStanze
+    fetchStanze,
+    addStanza
 }
 
 export default stanzeActions;

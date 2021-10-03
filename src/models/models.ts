@@ -35,11 +35,11 @@ export interface StanzaDTO {
     descrizione: string,
     metriQuadri: number,
     idCategoria: string,
-    idHotel: string
+    idHotel: number
 }
 
 export interface CategoriaDTO {
-    idCategoria: string,
+    id: string,
     nome: string,
     prezzo: number,
     descrizioneCategoria: string,

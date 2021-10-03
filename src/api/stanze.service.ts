@@ -9,7 +9,8 @@ const apiURL = localhostURL + postfix;
 
 
 const stanzaEndpoints = {
-    lista:'lista'
+    lista: 'lista',
+    create: 'create'
 }
 
 export const searchStanze = async (idHotel: number): Promise<AxiosResponse<StanzaDTO[]>> => {
@@ -17,5 +18,11 @@ export const searchStanze = async (idHotel: number): Promise<AxiosResponse<Stanz
         params: {
             idHotel
         }
+    });
+}
+
+export const createStanza = async (stanza: Partial<StanzaDTO>): Promise<AxiosResponse<StanzaDTO>> => {
+    return axios.post(apiURL+stanzaEndpoints.create,{
+        ...stanza
     });
 }
