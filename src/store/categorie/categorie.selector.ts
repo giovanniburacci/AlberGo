@@ -7,6 +7,10 @@ const getIsError = (state:RootState): boolean => state.categorie.isError;
 
 const getIsLoading = (state:RootState): boolean => state.categorie.isLoading;
 
+const getIsErrorCreate = (state:RootState): boolean => state.categorie.isErrorCreate;
+
+const getIsLoadingCreate = (state:RootState): boolean => state.categorie.isLoadingCreate;
+
 export const categorieSelector = {
     getCategorie,
     getIsError,

@@ -5,7 +5,7 @@ export const login = async (data:AdminData):Promise<Partial<AmministratoreLogin>
     return await new Promise((resolve,reject) => {
         setTimeout(() => {
             resolve({
-                id: '0',
+                id: 0,
                 nome: 'Pippo',
                 cognome: 'Baudo',
                 username: 'pippobaudo69',

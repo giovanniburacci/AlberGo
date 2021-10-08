@@ -1,11 +1,11 @@
-import {PrenotazioneDTO, PrenotazioneIbridaDTO} from '../../models/models';
+import {FatturaDTO, PrenotazioneDTO} from '../../models/models';
 import {PrenotazioneIbridaMapper} from '../../models/table';
 
 export const getPrenotazioniStub = ():PrenotazioneDTO[] => {
     const prenotazioniStub:PrenotazioneDTO[] = [];
     for(let i=0;i<10;i++) {
         prenotazioniStub.push({
-            id: ''+i,
+            id: i,
             dataInizio: new Date('2020-7-18'),
             dataFine: new Date('2020-7-25'),
             idCliente: '0',
@@ -15,17 +15,17 @@ export const getPrenotazioniStub = ():PrenotazioneDTO[] => {
     }
     return prenotazioniStub;
 }
-export const getPrenotazioniMapped = ():PrenotazioneIbridaMapper[] => {
-    const prenotazioni: PrenotazioneIbridaDTO[] = getPrenotazioniIbride();
+/*export const getPrenotazioniMapped = ():PrenotazioneIbridaMapper[] => {
+    const prenotazioni: FatturaDTO[] = getPrenotazioniIbride();
     return prenotazioni.map(
         prenotazione => ({
             ...prenotazione,
             dataInizio: prenotazione.dataInizio.getFullYear()+'-'+(prenotazione.dataInizio.getMonth()+1)+'-'+prenotazione.dataInizio.getDate(),
             dataFine: prenotazione.dataFine.getFullYear()+'-'+(prenotazione.dataFine.getMonth()+1)+'-'+prenotazione.dataFine.getDate()
         }));
-}
+}*/
 
-export const getPrenotazioniIbride = () => {
+/*export const getPrenotazioniIbride = () => {
     const prenotazioniIbrideStub: PrenotazioneIbridaDTO[] = [];
 
     for(let i = 0; i<10; i++) {
@@ -43,4 +43,4 @@ export const getPrenotazioniIbride = () => {
     }
 
     return prenotazioniIbrideStub;
-}
+}*/

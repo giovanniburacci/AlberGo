@@ -1,7 +1,7 @@
-import {PrenotazioneIbridaDTO} from '../../models/models';
+import {FatturaDTO} from '../../models/models';
 
 export interface PrenotazioniState {
-    prenotazioni?: PrenotazioneIbridaDTO[]
+    prenotazioni?: FatturaDTO[]
     isLoading: boolean,
     isError: boolean
 }

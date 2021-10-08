@@ -1,5 +1,5 @@
 export interface ClienteDTO {
-    id: string,
+    id: number,
     nome: string,
     cognome: string,
     telefono: string,
@@ -8,7 +8,7 @@ export interface ClienteDTO {
 }
 
 export interface PrenotazioneDTO {
-    id: string,
+    id: number,
     dataInizio: Date,
     dataFine: Date,
     idCliente: string,
@@ -16,38 +16,34 @@ export interface PrenotazioneDTO {
     idHotel: string
 }
 
-export interface PrenotazioneIbridaDTO {
-    nome: string,
-    cognome: string,
-    dataInizio: Date,
-    dataFine: Date,
-    numeroStanza: number,
-    telefono: string,
-    idPrenotazione: string,
-    nomeCategoria: string,
-    documento: string
+export interface FatturaDTO {
+    cliente: ClienteDTO,
+    categoria: CategoriaDTO,
+    stanza: StanzaDTO,
+    hotel: HotelDTO,
+    prenotazione: PrenotazioneDTO
 }
 
 export interface StanzaDTO {
-    id: string,
+    id: number,
     numeroStanza: number,
     fuoriServizio: boolean,
     descrizione: string,
     metriQuadri: number,
-    idCategoria: string,
+    idCategoria: number,
     idHotel: number
 }
 
 export interface CategoriaDTO {
-    id: string,
+    id: number,
     nome: string,
     prezzo: number,
-    descrizioneCategoria: string,
-    idHotel: string
+    descrizione: string,
+    idHotel: number
 }
 
 export interface AmministratoreDTO {
-    id: string,
+    id: number,
     nome: string,
     cognome: string,
     username: string,
@@ -56,7 +52,7 @@ export interface AmministratoreDTO {
 }
 
 export interface HotelDTO {
-    id: string,
+    id: number,
     nome:string,
     indirizzo: string,
     stelle: Stelle

@@ -9,7 +9,8 @@ const apiURL = localhostURL + postfix;
 
 
 const categorieEndpoints = {
-    lista:'lista'
+    lista: 'lista',
+    create: 'create'
 }
 
 export const searchCategorie = async (idHotel: number): Promise<AxiosResponse<CategoriaDTO[]>> => {
@@ -18,4 +19,11 @@ export const searchCategorie = async (idHotel: number): Promise<AxiosResponse<Ca
             idHotel
         }
     });
+}
+
+export const createCategoria = async (categoria: Partial<CategoriaDTO>): Promise<AxiosResponse<CategoriaDTO>> => {
+    console.log('categoria', categoria)
+    return axios.post(apiURL + categorieEndpoints.create, {
+        ...categoria
+    })
 }

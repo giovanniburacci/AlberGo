@@ -8,8 +8,8 @@ export const getStanzeStub = ():StanzaDTO[] => {
         stanzeStub.push({
             descrizione: 'Descrizione casuale',
             fuoriServizio: randStato < 3,
-            id: ''+i,
-            idCategoria: '1',
+            id: i,
+            idCategoria: 1,
             idHotel: i,
             metriQuadri: 20,
             numeroStanza: i

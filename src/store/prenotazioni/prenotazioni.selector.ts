@@ -1,7 +1,7 @@
 import {RootState} from '../reducer.config';
-import {PrenotazioneIbridaDTO} from '../../models/models';
+import {FatturaDTO} from '../../models/models';
 
-const getPrenotazioni = (state:RootState): PrenotazioneIbridaDTO[] | undefined => state.prenotazioni.prenotazioni;
+const getPrenotazioni = (state:RootState): FatturaDTO[] | undefined => state.prenotazioni.prenotazioni;
 
 const getIsError = (state:RootState): boolean => state.prenotazioni.isError;
 

@@ -25,7 +25,7 @@ const Stanze = () => {
     const [hasClickedNew, setHasClickedNew] = useState<boolean>(false)
 
     useEffect( () => {
-        dispatch(stanzeActions.fetchStanze(1))
+        dispatch(stanzeActions.fetchStanze(1)) //todo gestire idHotel
     }, [])
 
     useEffect(() => {

@@ -5,18 +5,19 @@ import {Drawer, Table} from 'antd';
 import Prenotazione from './prenotazione/prenotazione.component';
 import PrenotazioniBar from './prenotazioniBar/prenotazioniBar.component';
 import NuovaPrenotazione from './nuovaPrenotazione/nuovaPrenotazione.component';
-import {PrenotazioneIbridaDTO} from '../../models/models';
+import {FatturaDTO} from '../../models/models';
 import {useDispatch, useSelector} from 'react-redux';
 import prenotazioniActions from '../../store/prenotazioni/prenotazioni.action';
 import {Spin} from 'antd';
 import {prenotazioniSelector} from '../../store/prenotazioni/prenotazioni.selector';
+import {FatturaMapped} from './types';
 
 const componentClassName = 'Prenotazioni';
 
 const Prenotazioni = () => {
 
     const [isDrawerVisible,setIsDrawerVisible] = useState<boolean>(false);
-    const [selectedPrenotazione, setSelectedPrenotazione] = useState<PrenotazioneIbridaDTO>();
+    const [selectedPrenotazione, setSelectedPrenotazione] = useState<FatturaDTO>();
     const [isCreatingPrenotazione, setIsCreatingPrenotazione] = useState<boolean>(false);
     const listaPren = useSelector(prenotazioniSelector.getPrenotazioni)
     const isLoading = useSelector(prenotazioniSelector.getIsLoading);
@@ -27,11 +28,11 @@ const Prenotazioni = () => {
         dispatch(prenotazioniActions.fetchPrenotazioni(1))
     }, [])
 
-    const selectPrenotazione = (record:PrenotazioneIbridaDTO) => {
+    const selectPrenotazione = (record?:FatturaDTO) => {
         setSelectedPrenotazione(record);
         setIsDrawerVisible(true);
     }
-    const columns:ColumnsType<PrenotazioneIbridaDTO> = [{
+    const columns:ColumnsType<FatturaMapped> = [{
         title: 'Stanza',
         dataIndex: 'numeroStanza',
         key: 'numeroStanza',
@@ -39,17 +40,17 @@ const Prenotazioni = () => {
         {
             title: 'Cognome',
             dataIndex: 'cognome',
-            key: 'cognome'
+            key: 'cliente.cognome'
         },
         {
             title: 'Check-in',
             dataIndex: 'dataInizio',
-            key: 'dataInizio',
+            key: 'prenotazione.dataInizio',
         },
         {
             title: 'Check-out',
             dataIndex: 'dataFine',
-            key: 'dataFine'
+            key: 'prenotazione.dataFine'
         }];
 
     return (
@@ -60,7 +61,7 @@ const Prenotazioni = () => {
                         <Spin size={'large'}/>
                     ) : isError ? (
                         <>boh</>
-                    ) : (
+                    ) : ( listaPren &&
                         <>
                             <PrenotazioniBar setHasClickedNew={() => {
                                 setIsDrawerVisible(true);
@@ -69,13 +70,22 @@ const Prenotazioni = () => {
                             <Table
                                 onRow={(record,index) => {
                                     return {
-                                        onClick: () => {selectPrenotazione(record)}
+                                        onClick: () => {
+                                            if(listaPren) {
+                                                selectPrenotazione(listaPren.find(fattura => record.id === fattura.prenotazione.id))
+                                            }}
                                     }
                                 }}
                                 columns={columns}
-                                dataSource={listaPren}
+                                dataSource={listaPren.map((fattura) => ({
+                                    id: fattura.prenotazione.id,
+                                    numeroStanza: fattura.stanza.numeroStanza,
+                                    cognome: fattura.cliente.cognome,
+                                    dataInizio: fattura.prenotazione.dataInizio,
+                                    dataFine: fattura.prenotazione.dataFine
+                                }))}
                                 pagination={false}
-                                rowKey={(row) => row.idPrenotazione}
+                                rowKey={(row) => row.id}
                             />
                         </>
                     )

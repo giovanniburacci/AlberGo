@@ -3,5 +3,7 @@ import {CategoriaDTO} from '../../models/models';
 export interface CategorieState {
     categorie?: CategoriaDTO[]
     isLoading: boolean,
-    isError: boolean
+    isError: boolean,
+    isLoadingCreate: boolean,
+    isErrorCreate: boolean
 }

@@ -1,25 +1,28 @@
 import React, {useEffect, useState} from 'react';
-import {Empty, Table} from 'antd';
+import {Drawer, Empty, Table} from 'antd';
 import './categorie.scss';
 import {ColumnsType} from 'antd/es/table';
 import {CategoriaDTO} from '../../models/models';
 import categorieActions from '../../store/categorie/categorie.action';
 import categorieSelector from '../../store/categorie/categorie.selector';
-import {Pie} from 'react-chartjs-2';
 import DettaglioCategoria from './dettaglioCategoria/dettaglioCategoria.component';
 import {useDispatch, useSelector} from 'react-redux';
+import PieContainer from '../../containers/pies/pieContainer/pie.component';
+import CategorieBar from './categorieBar/categorieBar.component';
+import NewCategoria from './newCategoria/newCategoria.component';
 const componentClassName = 'Categorie';
 
 const Categorie = () => {
 
     const dispatch = useDispatch();
     const [selectedCategoria,setSelectedCategoria] = useState<CategoriaDTO>();
+    const [hasClickedNew, setHasClickedNew] = useState<boolean>(false);
     const [dataPie, setDataPie] = useState<{}>();
 
     const categorie = useSelector(categorieSelector.getCategorie);
     // todo gestire loading ed error
     useEffect(() => {
-        dispatch(categorieActions.fetchCategorie(1));
+        dispatch(categorieActions.fetchCategorie(1)); // todo gestire idHotel
     },[])
 
     useEffect(() => {
@@ -57,6 +60,7 @@ const Categorie = () => {
         <>
             <div className={`${componentClassName}`}>
                 <div className={`${componentClassName}__column`}>
+                    <CategorieBar setHasClickedNew={() => {setHasClickedNew(true)}}/>
                     <Table
                         columns={columns}
                         dataSource={categorie}
@@ -81,11 +85,23 @@ const Categorie = () => {
                     <div className={`${componentClassName}__column__box`}>
                         {
                             dataPie && (
-                                <Pie data={dataPie} /> // todo gestire refresh component
+                                <PieContainer data={dataPie} />
                             )
                         }
                     </div>
                 </div>
+                <Drawer
+                    headerStyle={{
+                        background: '#eb2f96',
+                        color: '#ffffff'
+                    }}
+                    bodyStyle={{background: '#f8f8ff'}}
+                    visible={hasClickedNew}
+                    onClose={() => {setHasClickedNew(false)}}
+                    title={'Nuova categoria'}
+                    width={'348px'}>
+                    <NewCategoria/>
+                </Drawer>
             </div>
         </>
     )

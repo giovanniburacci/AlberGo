@@ -22,7 +22,7 @@ const NewStanza = () => {
     const isError = useSelector(categorieSelector.getIsError);
 
     useEffect(() => {
-        dispatch(categorieActions.fetchCategorie(1))
+        dispatch(categorieActions.fetchCategorie(1)) // todo gestire idHotel
     }, [])
 
     const changeNumeroStanza = (value:Key) => {
@@ -50,6 +50,7 @@ const NewStanza = () => {
 
     const changeCategoria = (value:Key) => {
         if(categorie) {
+
             const newCategoria = categorie.find((categoria) => (categoria.id == value));
             if(newCategoria) {
                 setNewStanza((oldStanza) => ({
@@ -97,8 +98,7 @@ const NewStanza = () => {
                     value={(newStanza && newStanza.idCategoria) && newStanza.idCategoria}
                     onChange={changeCategoria}
                     filterOption={(input, option) =>
-                        // @ts-ignore
-                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                        option!.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                     }
                     disabled={isLoading || isError}
                 >
@@ -122,7 +122,7 @@ const NewStanza = () => {
             </div>
             <Button onClick={() => {
                 if(newStanza && newStanza.numeroStanza && newStanza.descrizione && newStanza.idCategoria && newStanza.metriQuadri) {
-                    console.log('alright')
+                    console.log('prova')
                     dispatch(stanzeActions.addStanza({
                         ...newStanza,
                         idHotel: 1

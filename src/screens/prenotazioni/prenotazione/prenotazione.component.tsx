@@ -2,11 +2,11 @@ import React from 'react';
 import './prenotazione.scss'
 import {DatePicker, Typography} from 'antd';
 import moment from 'moment';
-import {PrenotazioneIbridaDTO} from '../../../models/models';
+import {FatturaDTO} from '../../../models/models';
 const componentClassName = 'Prenotazione';
 
 interface PrenotazioneProps {
-    prenotazione: PrenotazioneIbridaDTO
+    prenotazione: FatturaDTO
 }
 export const Prenotazione = (props:PrenotazioneProps) => {
     const {Title,Text} = Typography;
@@ -17,14 +17,14 @@ export const Prenotazione = (props:PrenotazioneProps) => {
             <div className={`${componentClassName}__inputgroup`}>
                 <Title level={5}>Check-in</Title>
                 <DatePicker
-                    value={moment(prenotazione.dataInizio)}
+                    value={moment(prenotazione.prenotazione.dataInizio)}
                     className={`${componentClassName}__inputgroup__datepicker`}
                 />
             </div>
             <div className={`${componentClassName}__inputgroup`}>
                 <Title level={5}>Check-out</Title>
                 <DatePicker
-                    value={moment(prenotazione.dataFine)}
+                    value={moment(prenotazione.prenotazione.dataFine)}
                     className={`${componentClassName}__inputgroup__datepicker`}
                 />
             </div>

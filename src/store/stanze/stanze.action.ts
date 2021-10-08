@@ -16,10 +16,13 @@ const fetchStanze = createAsyncThunk(stanzeLabels.fetchStanze, async (hotelId:nu
     }
 });
 
-const addStanza = createAsyncThunk(stanzeLabels.addStanza, async (stanza: Partial<StanzaDTO>) => {
+const addStanza = createAsyncThunk(stanzeLabels.addStanza, async (stanza: Partial<StanzaDTO>, thunkAPI) => {
     try {
         const resp = await createStanza(stanza)
         console.log(resp);
+        if(stanza.idHotel) {
+            thunkAPI.dispatch(stanzeActions.fetchStanze(stanza.idHotel));
+        }
         return resp.data;
     } catch(e) {
         console.log('fetchStanze request failed')
