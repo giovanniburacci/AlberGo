@@ -4,13 +4,15 @@ import {loginReducer} from './login/login.reducer';
 import {prenotazioniReducer} from './prenotazioni/prenotazioni.reducer';
 import {stanzeReducer} from './stanze/stanze.reducer';
 import {categorieReducer} from './categorie/categorie.reducer';
+import {clientiReducer} from './clienti/clienti.reducer';
 
 const appReducer = combineReducers({
     ...testReducer,
     ...loginReducer,
     ...prenotazioniReducer,
     ...stanzeReducer,
-    ...categorieReducer
+    ...categorieReducer,
+    ...clientiReducer
 });
 export const RESET_STORE = 'RESET_STORE';
 

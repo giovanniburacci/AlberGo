@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Switch, Route, Redirect} from 'react-router-dom'
-import {Drawer, Layout, Menu} from 'antd';
+import {Layout, Menu} from 'antd';
 import { LoginComponent } from './screens/login/login.component';
 import './App.scss'
 import { MenuContainer } from './containers/menuContainer/menuContainer.container';
@@ -10,7 +10,7 @@ import {loginSelector} from './store/login/login.selector';
 import Prenotazioni from './screens/prenotazioni/prenotazioni.component';
 import Stanze from './screens/stanze/stanze.component';
 import Categorie from './screens/categorie/categorie.component';
-import axios from 'axios';
+import Clienti from './screens/clienti/clienti.component';
 
 const componentClassName = 'App';
 
@@ -79,7 +79,7 @@ function App() {
                                         <Categorie />
                                     </Route>
                                     <Route path='/clienti'>
-                                        Clienti
+                                        <Clienti />
                                     </Route>
                                     <Route path='/*'>
                                         <Redirect to='/' />

@@ -73,7 +73,9 @@ const Stanze = () => {
                 <StanzeBar setHasClickedNew={() => {setHasClickedNew(true)}}/>
                 <Table
                     columns={columns}
-                    dataSource={stanze}/>
+                    dataSource={stanze}
+                    rowKey={(row) => row.id}
+                />
             </div>
 
             <div className={`${componentClassName}__column`}>

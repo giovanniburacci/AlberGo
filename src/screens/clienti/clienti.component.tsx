@@ -1,27 +1,36 @@
-/*mport React, {useEffect, useState} from 'react';
-import './prenotazioni.scss'
+import React, {useEffect, useState} from 'react';
+import './clienti.scss'
 import {ColumnsType} from 'antd/es/table';
 import {Drawer, Table} from 'antd';
 import {useDispatch, useSelector} from 'react-redux';
 import {Spin} from 'antd';
 import {ClienteDTO} from '../../models/models';
+import clientiSelector from '../../store/clienti/clienti.selector';
+import clientiActions from '../../store/clienti/clienti.action';
 
-const componentClassName = 'Prenotazioni';
+const componentClassName = 'Clienti';
 
-const Prenotazioni = () => {
+const Clienti = () => {
 
-    const [isDrawerVisible,setIsDrawerVisible] = useState<boolean>(false);
-    const [selectedCliente, setSelectedCliente] = useState<ClienteDTO>();
+    const dispatch = useDispatch();
+    const [selectedCliente, setSelectedCliente] = useState<ClienteDTO | undefined>();
 
-    const selectPrenotazione = (record:ClienteDTO) => {
-        setSelectedPrenotazione(record);
-        setIsDrawerVisible(true);
+    const isLoading = useSelector(clientiSelector.getIsLoading);
+    const isError = useSelector(clientiSelector.getIsError); //todo gestire loading ed error
+    const clienti = useSelector(clientiSelector.getClienti);
+
+    useEffect(() => {
+        dispatch(clientiActions.fetchClienti(1)) // todo gestire idHotel
+    }, [])
+
+    const selectCliente = (record:ClienteDTO) => {
+        setSelectedCliente(record);
     }
 
-    const columns:ColumnsType<PrenotazioneIbridaDTO> = [{
-        title: 'Stanza',
-        dataIndex: 'numeroStanza',
-        key: 'numeroStanza',
+    const columns:ColumnsType<ClienteDTO> = [{
+        title: 'Nome',
+        dataIndex: 'nome',
+        key: 'nome',
     },
         {
             title: 'Cognome',
@@ -29,20 +38,16 @@ const Prenotazioni = () => {
             key: 'cognome'
         },
         {
-            title: 'Check-in',
-            dataIndex: 'dataInizio',
-            key: 'dataInizio',
+            title: 'Numero di telefono',
+            dataIndex: 'telefono',
+            key: 'telefono',
         },
         {
-            title: 'Check-out',
-            dataIndex: 'dataFine',
-            key: 'dataFine'
+            title: 'Numero del documento',
+            dataIndex: 'documento',
+            key: 'documento'
         }];
-    useEffect(() => {
-        if(isLoading) {
-            console.log('cazzo loading')
-        }
-    }, [isLoading])
+
     return (
         <>
             <div className={`${componentClassName}`}>
@@ -52,23 +57,17 @@ const Prenotazioni = () => {
                     ) : isError ? (
                         <>boh</>
                     ) : (
-                        <>
-                            <PrenotazioniBar setHasClickedNew={() => {
-                                setIsDrawerVisible(true);
-                                setIsCreatingPrenotazione(true);
-                            }}/>
-                            <Table
-                                onRow={(record,index) => {
-                                    return {
-                                        onClick: () => {selectPrenotazione(record)}
-                                    }
-                                }}
-                                columns={columns}
-                                dataSource={listaPren}
-                                pagination={false}
-                                rowKey={(row) => row.idPrenotazione}
-                            />
-                        </>
+                        <Table
+                            onRow={(record,index) => {
+                                return {
+                                    onClick: () => {selectCliente(record)}
+                                }
+                            }}
+                            columns={columns}
+                            dataSource={clienti}
+                            pagination={false}
+                            rowKey={(row) => row.id}
+                        />
                     )
                 }
             </div>
@@ -78,38 +77,18 @@ const Prenotazioni = () => {
                     color: '#ffffff'
                 }}
                 bodyStyle={{background: '#f8f8ff'}}
-                visible={isDrawerVisible}
-                onClose={() => {
-                    setSelectedPrenotazione((prevState => {
-                        if(prevState) {
-                            return undefined;
-                        }
-                    }));
-                    setIsDrawerVisible(false);
-                    setIsCreatingPrenotazione(false);
-                }}
-                title={ selectedPrenotazione ? (
-                    <div style={{color: '#ffffff'}}>
-                        Dettaglio prenotazione
-                    </div>
-                ) : (
-                    <div style={{color: '#ffffff'}}>
-                        Nuova prenotazione
-                    </div>
-                )}
+                visible={!!selectedCliente}
+                onClose={() => {setSelectedCliente(undefined)}}
+                title={'Dettaglio cliente'}
                 width={'348px'}>
-                { selectedPrenotazione ? (
-                    <Prenotazione
-                        prenotazione={selectedPrenotazione}
-                    />
-                ) :  isCreatingPrenotazione && (
-                    <NuovaPrenotazione />
-                )}
+                { selectedCliente && (
+                    <>
+                    </> // todo aggiungere dettaglio cliente
+                )
+                }
             </Drawer>
         </>
     )
 }
 
-export default Prenotazioni;*/
-
-export {}
+export default Clienti;
