@@ -68,7 +68,8 @@ const Categorie = () => {
                             return {
                                 onClick: () => setSelectedCategoria(categoria)
                             }
-                        }}/>
+                        }}
+                        rowKey={(row) => row.id}/>
                 </div>
 
                 <div className={`${componentClassName}__column`}>

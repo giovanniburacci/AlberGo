@@ -1,8 +1,10 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {searchPrenotazioni} from '../../api/prenotazioni.service';
+import {createPrenotazione, searchPrenotazioni} from '../../api/prenotazioni.service';
+import {PrenotazioneDTO} from '../../models/models';
 
 const prenotazioniLabels = {
-    fetchPrenotazioni: 'fetchPrenotazioni'
+    fetchPrenotazioni: 'fetchPrenotazioni',
+    addPrenotazione: 'addPrenotazione'
 }
 const fetchPrenotazioni = createAsyncThunk(prenotazioniLabels.fetchPrenotazioni, async (hotelId:number) => {
     try {
@@ -14,8 +16,21 @@ const fetchPrenotazioni = createAsyncThunk(prenotazioniLabels.fetchPrenotazioni,
     }
 });
 
+const addPrenotazione = createAsyncThunk(prenotazioniLabels.addPrenotazione, async (categoria: Partial<PrenotazioneDTO>, thunkAPI) => {
+    try {
+        const resp = await createPrenotazione(categoria)
+        if(categoria.idHotel) {
+            thunkAPI.dispatch(fetchPrenotazioni(categoria.idHotel));
+        }
+        return resp.data;
+    } catch(e) {
+        console.log('fetchCategorie request failed')
+        throw e;
+    }
+});
 export const prenotazioniActions = {
-    fetchPrenotazioni
+    fetchPrenotazioni,
+    addPrenotazione
 }
 
 export default prenotazioniActions;

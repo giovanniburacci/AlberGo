@@ -20,7 +20,7 @@ const addCategoria = createAsyncThunk(categorieLabels.addCategoria, async (categ
     try {
         const resp = await createCategoria(categoria)
         if(categoria.idHotel) {
-            thunkAPI.dispatch(categorieActions.fetchCategorie(categoria.idHotel));
+            thunkAPI.dispatch(fetchCategorie(categoria.idHotel));
         }
         return resp.data;
     } catch(e) {

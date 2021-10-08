@@ -8,9 +8,9 @@ export const getPrenotazioniStub = ():PrenotazioneDTO[] => {
             id: i,
             dataInizio: new Date('2020-7-18'),
             dataFine: new Date('2020-7-25'),
-            idCliente: '0',
-            idStanza: ''+i,
-            idHotel: '1'
+            idCliente: i,
+            idStanza: i,
+            idHotel: i
         })
     }
     return prenotazioniStub;

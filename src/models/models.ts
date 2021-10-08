@@ -11,9 +11,9 @@ export interface PrenotazioneDTO {
     id: number,
     dataInizio: Date,
     dataFine: Date,
-    idCliente: string,
-    idStanza: string,
-    idHotel: string
+    idCliente: number,
+    idStanza: number,
+    idHotel: number
 }
 
 export interface FatturaDTO {

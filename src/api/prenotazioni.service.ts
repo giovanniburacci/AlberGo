@@ -1,12 +1,13 @@
 import {localhostURL} from './axiosConfig';
-import {FatturaDTO} from '../models/models';
+import {CategoriaDTO, FatturaDTO, PrenotazioneDTO} from '../models/models';
 import axios, {AxiosResponse} from 'axios';
 
 const postfix = 'prenotazione/';
 
 const apiURL = localhostURL + postfix;
 const prenotazioniEndpoints = {
-    lista:'lista'
+    lista: 'lista',
+    create: 'create'
 }
 
 export const searchPrenotazioni = async (idHotel: number): Promise<AxiosResponse<FatturaDTO[]>> => {
@@ -15,4 +16,10 @@ export const searchPrenotazioni = async (idHotel: number): Promise<AxiosResponse
             idHotel
         }
     });
+}
+
+export const createPrenotazione = async (categoria: Partial<PrenotazioneDTO>): Promise<AxiosResponse<PrenotazioneDTO>> => {
+    return axios.post(apiURL + prenotazioniEndpoints.create, {
+        ...categoria
+    })
 }
