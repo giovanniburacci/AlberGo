@@ -7,7 +7,8 @@ const postfix = 'prenotazione/';
 const apiURL = localhostURL + postfix;
 const prenotazioniEndpoints = {
     lista: 'lista',
-    create: 'create'
+    create: 'create',
+    update: 'update'
 }
 
 export const searchPrenotazioni = async (idHotel: number): Promise<AxiosResponse<FatturaDTO[]>> => {
@@ -18,8 +19,14 @@ export const searchPrenotazioni = async (idHotel: number): Promise<AxiosResponse
     });
 }
 
-export const createPrenotazione = async (categoria: Partial<PrenotazioneDTO>): Promise<AxiosResponse<PrenotazioneDTO>> => {
+export const createPrenotazione = async (prenotazione: Partial<PrenotazioneDTO>): Promise<AxiosResponse<PrenotazioneDTO>> => {
     return axios.post(apiURL + prenotazioniEndpoints.create, {
-        ...categoria
+        ...prenotazione
+    })
+}
+
+export const updatePrenotazione = async (prenotazione: Partial<PrenotazioneDTO>): Promise<AxiosResponse<PrenotazioneDTO>> => {
+    return axios.put(apiURL + prenotazioniEndpoints.update, {
+        ...prenotazione
     })
 }

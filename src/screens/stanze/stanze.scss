@@ -37,3 +37,13 @@
 .bb {
   border-bottom: 1px solid #0000001a;
 }
+
+.ant-drawer-title-white {
+
+  .ant-drawer-header {
+    background: #191919;
+  }
+  .ant-drawer-title, svg {
+    color: #fff;
+  }
+}

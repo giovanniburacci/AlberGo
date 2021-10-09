@@ -111,11 +111,7 @@ const Stanze = () => {
                     }
                 </div>
                 <Drawer
-                    headerStyle={{
-                        background: '#eb2f96',
-                        color: '#ffffff'
-                    }}
-                    bodyStyle={{background: '#f8f8ff'}}
+                    className={'ant-drawer-title-white'}
                     visible={hasClickedNew}
                     onClose={() => {setHasClickedNew(false)}}
                     title={'Nuova stanza'}

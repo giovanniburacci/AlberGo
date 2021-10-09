@@ -93,11 +93,11 @@ const Categorie = () => {
                 </div>
                 <Drawer
                     headerStyle={{
-                        background: '#eb2f96',
-                        color: '#ffffff'
+                        background: '#191919',
+                        color: '#ffffff !important'
                     }}
-                    bodyStyle={{background: '#f8f8ff'}}
                     visible={hasClickedNew}
+                    className={'ant-drawer-title-white'}
                     onClose={() => {setHasClickedNew(false)}}
                     title={'Nuova categoria'}
                     width={'348px'}>

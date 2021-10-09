@@ -92,11 +92,6 @@ const Prenotazioni = () => {
                 }
             </div>
             <Drawer
-                headerStyle={{
-                    background: '#eb2f96',
-                    color: '#ffffff'
-                }}
-                bodyStyle={{background: '#f8f8ff'}}
                 visible={isDrawerVisible}
                 onClose={() => {
                     setSelectedPrenotazione((prevState => {
@@ -107,11 +102,12 @@ const Prenotazioni = () => {
                     setIsDrawerVisible(false);
                     setIsCreatingPrenotazione(false);
                 }}
+                className={'ant-drawer-title-white'}
                 title={ selectedPrenotazione ? (
                     <div style={{color: '#ffffff'}}>
                         Dettaglio prenotazione
                     </div>
-                ) : (
+                ) : isCreatingPrenotazione && (
                     <div style={{color: '#ffffff'}}>
                         Nuova prenotazione
                     </div>
