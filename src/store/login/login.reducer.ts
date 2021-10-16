@@ -1,6 +1,7 @@
 import {createReducer} from '@reduxjs/toolkit';
 import {AmministratoreLogin} from './types';
 import loginActions from './login.action';
+import {getAmministratoreStub} from '../../mocks/stubs/amministratore';
 
 const storedData = localStorage.getItem('AlberGOData');
 
@@ -16,8 +17,7 @@ if(storedData) {
 
 const initialState:AmministratoreLogin = {
     token,
-    id,
-    idHotel,
+    amministratore: getAmministratoreStub(),
     isLoading: false,
     isError: false
 }
@@ -25,7 +25,8 @@ const initialState:AmministratoreLogin = {
 export const loginReducer = {
     login: createReducer(initialState, (builder) => {
         builder.addCase(loginActions.loginRequest.fulfilled, (state,action) => {
-            const {idHotel,id, token } = action.payload
+            const {amministratore,id, token } = action.payload
+            const idHotel = amministratore?.idHotel
             localStorage.setItem('AlberGOData', JSON.stringify({
                 idHotel,
                 id,

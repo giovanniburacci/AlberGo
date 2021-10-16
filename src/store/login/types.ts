@@ -1,7 +1,8 @@
 import {AmministratoreDTO} from '../../models/models';
 
-export interface AmministratoreLogin extends Partial<AmministratoreDTO> {
+export interface AmministratoreLogin {
     token?: string,
     isLoading: boolean,
-    isError: boolean
+    isError: boolean,
+    amministratore: AmministratoreDTO
 }
