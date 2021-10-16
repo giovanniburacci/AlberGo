@@ -41,6 +41,10 @@ export interface CategoriaDTO {
     prezzo: number,
     descrizione: string,
     idHotel: number
+
+    giorniBlocco: number,
+    giorniPenale: number,
+    qtaPenale: number
 }
 
 export interface AmministratoreDTO {
@@ -58,6 +62,14 @@ export interface HotelDTO {
     stelle: Stelle
     descrizione: string,
     telefono: string
+}
+
+export interface ServizioDTO {
+    id: number,
+    nome: string,
+    prezzo: number,
+    idHotel: number,
+    idPrenotazione: number
 }
 
 export enum Stelle  {

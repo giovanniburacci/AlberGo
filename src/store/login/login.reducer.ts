@@ -25,8 +25,9 @@ const initialState:AmministratoreLogin = {
 export const loginReducer = {
     login: createReducer(initialState, (builder) => {
         builder.addCase(loginActions.loginRequest.fulfilled, (state,action) => {
-            const {amministratore,id, token } = action.payload
+            const {amministratore, token } = action.payload
             const idHotel = amministratore?.idHotel
+            const id = amministratore?.id
             localStorage.setItem('AlberGOData', JSON.stringify({
                 idHotel,
                 id,

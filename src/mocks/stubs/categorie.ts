@@ -9,7 +9,10 @@ export const getCategorieStub = ():CategoriaDTO[] => {
             id: i,
             idHotel: i,
             nome: 'cat'+i,
-            prezzo: 30
+            prezzo: 30,
+            giorniBlocco: 0,
+            giorniPenale: 0,
+            qtaPenale: 0
         });
     }
     return categorie;

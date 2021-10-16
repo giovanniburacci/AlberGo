@@ -11,7 +11,21 @@ import NewStanza from './newStanza/newStanza.component';
 import PieContainer from '../../containers/pies/pieContainer/pie.component';
 
 const componentClassName = 'Stanze';
-
+const columns:ColumnsType<StanzaDTO> = [{
+    title: 'Stanza',
+    dataIndex: 'numeroStanza',
+    key: 'numeroStanza',
+},
+    {
+        title: 'Descrizione',
+        dataIndex: 'descrizione',
+        key: 'descrizione'
+    },
+    {
+        title: 'Stato',
+        dataIndex: 'stato',
+        key: 'stato',
+    }];
 const Stanze = () => {
 
     const {Title,Text} = Typography;
@@ -49,23 +63,6 @@ const Stanze = () => {
             });
         }
     }, [stanze])
-
-
-    const columns:ColumnsType<StanzaDTO> = [{
-        title: 'Stanza',
-        dataIndex: 'numeroStanza',
-        key: 'numeroStanza',
-    },
-        {
-            title: 'Descrizione',
-            dataIndex: 'descrizione',
-            key: 'descrizione'
-        },
-        {
-            title: 'Stato',
-            dataIndex: 'stato',
-            key: 'stato',
-        }];
 
     return (
         <div className={`${componentClassName}`}>
