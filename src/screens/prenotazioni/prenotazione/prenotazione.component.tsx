@@ -25,7 +25,7 @@ export const Prenotazione = (props:PrenotazioneProps) => {
     const dispatch = useDispatch();
 
     const [newPrenotazione, setNewPrenotazione] = useState<Partial<PrenotazioneDTO>>();
-
+    const [isMakingChanges, setIsMakingChanges] = useState<boolean>(false);
     useEffect(() => {
         setNewPrenotazione({
             id: prenotazione.prenotazione.id,
@@ -39,6 +39,13 @@ export const Prenotazione = (props:PrenotazioneProps) => {
         dispatch(stanzeActions.fetchStanze(1)) // todo handle hotel id
     }, [prenotazione]);
 
+    useEffect(() => {
+        if(!isEqual(prenotazione.prenotazione, newPrenotazione)) {
+            setIsMakingChanges(true);
+        } else {
+            setIsMakingChanges(false);
+        }
+    }, [newPrenotazione])
     const isLoadingEdit = useSelector(prenotazioniSelector.getIsLoadingEdit);
     return (
         <div className={`${componentClassName}`}>
@@ -125,15 +132,25 @@ export const Prenotazione = (props:PrenotazioneProps) => {
                     disabled={true} />
             </div>
             <Button
-                disabled={isEqual(prenotazione.prenotazione, newPrenotazione)}
+                size={'large'}
+                className={isMakingChanges ? 'button-edit' : ''}
+                disabled={!isMakingChanges}
                 onClick={() => {
                     if(newPrenotazione) {
                         dispatch(prenotazioniActions.editPrenotazione({
+                            ...prenotazione.prenotazione,
                             ...newPrenotazione,
                         }))
                     }
                 }}
                 loading={isLoadingEdit}>Modifica</Button>
+            <Button
+                size={'large'}
+                className={'button-delete'}
+                onClick={() => {
+                   dispatch(prenotazioniActions.removePrenotazione(prenotazione.prenotazione));
+                }}
+                >Elimina</Button>
         </div>
     )
 }

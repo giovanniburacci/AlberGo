@@ -12,7 +12,7 @@ interface HeaderContainerProps {
     selectedKey: string
 }
 
-const screens = ['Prenotazioni', 'Stanze', 'Categorie', 'Clienti']
+const screens = ['Prenotazioni', 'Stanze', 'Categorie', 'Clienti', 'Hotel']
 
 export const HeaderContainer = (props:HeaderContainerProps) => {
     const {Title} = Typography;

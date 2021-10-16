@@ -5,9 +5,10 @@ const initialState: PrenotazioniState = {
     isLoading: false,
     isError: false,
     isLoadingEdit: false,
-    isErrorCreate: false,
-    isErrorEdit: false,
-    isLoadingCreate: false
+    // isErrorCreate: false,
+    // isErrorEdit: false,
+    isLoadingCreate: false,
+    isLoadingDelete: false
 }
 export const prenotazioniReducer = {
     prenotazioni: createReducer(initialState, (builder) => {
@@ -52,19 +53,37 @@ export const prenotazioniReducer = {
             return {
                 ...state,
                 isLoadingEdit: false,
-                isErrorEdit: false
+                // isErrorEdit: false
             }
         }).addCase(prenotazioniActions.editPrenotazione.pending, (state,action) => {
             return {
                 ...state,
                 isLoadingEdit: true,
-                isErrorEdit: false
+                // isErrorEdit: false
             }
         }).addCase(prenotazioniActions.editPrenotazione.rejected, (state,action) => {
             return {
                 ...state,
                 isLoadingEdit: false,
-                isErrorEdit: true
+                // isErrorEdit: true
+            }
+        }).addCase(prenotazioniActions.removePrenotazione.fulfilled, (state,action) => {
+            return {
+                ...state,
+                isLoadingDelete: false,
+                // isErrorEdit: true
+            }
+        }).addCase(prenotazioniActions.removePrenotazione.pending, (state,action) => {
+            return {
+                ...state,
+                isLoadingDelete: true,
+                // isErrorEdit: true
+            }
+        }).addCase(prenotazioniActions.removePrenotazione.rejected, (state,action) => {
+            return {
+                ...state,
+                isLoadingDelete: false,
+                // isErrorEdit: true
             }
         })
     })

@@ -9,19 +9,21 @@ const getIsLoading = (state:RootState): boolean => state.prenotazioni.isLoading;
 
 const getIsLoadingCreate = (state:RootState): boolean => state.prenotazioni.isLoadingCreate;
 
-const getIsErrorCreate = (state:RootState): boolean => state.prenotazioni.isErrorCreate;
+// const getIsErrorCreate = (state:RootState): boolean => state.prenotazioni.isErrorCreate;
 
 const getIsLoadingEdit = (state:RootState): boolean => state.prenotazioni.isLoadingEdit;
 
-const getIsErrorEdit = (state:RootState): boolean => state.prenotazioni.isErrorEdit;
+// const getIsErrorEdit = (state:RootState): boolean => state.prenotazioni.isErrorEdit;
+
+const getIsLoadingDelete = (state:RootState): boolean => state.prenotazioni.isLoadingDelete
 
 export const prenotazioniSelector = {
     getPrenotazioni,
     getIsError,
     getIsLoading,
-    getIsErrorCreate,
+    // getIsErrorCreate,
     getIsLoadingCreate,
-    getIsErrorEdit,
+    // getIsErrorEdit,
     getIsLoadingEdit
 }
 

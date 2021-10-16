@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react';
-import {ContactsOutlined, ControlOutlined, HomeOutlined, UsergroupAddOutlined} from '@ant-design/icons';
+import {ContactsOutlined, ControlOutlined, HomeOutlined, UserOutlined, ShopOutlined} from '@ant-design/icons';
 import './menuContainer.scss'
 import MenuItem from 'antd/es/menu/MenuItem';
 import {Tag} from 'antd';
@@ -40,8 +40,13 @@ export const MenuContainer = (props:MenuContainerProps) => {
         },
         {
             title: 'Clienti',
-            icon: <UsergroupAddOutlined style={{fontSize: isCollapsed ? '32px' : 'unset'}}/>,
+            icon: <UserOutlined style={{fontSize: isCollapsed ? '32px' : 'unset'}}/>,
             path: '/clienti'
+        },
+        {
+            title: 'Hotel',
+            icon: <ShopOutlined style={{fontSize: isCollapsed ? '32px' : 'unset'}}/>,
+            path: '/hotel'
         }];
 
     //todo ignazio mi serve il count

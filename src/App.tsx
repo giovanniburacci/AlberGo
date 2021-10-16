@@ -81,6 +81,9 @@ function App() {
                                     <Route path='/clienti'>
                                         <Clienti />
                                     </Route>
+                                    <Route path='/hotel'>
+                                        <Clienti />
+                                    </Route>
                                     <Route path='/*'>
                                         <Redirect to='/' />
                                     </Route>

@@ -5,7 +5,8 @@ export interface PrenotazioniState {
     isLoading: boolean,
     isError: boolean,
     isLoadingCreate: boolean,
-    isErrorCreate: boolean,
+    // isErrorCreate: boolean,
     isLoadingEdit: boolean,
-    isErrorEdit: boolean
+    // isErrorEdit: boolean,
+    isLoadingDelete: boolean
 }
