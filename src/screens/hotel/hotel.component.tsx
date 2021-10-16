@@ -4,9 +4,6 @@ import {ColumnsType} from 'antd/es/table';
 import {Descriptions, Drawer} from 'antd';
 import {useDispatch, useSelector} from 'react-redux';
 import {Spin} from 'antd';
-import {ClienteDTO} from '../../models/models';
-import clientiSelector from '../../store/clienti/clienti.selector';
-import clientiActions from '../../store/clienti/clienti.action';
 import hotelSelector from '../../store/hotel/hotel.selector';
 
 const componentClassName = 'Hotel';
