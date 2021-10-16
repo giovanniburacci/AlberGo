@@ -9,7 +9,7 @@ export const login = async (data:AdminData):Promise<Partial<AmministratoreLogin>
                 nome: 'Pippo',
                 cognome: 'Baudo',
                 username: 'pippobaudo69',
-                idHotel: '0',
+                idHotel: 0,
                 token: 'tokenprova'
             })
         }, 2000)

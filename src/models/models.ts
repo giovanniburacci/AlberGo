@@ -4,7 +4,8 @@ export interface ClienteDTO {
     cognome: string,
     telefono: string,
     documento: string,
-    idHotel: string
+    idHotel: number,
+    username: string
 }
 
 export interface PrenotazioneDTO {
@@ -47,8 +48,7 @@ export interface AmministratoreDTO {
     nome: string,
     cognome: string,
     username: string,
-    password: string,
-    idHotel: string
+    idHotel: number
 }
 
 export interface HotelDTO {

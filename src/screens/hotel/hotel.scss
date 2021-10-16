@@ -1,3 +1,18 @@
 .Hotel {
+  display: flex;
+  height: 100%;
+  padding: 16px 8px;
 
+  &__column {
+    width: 50%;
+    height: 100%;
+    overflow-y: auto;
+    margin: 0 auto;
+    border: 1px solid #0000001a;
+    background: white;
+  }
+}
+
+.p-24 {
+  padding: 24px
 }

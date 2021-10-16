@@ -11,6 +11,7 @@ import Prenotazioni from './screens/prenotazioni/prenotazioni.component';
 import Stanze from './screens/stanze/stanze.component';
 import Categorie from './screens/categorie/categorie.component';
 import Clienti from './screens/clienti/clienti.component';
+import Hotel from './screens/hotel/hotel.component';
 
 const componentClassName = 'App';
 
@@ -82,7 +83,7 @@ function App() {
                                         <Clienti />
                                     </Route>
                                     <Route path='/hotel'>
-                                        <Clienti />
+                                        <Hotel />
                                     </Route>
                                     <Route path='/*'>
                                         <Redirect to='/' />
