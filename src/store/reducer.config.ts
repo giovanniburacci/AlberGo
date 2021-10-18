@@ -6,6 +6,7 @@ import {stanzeReducer} from './stanze/stanze.reducer';
 import {categorieReducer} from './categorie/categorie.reducer';
 import {clientiReducer} from './clienti/clienti.reducer';
 import {hotelReducer} from './hotel/hotel.reducer';
+import {serviziReducer} from './servizi/servizi.reducer';
 
 const appReducer = combineReducers({
     ...testReducer,
@@ -14,7 +15,8 @@ const appReducer = combineReducers({
     ...stanzeReducer,
     ...categorieReducer,
     ...clientiReducer,
-    ...hotelReducer
+    ...hotelReducer,
+    ...serviziReducer
 });
 export const RESET_STORE = 'RESET_STORE';
 

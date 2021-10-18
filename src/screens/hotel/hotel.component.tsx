@@ -8,6 +8,9 @@ import hotelSelector from '../../store/hotel/hotel.selector';
 import {ServizioDTO} from '../../models/models';
 import {getServiziStub} from '../../mocks/stubs/servizi';
 import Servizio from './servizio/servizio.component';
+import serviziSelector from '../../store/servizi/servizi.selector';
+import serviziActions from '../../store/servizi/servizi.action';
+import ServiziBar from './serviziBar/serviziBar.component';
 
 const componentClassName = 'Hotel';
 const columns:ColumnsType<ServizioDTO> = [{
@@ -22,10 +25,16 @@ const columns:ColumnsType<ServizioDTO> = [{
     }];
 const Hotel = () => {
 
-    const hotel = useSelector(hotelSelector.getHotel);
-
     const [hasClickedNew, setHasClickedNew] = useState<boolean>(false);
     const [selectedServizio, setSelectedServizio] = useState<ServizioDTO | null>();
+
+    const dispatch = useDispatch();
+    const hotel = useSelector(hotelSelector.getHotel);
+    const servizi = useSelector(serviziSelector.getServizi)
+
+    useEffect(() => {
+        dispatch(serviziActions.fetchServizi(1)) //todo handle hotel id
+    }, [])
 
 
     return (
@@ -49,14 +58,19 @@ const Hotel = () => {
                         </div>
                     </div>
                     <div className={`${componentClassName}__column`}>
-                        <Table
-                            dataSource={getServiziStub()}
-                            columns={columns}
-                            rowKey={(row) => row.id}
-                            onRow={(record,index) => {
-                                return {
-                                    onClick: () => {setSelectedServizio(record)}
-                            }}}/>
+                        <ServiziBar setHasClickedNew={() => {setHasClickedNew(true)}}/>
+                        {
+                            servizi && (
+                                <Table
+                                    dataSource={servizi}
+                                    columns={columns}
+                                    rowKey={(row) => row.id}
+                                    onRow={(record,index) => {
+                                        return {
+                                            onClick: () => {setSelectedServizio(record)}
+                                        }}}/>
+                            )
+                        }
                     </div>
                 </div>
                 <Drawer

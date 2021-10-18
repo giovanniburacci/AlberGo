@@ -1,0 +1,23 @@
+.NewServizio {
+  overflow-y: auto;
+
+  &__inputgroup {
+
+    &__name-labels {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      h5 {
+        margin: 0 0 8px 0 !important;
+      }
+    }
+
+    margin: 0 0 24px 0;
+    &__datepicker,&__select {
+      width: 100%;
+    }
+
+  }
+
+}
