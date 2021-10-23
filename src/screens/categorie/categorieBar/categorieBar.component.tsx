@@ -12,7 +12,7 @@ const CategorieBar = (props:CategorieBarProps) => {
     return (
         <div className={`${componentClassName}`}>
             <div className={`${componentClassName}__box`}>
-                <Input type={'text'}/>
+                <Input type={'text'} placeholder={'Nome categoria...'}/>
             </div>
             <div className={`${componentClassName}__box`}>
                 <Button type={'primary'} onClick={setHasClickedNew} icon={<PlusCircleOutlined />}>

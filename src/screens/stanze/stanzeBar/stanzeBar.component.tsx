@@ -2,6 +2,7 @@ import React from 'react';
 import './stanzeBar.scss'
 import {Button, Input} from 'antd';
 import {PlusCircleOutlined} from '@ant-design/icons';
+import StanzeFilters from './stanzeFilters/stanzeFilters.component';
 const componentClassName = 'StanzeBar'
 
 interface StanzeBarProps {
@@ -12,7 +13,7 @@ const StanzeBar = (props:StanzeBarProps) => {
     return (
         <div className={`${componentClassName}`}>
             <div className={`${componentClassName}__box`}>
-                <Input type={'text'}/>
+                <StanzeFilters />
             </div>
             <div className={`${componentClassName}__box`}>
                 <Button type={'primary'} onClick={setHasClickedNew} icon={<PlusCircleOutlined />}>

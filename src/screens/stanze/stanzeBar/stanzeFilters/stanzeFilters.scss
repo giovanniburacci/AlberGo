@@ -1,0 +1,12 @@
+.StanzeFilters {
+  display: flex;
+
+  &__select {
+    width: 150px !important;
+  }
+
+  &__range-picker {
+    width: 320px !important;
+    margin: 0 0 0 32px;
+  }
+}

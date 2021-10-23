@@ -2,6 +2,7 @@ import React from 'react';
 import './prenotazioniBar.scss'
 import {Button, Input} from 'antd';
 import {PlusCircleOutlined} from '@ant-design/icons';
+import PrenotazioniFilters from './prenotazioniFilters/prenotazioniFilters.component';
 const componentClassName = 'PrenotazioniBar'
 
 interface PrenotazioniBarProps {
@@ -12,7 +13,7 @@ const PrenotazioniBar = (props:PrenotazioniBarProps) => {
     return (
         <div className={`${componentClassName}`}>
             <div className={`${componentClassName}__box`}>
-                <Input type={'text'}/>
+                <PrenotazioniFilters />
             </div>
             <div className={`${componentClassName}__box`}>
                 <Button type={'primary'} onClick={setHasClickedNew} icon={<PlusCircleOutlined />}>

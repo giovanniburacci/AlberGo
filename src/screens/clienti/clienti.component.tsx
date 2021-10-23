@@ -7,6 +7,7 @@ import {Spin} from 'antd';
 import {ClienteDTO} from '../../models/models';
 import clientiSelector from '../../store/clienti/clienti.selector';
 import clientiActions from '../../store/clienti/clienti.action';
+import ClientiFilters from './clientiFilters/clientiFilters.component';
 
 const componentClassName = 'Clienti';
 
@@ -57,17 +58,20 @@ const Clienti = () => {
                     ) : isError ? (
                         <>boh</>
                     ) : (
-                        <Table
-                            onRow={(record,index) => {
-                                return {
-                                    onClick: () => {selectCliente(record)}
-                                }
-                            }}
-                            columns={columns}
-                            dataSource={clienti}
-                            pagination={false}
-                            rowKey={(row) => row.id}
-                        />
+                        <>
+                            <ClientiFilters />
+                            <Table
+                                onRow={(record,index) => {
+                                    return {
+                                        onClick: () => {selectCliente(record)}
+                                    }
+                                }}
+                                columns={columns}
+                                dataSource={clienti}
+                                pagination={false}
+                                rowKey={(row) => row.id}
+                            />
+                        </>
                     )
                 }
             </div>

@@ -1,0 +1,10 @@
+.ClientiFilters {
+  display: flex;
+  &__input {
+    width: 200px;
+  }
+
+  &__select {
+    width: 150px;
+  }
+}

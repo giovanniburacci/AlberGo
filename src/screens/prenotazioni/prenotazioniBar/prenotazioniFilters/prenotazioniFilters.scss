@@ -1,0 +1,15 @@
+.PrenotazioniFilters {
+  display: flex;
+
+  &__input {
+    width: 200px;
+  }
+  &__select {
+    width: 150px !important;
+  }
+
+  &__range-picker {
+    width: 320px !important;
+    margin: 0 0 0 32px;
+  }
+}
