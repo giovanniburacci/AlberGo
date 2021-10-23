@@ -81,3 +81,4 @@ export enum Stelle  {
     SEI = 6,
     SETTE = 7
 }
+

@@ -44,8 +44,6 @@ const Stanze = () => {
 
     useEffect(() => {
         if(stanze) {
-            console.log('fuoriServizio', stanze.filter(stanza => stanza.fuoriServizio).length);
-            console.log('non fuoriServizio', stanze.length - stanze.filter(stanza => stanza.fuoriServizio).length);
             setDataPie({
                 labels: ['Fuori Servizio', 'Libera'],
                 datasets: [{
