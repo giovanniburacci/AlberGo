@@ -92,6 +92,7 @@ const Categorie = () => {
                     </div>
                 </div>
                 <Drawer
+                    destroyOnClose={true}
                     headerStyle={{
                         background: '#191919',
                         color: '#ffffff !important'

@@ -11,6 +11,7 @@ import Servizio from './servizio/servizio.component';
 import serviziSelector from '../../store/servizi/servizi.selector';
 import serviziActions from '../../store/servizi/servizi.action';
 import ServiziBar from './serviziBar/serviziBar.component';
+import NewServizio from './newServizio/newServizio.component';
 
 const componentClassName = 'Hotel';
 const columns:ColumnsType<ServizioDTO> = [{
@@ -74,6 +75,7 @@ const Hotel = () => {
                     </div>
                 </div>
                 <Drawer
+                    destroyOnClose={true}
                     className={'ant-drawer-title-white'}
                     visible={!!selectedServizio}
                     onClose={() => {setSelectedServizio(null)}}
@@ -83,14 +85,16 @@ const Hotel = () => {
                         selectedServizio && (
                             <Servizio servizio={selectedServizio}/>
                         )
-                    }                </Drawer>
+                    }
+                </Drawer>
                 <Drawer
+                    destroyOnClose={true}
                     className={'ant-drawer-title-white'}
                     visible={hasClickedNew}
                     onClose={() => {setHasClickedNew(false)}}
-                    title={'Nuova stanza'}
+                    title={'Nuovo servizio'}
                     width={'348px'}>
-
+                    <NewServizio />
                 </Drawer>
             </>
         ) : (

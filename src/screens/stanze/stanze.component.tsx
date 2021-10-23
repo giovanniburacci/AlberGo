@@ -108,6 +108,7 @@ const Stanze = () => {
                     }
                 </div>
                 <Drawer
+                    destroyOnClose={true}
                     className={'ant-drawer-title-white'}
                     visible={hasClickedNew}
                     onClose={() => {setHasClickedNew(false)}}

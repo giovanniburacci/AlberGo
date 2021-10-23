@@ -3,8 +3,9 @@ import './servizio.scss'
 import {Button, Input, InputNumber, Typography} from 'antd';
 import {ServizioDTO} from '../../../models/models';
 import {useDispatch, useSelector} from 'react-redux';
-import prenotazioniSelector from '../../../store/prenotazioni/prenotazioni.selector';
+import serviziSelector from '../../../store/servizi/servizi.selector';
 import {isEqual} from 'lodash';
+import serviziActions from '../../../store/servizi/servizi.action';
 const componentClassName = 'Servizio';
 
 interface ServizioProps {
@@ -33,7 +34,7 @@ export const Servizio = (props:ServizioProps) => {
         }
     }, [newServizio])
 
-    const isLoadingEdit = useSelector(prenotazioniSelector.getIsLoadingEdit);
+    // const isLoadingEdit = useSelector(serviziSelector.get);
     return (
         <div className={`${componentClassName}`}>
             <div className={`${componentClassName}__inputgroup`}>
@@ -48,24 +49,6 @@ export const Servizio = (props:ServizioProps) => {
                             setNewServizio((prevState => ({
                                     ...prevState,
                                     nome: newNome.target.value
-                                }
-                            )))
-                        }
-                    }}
-                />
-            </div>
-            <div className={`${componentClassName}__inputgroup`}>
-                <Title level={5}>
-                    Descrizione
-                </Title>
-                <Input
-                    placeholder="Descrizione"
-                    value={newServizio && newServizio.nome}
-                    onChange={(newDescrizione) => {
-                        if(newDescrizione) {
-                            setNewServizio((prevState => ({
-                                    ...prevState,
-                                    descrizione: newDescrizione.target.value
                                 }
                             )))
                         }
@@ -95,21 +78,21 @@ export const Servizio = (props:ServizioProps) => {
                 size={'large'}
                 className={isMakingChanges ? 'button-edit' : ''}
                 disabled={!isMakingChanges}
-                onClick={/*() => {
+                onClick={() => {
                     if(newServizio) {
-                        dispatch(prenotazioniActions.editPrenotazione({
-                            ...prenotazione.prenotazione,
-                            ...newPrenotazione,
+                        dispatch(serviziActions.editServizio({
+                            ...servizio,
+                            ...newServizio,
                         }))
                     }
-                }*/ () => -1}
+                }}
             >Modifica</Button>
             <Button
                 size={'large'}
                 className={'button-delete'}
-                onClick={/*() => {
-                    dispatch(prenotazioniActions.removePrenotazione(prenotazione.prenotazione));
-                }*/ () => -1}
+                onClick={() => {
+                    dispatch(serviziActions.removeServizio(servizio));
+                }}
             >Elimina</Button>
         </div>
     )

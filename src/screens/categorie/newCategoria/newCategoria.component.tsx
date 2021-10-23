@@ -47,12 +47,12 @@ export const NewCategoria = () => {
                     addonAfter={'€'}
                     value={newCategoria && newCategoria.prezzo && newCategoria.prezzo}
                     onChange={(value) => {
-                        setNewCategoria((prevState => {
+                        setNewCategoria(prevState => {
                             return {
                                 ...prevState,
                                 prezzo: value
                             }
-                        }))
+                        })
                     }}/>
             </div>
             <Button onClick={() => {

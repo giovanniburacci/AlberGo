@@ -4,7 +4,13 @@ import {serviziActions} from './servizi.action';
 
 const initialState: ServiziState = {
     isLoading: false,
-    isError: false
+    isError: false,
+    isLoadingCreate: false,
+    isErrorCreate: false,
+    isLoadingDelete: false,
+    isLoadingUpdate: false,
+    isErrorDelete: false,
+    isErrorUpdate: false
 }
 export const serviziReducer = {
     servizi: createReducer(initialState, (builder) => {
@@ -27,6 +33,24 @@ export const serviziReducer = {
                 isLoading: false,
                 isError: true
             }
-        }))
+        })).addCase(serviziActions.addServizio.fulfilled, ((state, action) => {
+            return {
+                ...state,
+                isLoadingCreate: false,
+                isErrorCreate: false
+            }
+        })).addCase(serviziActions.addServizio.pending, (state) => {
+            return {
+                ...state,
+                isLoadingCreate: true,
+                isErrorCreate: false
+            }
+        }).addCase(serviziActions.addServizio.rejected, (state) => {
+            return {
+                ...state,
+                isLoadingCreate: false,
+                isErrorCreate: true
+            }
+        })
     })
 }

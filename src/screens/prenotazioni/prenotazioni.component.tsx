@@ -92,6 +92,7 @@ const Prenotazioni = () => {
                 }
             </div>
             <Drawer
+                destroyOnClose={true}
                 visible={isDrawerVisible}
                 onClose={() => {
                     setSelectedPrenotazione((prevState => {

@@ -72,6 +72,7 @@ const Clienti = () => {
                 }
             </div>
             <Drawer
+                destroyOnClose={true}
                 visible={!!selectedCliente}
                 onClose={() => {setSelectedCliente(undefined)}}
                 title={'Dettaglio cliente'}
