@@ -1,12 +1,20 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {createStanza, searchStanze, searchStanzeLibereWithDates} from '../../api/stanze.service';
+import {
+    createStanza,
+    deleteStanza,
+    searchStanze,
+    searchStanzeLibereWithDates,
+    updateStanza
+} from '../../api/stanze.service';
 import {StanzaDTO} from '../../models/models';
 import moment from 'moment';
 
 const stanzeLabels = {
     fetchStanze: 'fetchStanze',
     addStanza: 'addStanza',
-    fetchStanzeLibereWithDates: 'fetchStanzeLibereWithDates'
+    fetchStanzeLibereWithDates: 'fetchStanzeLibereWithDates',
+    editStanza: 'editStanza',
+    removeStanza: 'removeStanza'
 }
 
 export interface FetchWithDatesBean {
@@ -43,7 +51,6 @@ const fetchStanzeLibereWithDates = createAsyncThunk(stanzeLabels.fetchStanzeLibe
 const addStanza = createAsyncThunk(stanzeLabels.addStanza, async (stanza: Partial<StanzaDTO>, thunkAPI) => {
     try {
         const resp = await createStanza(stanza)
-        console.log(resp);
         if(stanza.idHotel) {
             thunkAPI.dispatch(stanzeActions.fetchStanze(stanza.idHotel));
         }
@@ -54,10 +61,39 @@ const addStanza = createAsyncThunk(stanzeLabels.addStanza, async (stanza: Partia
     }
 });
 
+const editStanza = createAsyncThunk(stanzeLabels.editStanza, async (stanza: StanzaDTO, thunkAPI) => {
+    try {
+        const resp = await updateStanza(stanza)
+        if(stanza.idHotel) {
+            thunkAPI.dispatch(stanzeActions.fetchStanze(stanza.idHotel));
+        }
+        return resp.data;
+    } catch(e) {
+        console.log('updateStanza request failed')
+        throw e;
+    }
+});
+
+// @ts-ignore
+const removeStanza = createAsyncThunk<StanzaDTO>(stanzeLabels.removeStanza, async (stanza: StanzaDTO, thunkAPI) => {
+    try {
+        const resp = await deleteStanza(stanza.id)
+        if(stanza.idHotel) {
+            thunkAPI.dispatch(stanzeActions.fetchStanze(stanza.idHotel));
+        }
+        return resp.data;
+    } catch(e) {
+        console.log('deleteStanza request failed')
+        throw e;
+    }
+});
+
 export const stanzeActions = {
     fetchStanze,
     addStanza,
-    fetchStanzeLibereWithDates
+    fetchStanzeLibereWithDates,
+    editStanza,
+    removeStanza
 }
 
 export default stanzeActions;

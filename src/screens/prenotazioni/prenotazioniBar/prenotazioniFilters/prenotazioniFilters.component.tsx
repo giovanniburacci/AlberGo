@@ -33,7 +33,7 @@ const PrenotazioniFilters = () => {
 
     return (
         <div className={`${componentClassName}`}>
-            <Input type={'text'}/>
+            <Input className={`${componentClassName}__input`} type={'text'}/>
             <Select className={`${componentClassName}__select`} defaultValue={UtenteFilter.COGNOME} value={utenteFilter} style={{ width: 120 }} onChange={setUtenteFilter}>
                 {
                     filterOptions.map((option) => <Option value={option.value}>{option.label}</Option>)

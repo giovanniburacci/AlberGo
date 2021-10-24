@@ -9,6 +9,7 @@ import stanzeSelector from '../../store/stanze/stanze.selector';
 import StanzeBar from './stanzeBar/stanzeBar.component';
 import NewStanza from './newStanza/newStanza.component';
 import PieContainer from '../../containers/pies/pieContainer/pie.component';
+import DettaglioStanza from './dettaglioStanza/dettaglioStanza.component';
 
 const componentClassName = 'Stanze';
 const columns:ColumnsType<StanzaDTO> = [{
@@ -37,6 +38,7 @@ const Stanze = () => {
 
     const [dataPie,setDataPie] = useState<{}>();
     const [hasClickedNew, setHasClickedNew] = useState<boolean>(false)
+    const [selectedStanza, setSelectedStanza] = useState<StanzaDTO | undefined>();
 
     useEffect( () => {
         dispatch(stanzeActions.fetchStanze(1)) //todo gestire idHotel
@@ -70,6 +72,15 @@ const Stanze = () => {
                     columns={columns}
                     dataSource={stanze}
                     rowKey={(row) => row.id}
+                    onRow={(record,index) => {
+                        return {
+                            onClick: () => {
+                                if(stanze) {
+                                    setSelectedStanza(stanze.find(s => s.id === record.id))
+                                }
+                            }
+                        }
+                    }}
                 />
             </div>
 
@@ -113,6 +124,15 @@ const Stanze = () => {
                     title={'Nuova stanza'}
                     width={'348px'}>
                     <NewStanza/>
+                </Drawer>
+                <Drawer
+                    destroyOnClose={true}
+                    className={'ant-drawer-title-white'}
+                    visible={!!selectedStanza}
+                    onClose={() => {setSelectedStanza(undefined)}}
+                    title={'Dettaglio stanza'}
+                    width={'348px'}>
+                    <DettaglioStanza stanza={selectedStanza!}/>
                 </Drawer>
             </div>
         </div>

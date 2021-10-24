@@ -1,12 +1,24 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {StanzeState} from './types';
+import {StanzeDeleteState, StanzeEditState, StanzeState} from './types';
 import stanzeActions from './stanze.action';
+
+const initialEditState: StanzeEditState = {
+    isLoadingEdit: false,
+    isErrorEdit: false
+}
+
+const initialDeleteState: StanzeDeleteState = {
+    isLoadingDelete: false,
+    isErrorDelete: false
+}
 
 const initialState: StanzeState = {
     isLoading: false,
     isError: false,
     isErrorNewStanza: false,
-    isLoadingNewStanza: false
+    isLoadingNewStanza: false,
+    ...initialEditState,
+    ...initialDeleteState
 }
 
 export const stanzeReducer = {
@@ -66,6 +78,42 @@ export const stanzeReducer = {
                 ...state,
                 isLoading: false,
                 isError: true
+            }
+        }).addCase(stanzeActions.editStanza.fulfilled, (state,action) => {
+            return {
+                ...state,
+                isLoadingEdit: false,
+                isErrorEdit: false
+            }
+        }).addCase(stanzeActions.editStanza.pending, (state,action) => {
+            return {
+                ...state,
+                isLoadingEdit: true,
+                isErrorEdit: false
+            }
+        }).addCase(stanzeActions.editStanza.rejected, (state,action) => {
+            return {
+                ...state,
+                isLoadingEdit: false,
+                isErrorEdit: true
+            }
+        }).addCase(stanzeActions.removeStanza.fulfilled, (state,action) => {
+            return {
+                ...state,
+                isLoadingDelete: false,
+                isErrorDelete: false
+            }
+        }).addCase(stanzeActions.removeStanza.pending, (state,action) => {
+            return {
+                ...state,
+                isLoadingDelete: true,
+                isErrorDelete: false
+            }
+        }).addCase(stanzeActions.removeStanza.rejected, (state,action) => {
+            return {
+                ...state,
+                isLoadingDelete: false,
+                isErrorDelete: true
             }
         })
     })

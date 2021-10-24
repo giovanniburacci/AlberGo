@@ -12,7 +12,9 @@ const apiURL = localhostURL + postfix;
 const stanzaEndpoints = {
     lista: 'lista',
     create: 'create',
-    libere: 'libere'
+    libere: 'libere',
+    update: 'update',
+    delete: 'delete'
 }
 
 export const searchStanze = async (idHotel: number): Promise<AxiosResponse<StanzaDTO[]>> => {
@@ -39,5 +41,19 @@ export const searchStanzeLibereWithDates = async (params: FetchWithDatesBean): P
 export const createStanza = async (stanza: Partial<StanzaDTO>): Promise<AxiosResponse<StanzaDTO>> => {
     return axios.post(apiURL+stanzaEndpoints.create,{
         ...stanza
+    });
+}
+
+export const updateStanza = async (stanza: StanzaDTO): Promise<AxiosResponse<StanzaDTO>> => {
+    return axios.put(apiURL+stanzaEndpoints.update,{
+        ...stanza
+    });
+}
+
+export const deleteStanza = async (idStanza: number): Promise<AxiosResponse<boolean>> => {
+    return axios.delete(apiURL+stanzaEndpoints.delete,{
+        params: {
+            idStanza
+        }
     });
 }

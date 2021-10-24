@@ -7,10 +7,13 @@ const getIsError = (state:RootState): boolean => state.stanze.isError;
 
 const getIsLoading = (state:RootState): boolean => state.stanze.isLoading;
 
+const getIsLoadingEdit = (state:RootState): boolean => state.stanze.isLoadingEdit;
+
 export const stanzeSelector = {
     getStanze,
     getIsError,
-    getIsLoading
+    getIsLoading,
+    getIsLoadingEdit
 }
 
 export default stanzeSelector;
