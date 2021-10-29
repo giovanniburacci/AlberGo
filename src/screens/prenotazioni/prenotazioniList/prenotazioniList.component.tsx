@@ -35,7 +35,7 @@ interface PrenotazioniListProps {
 export const PrenotazioniList = (props:PrenotazioniListProps) => {
 
     const {setIsDrawerVisible, setSelectedPrenotazione} = props;
-    const listaPren = useSelector(prenotazioniSelector.getPrenotazioni)
+    const listaPren: FatturaDTO[] | undefined = useSelector(prenotazioniSelector.getPrenotazioni)
     const isLoading = useSelector(prenotazioniSelector.getIsLoading);
     const isError = useSelector(prenotazioniSelector.getIsError);
     const selectPrenotazione = (record?:FatturaDTO) => {
@@ -48,32 +48,33 @@ export const PrenotazioniList = (props:PrenotazioniListProps) => {
         dispatch(prenotazioniActions.fetchPrenotazioni(1)) //todo fix hotelid
     }, [])
 
+    // @ts-ignore
     return (
-            listaPren ? (
-                    <Table
-                        onRow={(record,index) => {
-                            return {
-                                onClick: () => {
-                                    if(listaPren) {
-                                        selectPrenotazione(listaPren.find(fattura => record.id === fattura.prenotazione.id))
-                                    }}
-                            }
-                        }}
-                        columns={columns}
-                        dataSource={listaPren.map((fattura) => ({
-                            id: fattura.prenotazione.id,
-                            numeroStanza: fattura.stanza.numeroStanza,
-                            cognome: fattura.cliente.cognome,
-                            dataInizio: fattura.prenotazione.dataInizio,
-                            dataFine: fattura.prenotazione.dataFine
-                        }))}
-                        pagination={false}
-                        rowKey={(row) => row.id}
-                    />
+            isLoading ? (
+                    <Spin />
                 ) : isError ? (
                     <>boh</>
                 ) : (
-                <Spin />
+                <Table
+                    onRow={(record,index) => {
+                        return {
+                            onClick: () => {
+                                if(listaPren) {
+                                    selectPrenotazione(listaPren.find(fattura => record.id === fattura.prenotazione.id))
+                                }}
+                        }
+                    }}
+                    columns={columns}
+                    dataSource={listaPren && listaPren.map((fattura) => ({
+                        id: fattura.prenotazione.id,
+                        numeroStanza: fattura.stanza.numeroStanza,
+                        cognome: fattura.cliente.cognome,
+                        dataInizio: fattura.prenotazione.dataInizio,
+                        dataFine: fattura.prenotazione.dataFine
+                    }))}
+                    pagination={false}
+                    rowKey={(row) => row.id}
+                />
             )
     )
 }

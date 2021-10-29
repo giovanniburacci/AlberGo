@@ -1,4 +1,4 @@
-import {localhostURL} from './axiosConfig';
+import {localhostURL, mockTimeout} from './axiosConfig';
 import {CategoriaDTO, FatturaDTO, FilterBean, PrenotazioneDTO} from '../models/models';
 import axios, {AxiosResponse} from 'axios';
 
