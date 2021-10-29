@@ -2,7 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {Input, Select, DatePicker} from 'antd';
 import './prenotazioniFilters.scss'
 import moment from 'moment';
-
+import {prenotazioniActions} from '../../../../store/prenotazioni/prenotazioni.action'
+import {useDispatch} from 'react-redux';
 interface SelectOptions {
     value: string,
     label: string
@@ -27,14 +28,47 @@ const filterOptions:SelectOptions[] = [
 const componentClassName = 'PrenotazioniFilters'
 const {Option} = Select;
 const {RangePicker} = DatePicker;
+let timeout:any;
+
 const PrenotazioniFilters = () => {
     const [utenteFilter, setUtenteFilter] = useState<UtenteFilter>(UtenteFilter.COGNOME)
-    const [dateFilter, setDateFilter] = useState<[moment.Moment,moment.Moment | null]>()
+    const [dateFilter, setDateFilter] = useState<[moment.Moment,moment.Moment] | null>()
+    const [searchFilter, setSearchFilter] = useState<string>('');
 
+    const dispatch = useDispatch();
+    useEffect(() => {
+        timeout = setTimeout(() => {
+            if(!searchFilter && !dateFilter) {
+                console.log('iuu')
+                dispatch(prenotazioniActions.fetchPrenotazioni(1)) //todo edit hotel id
+            } else {
+                dispatch(prenotazioniActions.fetchFilteredPrenotazioni({
+                    nomeCliente: utenteFilter === UtenteFilter.NOME ? searchFilter : '',
+                    cognomeCliente: utenteFilter !== UtenteFilter.NOME ? searchFilter : '',
+                    dataInizio: dateFilter ? ''+dateFilter[0].toISOString() : '',
+                    dataFine: dateFilter ? ''+dateFilter[1].toISOString() : ''
+                }))
+            }
+        }, 300)
+    }, [searchFilter, dateFilter])
     return (
         <div className={`${componentClassName}`}>
-            <Input className={`${componentClassName}__input`} type={'text'}/>
-            <Select className={`${componentClassName}__select`} defaultValue={UtenteFilter.COGNOME} value={utenteFilter} style={{ width: 120 }} onChange={setUtenteFilter}>
+            <Input
+                className={`${componentClassName}__input`}
+                type={'text'}
+                value={searchFilter}
+                onChange={(e) => {
+                    const {value} = e.target
+                    if (timeout) {
+                        clearTimeout(timeout);
+                    }
+                    setSearchFilter(value)
+                }}/>
+            <Select
+                className={`${componentClassName}__select`}
+                defaultValue={UtenteFilter.COGNOME}
+                value={utenteFilter} style={{ width: 120 }}
+                onChange={setUtenteFilter}>
                 {
                     filterOptions.map((option) => <Option value={option.value}>{option.label}</Option>)
                 }

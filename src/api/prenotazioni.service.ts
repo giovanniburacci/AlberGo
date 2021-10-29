@@ -1,5 +1,5 @@
 import {localhostURL} from './axiosConfig';
-import {CategoriaDTO, FatturaDTO, PrenotazioneDTO} from '../models/models';
+import {CategoriaDTO, FatturaDTO, FilterBean, PrenotazioneDTO} from '../models/models';
 import axios, {AxiosResponse} from 'axios';
 
 const postfix = 'prenotazione/';
@@ -9,7 +9,8 @@ const prenotazioniEndpoints = {
     lista: 'lista',
     create: 'create',
     update: 'update',
-    delete: 'delete'
+    delete: 'delete',
+    searchNomeCognomeDate: 'searchNomeCognomeDate'
 }
 
 export const searchPrenotazioni = async (idHotel: number): Promise<AxiosResponse<FatturaDTO[]>> => {
@@ -36,6 +37,14 @@ export const deletePrenotazione = async (idPrenotazione: number): Promise<AxiosR
     return axios.delete(apiURL + prenotazioniEndpoints.delete, {
         params: {
             idPrenotazione
+        }
+    })
+}
+
+export const searchFilteredByUtenteAndDate = async (filterBean: FilterBean): Promise<AxiosResponse<FatturaDTO[]>> => {
+    return axios.get(apiURL + prenotazioniEndpoints.searchNomeCognomeDate, {
+        params: {
+            ...filterBean
         }
     })
 }

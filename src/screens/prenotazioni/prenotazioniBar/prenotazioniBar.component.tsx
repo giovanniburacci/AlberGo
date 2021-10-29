@@ -24,4 +24,4 @@ const PrenotazioniBar = (props:PrenotazioniBarProps) => {
     )
 }
 
-export default PrenotazioniBar;
+export default React.memo(PrenotazioniBar, (prevProps,nextProps) => prevProps !== nextProps);

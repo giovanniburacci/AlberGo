@@ -31,6 +31,25 @@ export const prenotazioniReducer = {
                 isLoading: false,
                 isError: true
             }
+        }).addCase(prenotazioniActions.fetchFilteredPrenotazioni.fulfilled, (state,action) => {
+            return {
+                ...state,
+                prenotazioni: action.payload,
+                isLoading: false,
+                isError: false
+            }
+        }).addCase(prenotazioniActions.fetchFilteredPrenotazioni.pending, (state,action) => {
+            return {
+                ...state,
+                isLoading: true,
+                isError: false
+            }
+        }).addCase(prenotazioniActions.fetchFilteredPrenotazioni.rejected, (state,action) => {
+            return {
+                ...state,
+                isLoading: false,
+                isError: true
+            }
         }).addCase(prenotazioniActions.addPrenotazione.fulfilled, (state,action) => {
             return {
                 ...state,

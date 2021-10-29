@@ -82,3 +82,9 @@ export enum Stelle  {
     SETTE = 7
 }
 
+export interface FilterBean {
+    nomeCliente: string,
+    cognomeCliente: string,
+    dataInizio: string,
+    dataFine: string
+}

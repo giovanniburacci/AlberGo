@@ -1,17 +1,18 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {
     createPrenotazione,
-    deletePrenotazione,
+    deletePrenotazione, searchFilteredByUtenteAndDate,
     searchPrenotazioni,
     updatePrenotazione
 } from '../../api/prenotazioni.service';
-import {PrenotazioneDTO} from '../../models/models';
+import {FilterBean, PrenotazioneDTO} from '../../models/models';
 
 const prenotazioniLabels = {
     fetchPrenotazioni: 'fetchPrenotazioni',
     addPrenotazione: 'addPrenotazione',
     editPrenotazione: 'editPrenotazione',
-    removePrenotazione: 'removePrenotazione'
+    removePrenotazione: 'removePrenotazione',
+    fetchFilteredPrenotazioni: 'fetchFilteredPrenotazioni'
 }
 const fetchPrenotazioni = createAsyncThunk(prenotazioniLabels.fetchPrenotazioni, async (hotelId:number) => {
     try {
@@ -19,6 +20,16 @@ const fetchPrenotazioni = createAsyncThunk(prenotazioniLabels.fetchPrenotazioni,
         return resp.data;
     } catch(e) {
         console.log('fetchPrenotazioni request failed')
+        throw e;
+    }
+});
+
+const fetchFilteredPrenotazioni = createAsyncThunk(prenotazioniLabels.fetchFilteredPrenotazioni, async (searchBean:FilterBean) => {
+    try {
+        const resp = await searchFilteredByUtenteAndDate(searchBean)
+        return resp.data;
+    } catch(e) {
+        console.log('fetchFilteredPrenotazioni request failed')
         throw e;
     }
 });
@@ -63,7 +74,8 @@ export const prenotazioniActions = {
     fetchPrenotazioni,
     addPrenotazione,
     editPrenotazione,
-    removePrenotazione
+    removePrenotazione,
+    fetchFilteredPrenotazioni
 }
 
 export default prenotazioniActions;
