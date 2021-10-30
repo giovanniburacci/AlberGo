@@ -20,21 +20,24 @@ const StanzeFilters = () => {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        if(dateFilter && !selectedCategoria) {
+        if(dateFilter) {
             const [dataInizio, dataFine] = dateFilter;
             if (dataInizio && dataFine) {
-                dispatch(stanzeActions.fetchStanzeLibereWithDates({
+                dispatch(stanzeActions.fetchStanzeWithDates({
                     dataInizio,
                     dataFine,
+                    idCategoria: selectedCategoria?.id,
                     idHotel: 1 //todo handle hotel id
                 }));
             }
-        } else if(!dateFilter && selectedCategoria) {
-            // todo aggiungere caso
         } else { // caso di nessun filtro
             dispatch(stanzeActions.fetchStanze(1)) //handle hotel id
         }
-    }, [selectedCategoria, dateFilter])
+    }, [dateFilter])
+
+    useEffect(() => {
+        dispatch(stanzeActions.filterBySelectedCategoria(selectedCategoria?.id))
+    }, [selectedCategoria])
 
     if(!listaCategorie) {
         dispatch(categorieActions.fetchCategorie(1)) //todo handle hotelId

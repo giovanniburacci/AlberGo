@@ -1,7 +1,16 @@
 import {RootState} from '../reducer.config';
 import {StanzaDTO} from '../../models/models';
 
-const getStanze = (state:RootState): StanzaDTO[] | undefined => state.stanze.stanze;
+const getStanze = (state:RootState): StanzaDTO[] | undefined => {
+    const {stanze, categoriaFilter} = state.stanze
+    return stanze && (
+        categoriaFilter ? (
+            stanze.filter(s => s.idCategoria === categoriaFilter)
+        ) : (
+            stanze
+        )
+    )
+};
 
 const getIsError = (state:RootState): boolean => state.stanze.isError;
 

@@ -1,11 +1,16 @@
 import {StanzaDTO} from '../../models/models';
 
 export interface StanzeState extends StanzeEditState, StanzeDeleteState{
-    stanze?: StanzaDTO[]
+    stanze?: StanzaWithStatus[]
     isLoading: boolean,
     isError: boolean,
     isLoadingNewStanza: boolean,
-    isErrorNewStanza: boolean
+    isErrorNewStanza: boolean,
+    categoriaFilter?: number
+}
+
+export interface StanzaWithStatus extends StanzaDTO {
+    status?: StanzaStatus
 }
 
 export interface StanzeEditState {
@@ -16,4 +21,9 @@ export interface StanzeEditState {
 export interface StanzeDeleteState {
     isLoadingDelete: boolean,
     isErrorDelete: boolean
+}
+
+export enum StanzaStatus {
+    OCCUPATA = 'occupata',
+    LIBERA = 'libera'
 }

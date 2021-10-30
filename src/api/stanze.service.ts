@@ -13,6 +13,7 @@ const stanzaEndpoints = {
     lista: 'lista',
     create: 'create',
     libere: 'libere',
+    occupate: 'occupate',
     update: 'update',
     delete: 'delete'
 }
@@ -30,6 +31,19 @@ export const searchStanzeLibereWithDates = async (params: FetchWithDatesBean): P
     const newDataInizio = dataInizio.toDate();
     const newDataFine = dataFine.toDate()
     return axios.get(apiURL+stanzaEndpoints.libere,{
+        params: {
+            idHotel,
+            dataInizio: newDataInizio,
+            dataFine: newDataFine
+        }
+    });
+}
+
+export const searchStanzeOccupateWithDates = async (params: FetchWithDatesBean): Promise<AxiosResponse<StanzaDTO[]>> => {
+    let {idHotel, dataInizio, dataFine} = params
+    const newDataInizio = dataInizio.toDate();
+    const newDataFine = dataFine.toDate()
+    return axios.get(apiURL+stanzaEndpoints.occupate,{
         params: {
             idHotel,
             dataInizio: newDataInizio,

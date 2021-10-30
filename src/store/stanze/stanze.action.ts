@@ -1,26 +1,31 @@
-import {createAsyncThunk} from '@reduxjs/toolkit';
+import {createAction, createAsyncThunk} from '@reduxjs/toolkit';
 import {
     createStanza,
     deleteStanza,
     searchStanze,
     searchStanzeLibereWithDates,
+    searchStanzeOccupateWithDates,
     updateStanza
 } from '../../api/stanze.service';
 import {StanzaDTO} from '../../models/models';
 import moment from 'moment';
+import {mapStanze} from './stanze.mapper';
+import {StanzaStatus} from './types';
 
 const stanzeLabels = {
     fetchStanze: 'fetchStanze',
     addStanza: 'addStanza',
-    fetchStanzeLibereWithDates: 'fetchStanzeLibereWithDates',
+    fetchStanzeWithDates: 'fetchStanzeLibereWithDates',
     editStanza: 'editStanza',
-    removeStanza: 'removeStanza'
+    removeStanza: 'removeStanza',
+    filterBySelectedCategoria: 'filterBySelectedCategoria'
 }
 
 export interface FetchWithDatesBean {
     idHotel:number,
     dataInizio: moment.Moment,
-    dataFine: moment.Moment
+    dataFine: moment.Moment,
+    idCategoria?: number
 }
 
 const fetchStanze = createAsyncThunk(stanzeLabels.fetchStanze, async (hotelId:number) => {
@@ -33,17 +38,22 @@ const fetchStanze = createAsyncThunk(stanzeLabels.fetchStanze, async (hotelId:nu
     }
 });
 
-const fetchStanzeLibereWithDates = createAsyncThunk(stanzeLabels.fetchStanzeLibereWithDates, async (params: FetchWithDatesBean) => {
+const fetchStanzeWithDates = createAsyncThunk(stanzeLabels.fetchStanzeWithDates, async (params: FetchWithDatesBean) => {
     try {
         if(params.dataFine && params.dataInizio) {
-            const resp = await searchStanzeLibereWithDates(params);
-            return resp.data;
+            const stanzeLibere = await searchStanzeLibereWithDates(params);
+            const stanzeLibereMapped = mapStanze(stanzeLibere.data, StanzaStatus.LIBERA)
+
+            const stanzeOccupate = await searchStanzeOccupateWithDates(params);
+            const stanzeOccupateMapped = mapStanze(stanzeOccupate.data, StanzaStatus.OCCUPATA)
+
+            return [...stanzeLibereMapped, ...stanzeOccupateMapped]
         } else {
-            const resp = await searchStanze(params.idHotel);
-            return resp.data;
+            const stanze = await searchStanze(params.idHotel);
+            return stanze.data;
         }
     } catch(e) {
-        console.log('fetchStanzeLibereWithDates request failed')
+        console.log('fetchStanzeWithDates request failed')
         throw e;
     }
 });
@@ -88,12 +98,20 @@ const removeStanza = createAsyncThunk<StanzaDTO>(stanzeLabels.removeStanza, asyn
     }
 });
 
+const filterBySelectedCategoria = createAction(stanzeLabels.filterBySelectedCategoria, (idCategoria?: number) => {
+    return {
+        payload: {
+            idCategoria
+        }
+    }
+})
 export const stanzeActions = {
     fetchStanze,
     addStanza,
-    fetchStanzeLibereWithDates,
+    fetchStanzeWithDates,
     editStanza,
-    removeStanza
+    removeStanza,
+    filterBySelectedCategoria
 }
 
 export default stanzeActions;

@@ -60,20 +60,20 @@ export const stanzeReducer = {
                 isLoadingNewStanza: false,
                 isErrorNewStanza: true
             }
-        }).addCase(stanzeActions.fetchStanzeLibereWithDates.fulfilled, (state,action) => {
+        }).addCase(stanzeActions.fetchStanzeWithDates.fulfilled, (state,action) => {
             return {
                 ...state,
                 stanze: action.payload,
                 isLoading: false,
                 isError: false
             }
-        }).addCase(stanzeActions.fetchStanzeLibereWithDates.pending, (state,action) => {
+        }).addCase(stanzeActions.fetchStanzeWithDates.pending, (state,action) => {
             return {
                 ...state,
                 isLoading: true,
                 isError: false
             }
-        }).addCase(stanzeActions.fetchStanzeLibereWithDates.rejected, (state,action) => {
+        }).addCase(stanzeActions.fetchStanzeWithDates.rejected, (state,action) => {
             return {
                 ...state,
                 isLoading: false,
@@ -114,6 +114,11 @@ export const stanzeReducer = {
                 ...state,
                 isLoadingDelete: false,
                 isErrorDelete: true
+            }
+        }).addCase(stanzeActions.filterBySelectedCategoria, (state,action) => {
+            return {
+                ...state,
+                categoriaFilter: action.payload.idCategoria
             }
         })
     })
