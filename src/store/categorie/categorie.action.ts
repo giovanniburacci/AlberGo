@@ -1,10 +1,11 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {createCategoria, searchCategorie} from '../../api/categorie.service';
-import {CategoriaDTO} from '../../models/models';
+import {createCategoria, searchCategorie, searchFilteredByNome} from '../../api/categorie.service';
+import {CategoriaDTO, FetchCategorieWithName} from '../../models/models';
 
 const categorieLabels = {
     fetchCategorie: 'fetchCategorie',
-    addCategoria: 'addCategoria'
+    addCategoria: 'addCategoria',
+    fetchFilteredCategorie: 'fetchFilteredCategorie'
 }
 const fetchCategorie = createAsyncThunk(categorieLabels.fetchCategorie, async (hotelId:number) => {
     try {
@@ -29,9 +30,20 @@ const addCategoria = createAsyncThunk(categorieLabels.addCategoria, async (categ
     }
 });
 
+const fetchFilteredCategorie = createAsyncThunk(categorieLabels.fetchFilteredCategorie, async (params: FetchCategorieWithName, thunkAPI) => {
+    try {
+        const resp = await searchFilteredByNome(params)
+        return resp.data;
+    } catch(e) {
+        console.log('fetchFilteredCategorie request failed')
+        throw e;
+    }
+});
+
 export const categorieActions = {
     fetchCategorie,
-    addCategoria
+    addCategoria,
+    fetchFilteredCategorie
 }
 
 export default categorieActions;

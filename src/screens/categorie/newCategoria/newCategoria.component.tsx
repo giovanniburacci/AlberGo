@@ -11,6 +11,7 @@ export const NewCategoria = () => {
     const {Option} = Select;
 
     const [newCategoria, setNewCategoria] = useState<Partial<CategoriaDTO>>();
+    const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
     const dispatch = useDispatch();
     return (
         <div className={`${componentClassName}`}>
@@ -55,8 +56,80 @@ export const NewCategoria = () => {
                         })
                     }}/>
             </div>
+            <div className={`${componentClassName}__inputgroup`}>
+                <Title level={5}>Limite per modifica/cancellazione prenotazioni</Title>
+                <InputNumber
+                    className={`${componentClassName}__inputgroup__inputnumber`}
+                    addonAfter={'giorni'}
+                    min={0}
+                    defaultValue={0}
+                    value={newCategoria?.giorniBlocco}
+                    onChange={(value) => {
+                        setNewCategoria(prevState => {
+                            return {
+                                ...prevState,
+                                giorniBlocco: value
+                            }
+                        })
+                    }}/>
+            </div>
+            <div className={`${componentClassName}__inputgroup`}>
+                <Title level={5}>Penali</Title>
+                <Checkbox
+                    onChange={(val) => {
+                        setIsCheckboxChecked(val.target.checked);
+                        setNewCategoria((prevState => ({
+                            ...prevState,
+                            giorniPenale: undefined,
+                            qtaPenale: undefined
+                        })))
+                    }}
+                    checked={isCheckboxChecked}>Voglio applicare delle penali a questa categoria di stanze</Checkbox>
+            </div>
+            <div className={`${componentClassName}__inputgroup`}>
+                <Title level={5}>Giorni massimi</Title>
+                <InputNumber
+                    className={`${componentClassName}__inputgroup__inputnumber`}
+                    addonAfter={'giorni'}
+                    min={0}
+                    disabled={!isCheckboxChecked}
+                    value={newCategoria?.giorniPenale}
+                    onChange={(value) => {
+                        setNewCategoria(prevState => {
+                            return {
+                                ...prevState,
+                                giorniPenale: value
+                            }
+                        })
+                    }}/>
+            </div>
+
+            <div className={`${componentClassName}__inputgroup`}>
+                <Title level={5}>Costo penale</Title>
+                <InputNumber
+                    className={`${componentClassName}__inputgroup__inputnumber`}
+                    addonAfter={'€'}
+                    min={0}
+                    value={newCategoria?.qtaPenale}
+                    disabled={!isCheckboxChecked}
+                    onChange={(value) => {
+                        setNewCategoria(prevState => {
+                            return {
+                                ...prevState,
+                                qtaPenale: value
+                            }
+                        })
+                    }}/>
+            </div>
             <Button onClick={() => {
-                if(newCategoria && newCategoria.descrizione && newCategoria.nome && newCategoria.prezzo) {
+                if(newCategoria && newCategoria.descrizione && newCategoria.nome && newCategoria.prezzo && newCategoria.giorniBlocco) {
+                    if(!isCheckboxChecked) {
+                        setNewCategoria((prevState => ({
+                            ...prevState,
+                            giorniPenale: 0,
+                            qtaPenale: 0
+                        })))
+                    }
                     dispatch(categorieActions.addCategoria({
                         ...newCategoria,
                         idHotel: 1 // todo fix idHotel

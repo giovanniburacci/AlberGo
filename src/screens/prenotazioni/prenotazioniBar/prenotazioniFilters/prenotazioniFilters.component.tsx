@@ -29,7 +29,7 @@ const componentClassName = 'PrenotazioniFilters'
 const {Option} = Select;
 const {RangePicker} = DatePicker;
 let timeout:any;
-
+let renderCount = 0;
 const PrenotazioniFilters = () => {
     const [utenteFilter, setUtenteFilter] = useState<UtenteFilter>(UtenteFilter.COGNOME)
     const [dateFilter, setDateFilter] = useState<[moment.Moment,moment.Moment] | null>()
@@ -39,18 +39,26 @@ const PrenotazioniFilters = () => {
     useEffect(() => {
         timeout = setTimeout(() => {
             if(!searchFilter && !dateFilter) {
-                console.log('iuu')
-                dispatch(prenotazioniActions.fetchPrenotazioni(1)) //todo edit hotel id
+                if(renderCount !== 0) {
+                    dispatch(prenotazioniActions.fetchPrenotazioni(1)) //todo edit hotel id
+                }
             } else {
                 dispatch(prenotazioniActions.fetchFilteredPrenotazioni({
                     nomeCliente: utenteFilter === UtenteFilter.NOME ? searchFilter : '',
                     cognomeCliente: utenteFilter !== UtenteFilter.NOME ? searchFilter : '',
                     dataInizio: dateFilter ? ''+dateFilter[0].toISOString() : '',
                     dataFine: dateFilter ? ''+dateFilter[1].toISOString() : ''
-                }))
+                }));
+                renderCount ++;
             }
-        }, 300)
+        }, 500)
     }, [searchFilter, dateFilter])
+
+    useEffect(() => {
+        return () => {
+            renderCount = 0;
+        }
+    }, [])
     return (
         <div className={`${componentClassName}`}>
             <Input

@@ -16,6 +16,8 @@ interface StanzeFilterProps {
     dateFilter?: [moment.Moment, moment.Moment] | null,
     setDateFilter: (dates:[moment.Moment, moment.Moment] | null | undefined) => void
 }
+
+let renderCount = 0;
 const StanzeFilters = (props: StanzeFilterProps) => {
     const [selectedCategoria, setSelectedCategoria] = useState<CategoriaDTO>()
     const listaCategorie = useSelector(categorieSelector.getCategorie)
@@ -32,11 +34,20 @@ const StanzeFilters = (props: StanzeFilterProps) => {
                     idCategoria: selectedCategoria?.id,
                     idHotel: 1 //todo handle hotel id
                 }));
+                renderCount ++;
             }
         } else { // caso di nessun filtro
-            dispatch(stanzeActions.fetchStanze(1)) //handle hotel id
+            if(renderCount !== 0) {
+                dispatch(stanzeActions.fetchStanze(1)) //handle hotel id
+            }
         }
     }, [dateFilter])
+
+    useEffect(() => {
+        return () => {
+            renderCount = 0;
+        }
+    }, [])
 
     useEffect(() => {
         dispatch(stanzeActions.filterBySelectedCategoria(selectedCategoria?.id))

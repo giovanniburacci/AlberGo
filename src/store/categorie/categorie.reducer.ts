@@ -30,6 +30,25 @@ export const categorieReducer = {
                 isLoading: false,
                 isError: true
             }
+        }).addCase(categorieActions.fetchFilteredCategorie.fulfilled, (state,action) => {
+            return {
+                ...state,
+                categorie: action.payload,
+                isLoading: false,
+                isError: false
+            }
+        }).addCase(categorieActions.fetchFilteredCategorie.pending, (state,action) => {
+            return {
+                ...state,
+                isLoading: false,
+                isError: true
+            }
+        }).addCase(categorieActions.fetchFilteredCategorie.rejected, (state,action) => {
+            return {
+                ...state,
+                isLoading: false,
+                isError: true
+            }
         }).addCase(categorieActions.addCategoria.fulfilled, (state,action) => {
             return {
                 ...state,

@@ -12,6 +12,7 @@ import CategorieBar from './categorieBar/categorieBar.component';
 import NewCategoria from './newCategoria/newCategoria.component';
 const componentClassName = 'Categorie';
 
+const getRandomColor = ():string => 'rgb('+Math.floor(Math.random()*256)+', '+Math.floor(Math.random()*256)+', '+Math.floor(Math.random()*256)+')'
 const Categorie = () => {
 
     const dispatch = useDispatch();
@@ -20,26 +21,27 @@ const Categorie = () => {
     const [dataPie, setDataPie] = useState<{}>();
 
     const categorie = useSelector(categorieSelector.getCategorie);
+    const isLoading = useSelector(categorieSelector.getIsLoading)
     // todo gestire loading ed error
     useEffect(() => {
-        dispatch(categorieActions.fetchCategorie(1)); // todo gestire idHotel
+        if(!isLoading) {
+            dispatch(categorieActions.fetchCategorie(1)); // todo gestire idHotel
+        }
     },[])
 
     useEffect(() => {
-        if(categorie) {
+
+    }, [categorie])
+
+    useEffect(() => {
+        if(categorie && categorie.length > 0) {
             setDataPie({
-                labels: categorie.map(categorie => categorie.nome).slice(0,2),
+                labels: categorie.map(categorie => categorie.nome),
                 datasets: [{
                     label: 'Stato delle stanze',
-                    data: [
-                        1,1
+                    data: [1,1,1
                     ],
-                    backgroundColor: [
-                        'rgb(255, 99, 132)',
-                        'rgb(54, 162, 235)',
-                        'rgb(54, 162, 235)',
-                        'rgb(54, 162, 235)'
-                    ],
+                    backgroundColor: categorie.map(() => getRandomColor()),
                     hoverOffset: 2
                 }]
             })
