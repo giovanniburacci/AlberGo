@@ -1,5 +1,5 @@
-import React, {useEffect, useMemo, useState} from 'react';
-import {Drawer, Table, Typography} from 'antd'
+import React, {useEffect, useState} from 'react';
+import {Drawer, Spin, Table, Typography} from 'antd'
 import './stanze.scss';
 import {ColumnsType} from 'antd/es/table';
 import {StanzaDTO} from '../../models/models';
@@ -10,6 +10,8 @@ import StanzeBar from './stanzeBar/stanzeBar.component';
 import NewStanza from './newStanza/newStanza.component';
 import PieContainer from '../../containers/pies/pieContainer/pie.component';
 import DettaglioStanza from './dettaglioStanza/dettaglioStanza.component';
+import {StanzaStatus, StanzaWithStatus} from '../../store/stanze/types';
+import moment from 'moment';
 
 const componentClassName = 'Stanze';
 const columns:ColumnsType<StanzaDTO> = [{
@@ -21,11 +23,6 @@ const columns:ColumnsType<StanzaDTO> = [{
         title: 'Descrizione',
         dataIndex: 'descrizione',
         key: 'descrizione'
-    },
-    {
-        title: 'Stato',
-        dataIndex: 'stato',
-        key: 'stato',
     }];
 const Stanze = () => {
 
@@ -37,8 +34,10 @@ const Stanze = () => {
     const isError = useSelector(stanzeSelector.getIsError); //todo gestire loading ed error
 
     const [dataPie,setDataPie] = useState<{}>();
+    const [filteredDataPie,setFilteredDataPie] = useState<{}>();
     const [hasClickedNew, setHasClickedNew] = useState<boolean>(false)
-    const [selectedStanza, setSelectedStanza] = useState<StanzaDTO | undefined>();
+    const [selectedStanza, setSelectedStanza] = useState<StanzaWithStatus | undefined>();
+    const [dateFilter, setDateFilter] = useState<[moment.Moment,moment.Moment] | null>();
 
     useEffect( () => {
         dispatch(stanzeActions.fetchStanze(1)) //todo gestire idHotel
@@ -46,70 +45,131 @@ const Stanze = () => {
 
     useEffect(() => {
         if(stanze) {
-            setDataPie({
-                labels: ['Fuori Servizio', 'Libera'],
-                datasets: [{
-                    label: 'Stato delle stanze',
-                    data: [
-                        stanze.filter(stanza => stanza.fuoriServizio).length,
-                        stanze.length - stanze.filter(stanza => stanza.fuoriServizio).length
-                    ],
-                    backgroundColor: [
-                        'rgb(255, 99, 132)',
-                        'rgb(54, 162, 235)'
-                    ],
-                    hoverOffset: 2
-                }]
-            });
+            if(stanze.length > 0 && stanze[0].status) {
+                setFilteredDataPie({
+                    labels: ['Libere', 'Occupate'],
+                    datasets: [{
+                        label: 'Stato delle stanze',
+                        data: [
+                            stanze.reduce((acc,s) => (
+                                acc + (s.status === StanzaStatus.LIBERA ? 1 : 0)
+                            ), 0),
+                            stanze.reduce((acc,s) => (
+                                acc + (s.status === StanzaStatus.OCCUPATA ? 1 : 0)
+                            ), 0)],
+                        backgroundColor: [
+                            'rgb(54, 162, 235)',
+                            'rgb(255, 99, 132)'
+                        ],
+                        hoverOffset: 2
+                    }]
+                })
+            } else {
+                setDataPie({
+                    labels: ['Fuori Servizio', 'Disponibile'],
+                    datasets: [{
+                        label: 'Stato delle stanze',
+                        data: [
+                            stanze.reduce((acc,s) => (
+                                acc + (s.fuoriServizio ? 1 : 0)
+                            ), 0),
+                            stanze.reduce((acc,s) => (
+                                acc + (!s.fuoriServizio ? 1 : 0)
+                            ), 0)],
+                        backgroundColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(54, 162, 235)'
+                        ],
+                        hoverOffset: 2
+                    }]
+                });
+                setFilteredDataPie(undefined);
+            }
         }
     }, [stanze])
 
     return (
         <div className={`${componentClassName}`}>
             <div className={`${componentClassName}__column`}>
-                <StanzeBar setHasClickedNew={() => {setHasClickedNew(true)}}/>
-                <Table
-                    columns={columns}
-                    dataSource={stanze}
-                    rowKey={(row) => row.id}
-                    onRow={(record,index) => {
-                        return {
-                            onClick: () => {
-                                if(stanze) {
-                                    setSelectedStanza(stanze.find(s => s.id === record.id))
-                                }
-                            }
-                        }
-                    }}
+                <StanzeBar
+                    setHasClickedNew={() => {setHasClickedNew(true)}}
+                    dateFilter={dateFilter}
+                    setDateFilter={setDateFilter}
                 />
+                {
+                    isLoading ? (
+                        <Spin />
+                    ) : isError ? (
+                        <>ciao</>
+                    ) : (
+                        <Table
+                            columns={(stanze && stanze.length > 0 && stanze[0].status) ? (
+                                [...columns, {
+                                    title: 'Stato',
+                                    dataIndex: 'status',
+                                    key: 'status'
+                                }]
+                            ): columns}
+                            dataSource={stanze}
+                            rowKey={(row) => row.id}
+                            onRow={(record,index) => {
+                                return {
+                                    onClick: () => {
+                                        if(stanze) {
+                                            setSelectedStanza(stanze.find(s => s.id === record.id))
+                                        }
+                                    }
+                                }
+                            }}
+                        />
+                    )
+                }
             </div>
 
             <div className={`${componentClassName}__column`}>
                 <div className={`${componentClassName}__column__box bb`}>
                     {
-                        dataPie && (
-                            <PieContainer data={dataPie}/>
+                        filteredDataPie && (
+                            <>
+                                <PieContainer data={filteredDataPie}/>
+                                <div>
+                                    <div className={`${componentClassName}__column__box__spacing`}>
+                                        <Title level={3}>{
+                                            stanze?.reduce((acc,s) => (
+                                                acc + (s.status === StanzaStatus.LIBERA ? 1 : 0)
+                                            ), 0)
+                                        }</Title>
+                                        <Text type={'secondary'}>stanze sono libere</Text>
+                                    </div>
+                                    <Title level={3}>{
+                                        stanze?.reduce((acc,s) => (
+                                            acc + (s.status === StanzaStatus.OCCUPATA ? 1 : 0)
+                                        ), 0)
+                                    }</Title>
+                                    <Text type={'secondary'}>stanze sono fuori servizio</Text>
+                                </div>
+                            </>
                         )
                     }
-                    <div>
-                        <div className={`${componentClassName}__column__box__spacing`}>
-                            <Title level={3}>X</Title>
-                            <Text type={'secondary'}>stanze sono libere</Text>
-                        </div>
-                        <Title level={3}>X</Title>
-                        <Text type={'secondary'}>stanze sono fuori servizio</Text>
-                    </div>
                 </div>
 
                 <div className={`${componentClassName}__column__box`}>
-                    <div>
-                        <div className={`${componentClassName}__column__box__spacing`}>
-                            <Title level={3}>X</Title>
-                            <Text type={'secondary'}>stanze sono libere</Text>
-                        </div>
-                        <Title level={3}>X</Title>
-                        <Text type={'secondary'}>stanze sono fuori servizio</Text>
-                    </div>
+                    {
+                        stanze && (
+                            <div>
+                                <div className={`${componentClassName}__column__box__spacing`}>
+                                    <Title level={3}>{stanze.reduce((acc,s) => (
+                                        acc + (!s.fuoriServizio ? 1 : 0)
+                                    ), 0)}</Title>
+                                    <Text type={'secondary'}>stanze sono disponibili</Text>
+                                </div>
+                                <Title level={3}>{stanze.reduce((acc,s) => (
+                                    acc + (s.fuoriServizio ? 1 : 0)
+                                ), 0)}</Title>
+                                <Text type={'secondary'}>stanze sono fuori servizio</Text>
+                            </div>
+                        )
+                    }
                     {
                         dataPie && (
                             <PieContainer data={dataPie}/>
@@ -132,7 +192,7 @@ const Stanze = () => {
                     onClose={() => {setSelectedStanza(undefined)}}
                     title={'Dettaglio stanza'}
                     width={'348px'}>
-                    <DettaglioStanza stanza={selectedStanza!}/>
+                    <DettaglioStanza resetFilters={() => {setDateFilter(undefined)}}stanza={selectedStanza!}/>
                 </Drawer>
             </div>
         </div>

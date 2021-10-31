@@ -12,17 +12,20 @@ import stanzeActions from '../../../../store/stanze/stanze.action';
 const componentClassName = 'StanzeFilters'
 const {RangePicker} = DatePicker;
 const {Option} = Select;
-
-const StanzeFilters = () => {
-    const [dateFilter, setDateFilter] = useState<[moment.Moment,moment.Moment | null]>();
+interface StanzeFilterProps {
+    dateFilter?: [moment.Moment, moment.Moment] | null,
+    setDateFilter: (dates:[moment.Moment, moment.Moment] | null | undefined) => void
+}
+const StanzeFilters = (props: StanzeFilterProps) => {
     const [selectedCategoria, setSelectedCategoria] = useState<CategoriaDTO>()
     const listaCategorie = useSelector(categorieSelector.getCategorie)
-
+    const {dateFilter, setDateFilter} = props;
     const dispatch = useDispatch();
     useEffect(() => {
         if(dateFilter) {
             const [dataInizio, dataFine] = dateFilter;
             if (dataInizio && dataFine) {
+                // @ts-ignore
                 dispatch(stanzeActions.fetchStanzeWithDates({
                     dataInizio,
                     dataFine,

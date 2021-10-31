@@ -47,7 +47,7 @@ const fetchStanzeWithDates = createAsyncThunk(stanzeLabels.fetchStanzeWithDates,
             const stanzeOccupate = await searchStanzeOccupateWithDates(params);
             const stanzeOccupateMapped = mapStanze(stanzeOccupate.data, StanzaStatus.OCCUPATA)
 
-            return [...stanzeLibereMapped, ...stanzeOccupateMapped]
+                return [...stanzeLibereMapped, ...stanzeOccupateMapped];
         } else {
             const stanze = await searchStanze(params.idHotel);
             return stanze.data;

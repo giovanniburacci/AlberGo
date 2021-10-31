@@ -7,10 +7,12 @@ import categorieActions from '../../../store/categorie/categorie.action';
 import stanzeActions from '../../../store/stanze/stanze.action';
 import {isEqual} from 'lodash';
 import stanzeSelector from '../../../store/stanze/stanze.selector';
+import {StanzaWithStatus} from '../../../store/stanze/types';
 const componentClassName = 'DettaglioStanza';
 
 interface PrenotazioneProps {
-    stanza: StanzaDTO
+    stanza: StanzaWithStatus,
+    resetFilters: () => void
 }
 
 export const DettaglioStanza = (props:PrenotazioneProps) => {
@@ -87,6 +89,7 @@ export const DettaglioStanza = (props:PrenotazioneProps) => {
                 className={isMakingChanges ? 'button-edit' : ''}
                 disabled={!isMakingChanges}
                 onClick={() => {
+                    props.resetFilters();
                     dispatch(stanzeActions.editStanza({
                         ...stanza,
                         ...newStanza,
@@ -97,6 +100,7 @@ export const DettaglioStanza = (props:PrenotazioneProps) => {
                 size={'large'}
                 className={'button-delete'}
                 onClick={() => {
+                    props.resetFilters();
                     dispatch(stanzeActions.removeStanza(newStanza));
                 }}
             >Elimina</Button>

@@ -1,4 +1,5 @@
 import {StanzaDTO} from '../../models/models';
+import moment from 'moment';
 
 export interface StanzeState extends StanzeEditState, StanzeDeleteState{
     stanze?: StanzaWithStatus[]
@@ -6,7 +7,8 @@ export interface StanzeState extends StanzeEditState, StanzeDeleteState{
     isError: boolean,
     isLoadingNewStanza: boolean,
     isErrorNewStanza: boolean,
-    categoriaFilter?: number
+    categoriaFilter?: number,
+    filteringDates?: moment.Moment[]
 }
 
 export interface StanzaWithStatus extends StanzaDTO {

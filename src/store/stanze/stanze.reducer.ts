@@ -61,12 +61,12 @@ export const stanzeReducer = {
                 isErrorNewStanza: true
             }
         }).addCase(stanzeActions.fetchStanzeWithDates.fulfilled, (state,action) => {
-            return {
-                ...state,
-                stanze: action.payload,
-                isLoading: false,
-                isError: false
-            }
+                return {
+                    ...state,
+                    stanze: action.payload,
+                    isLoading: false,
+                    isError: false
+                }
         }).addCase(stanzeActions.fetchStanzeWithDates.pending, (state,action) => {
             return {
                 ...state,

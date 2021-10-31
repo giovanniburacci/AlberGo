@@ -1,7 +1,8 @@
 import {RootState} from '../reducer.config';
 import {StanzaDTO} from '../../models/models';
+import {StanzaWithStatus} from './types';
 
-const getStanze = (state:RootState): StanzaDTO[] | undefined => {
+const getStanze = (state:RootState): StanzaWithStatus[] | undefined => {
     const {stanze, categoriaFilter} = state.stanze
     return stanze && (
         categoriaFilter ? (
