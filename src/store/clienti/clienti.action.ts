@@ -1,9 +1,17 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {searchClienti} from '../../api/clienti.service';
+import {filterClientiByNomeCognome, searchClienti} from '../../api/clienti.service';
 
 const clientiLabels = {
-    fetchClienti: 'fetchClienti'
+    fetchClienti: 'fetchClienti',
+    fetchFilteredClienti: 'fetchFilteredClienti'
 }
+
+export interface FetchClientiBean {
+    nome?: string,
+    cognome?: string,
+    idHotel: number
+}
+
 const fetchClienti = createAsyncThunk(clientiLabels.fetchClienti, async (hotelId:number) => {
     try {
         const resp = await searchClienti(hotelId)
@@ -14,8 +22,18 @@ const fetchClienti = createAsyncThunk(clientiLabels.fetchClienti, async (hotelId
     }
 });
 
+const fetchFilteredClienti = createAsyncThunk(clientiLabels.fetchFilteredClienti, async (filterBean:FetchClientiBean) => {
+    try {
+        const resp = await filterClientiByNomeCognome(filterBean)
+        return resp.data;
+    } catch(e) {
+        console.log('searchPrenotazioni request failed')
+        throw e;
+    }
+});
 export const clientiActions = {
-    fetchClienti
+    fetchClienti,
+    fetchFilteredClienti
 }
 
 export default clientiActions;

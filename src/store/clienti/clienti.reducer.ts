@@ -27,6 +27,25 @@ export const clientiReducer = {
                 isLoading: false,
                 isError: true
             }
+        })).addCase(clientiActions.fetchFilteredClienti.fulfilled, ((state, action) => {
+            return {
+                ...state,
+                clienti: action.payload,
+                isLoading: false,
+                isError: false
+            }
+        })).addCase(clientiActions.fetchFilteredClienti.rejected, ((state, action) => {
+            return {
+                ...state,
+                isLoading: false,
+                isError: true
+            }
+        })).addCase(clientiActions.fetchFilteredClienti.pending, ((state, action) => {
+            return {
+                ...state,
+                isLoading: true,
+                isError: false
+            }
         }))
     })
 }

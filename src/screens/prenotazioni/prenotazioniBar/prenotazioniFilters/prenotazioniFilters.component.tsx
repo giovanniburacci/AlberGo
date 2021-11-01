@@ -47,7 +47,8 @@ const PrenotazioniFilters = () => {
                     nomeCliente: utenteFilter === UtenteFilter.NOME ? searchFilter : '',
                     cognomeCliente: utenteFilter !== UtenteFilter.NOME ? searchFilter : '',
                     dataInizio: dateFilter ? ''+dateFilter[0].toISOString() : '',
-                    dataFine: dateFilter ? ''+dateFilter[1].toISOString() : ''
+                    dataFine: dateFilter ? ''+dateFilter[1].toISOString() : '',
+                    idHotel: 1 // todo add hotel id
                 }));
                 renderCount ++;
             }

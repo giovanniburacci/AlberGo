@@ -86,7 +86,8 @@ export interface FilterBean {
     nomeCliente: string,
     cognomeCliente: string,
     dataInizio: string,
-    dataFine: string
+    dataFine: string,
+    idHotel: number
 }
 
 export interface FetchCategorieWithName {

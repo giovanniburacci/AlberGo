@@ -52,26 +52,24 @@ const Clienti = () => {
     return (
         <>
             <div className={`${componentClassName}`}>
+                <ClientiFilters />
                 {
                     isLoading ? (
                         <Spin size={'large'}/>
                     ) : isError ? (
                         <>boh</>
                     ) : (
-                        <>
-                            <ClientiFilters />
-                            <Table
-                                onRow={(record,index) => {
-                                    return {
-                                        onClick: () => {selectCliente(record)}
-                                    }
-                                }}
-                                columns={columns}
-                                dataSource={clienti}
-                                pagination={false}
-                                rowKey={(row) => row.id}
-                            />
-                        </>
+                        <Table
+                            onRow={(record,index) => {
+                                return {
+                                    onClick: () => {selectCliente(record)}
+                                }
+                            }}
+                            columns={columns}
+                            dataSource={clienti}
+                            pagination={false}
+                            rowKey={(row) => row.id}
+                        />
                     )
                 }
             </div>
