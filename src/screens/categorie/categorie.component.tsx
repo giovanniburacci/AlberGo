@@ -21,7 +21,9 @@ const Categorie = () => {
     const [dataPie, setDataPie] = useState<{}>();
 
     const categorie = useSelector(categorieSelector.getCategorie);
-    const isLoading = useSelector(categorieSelector.getIsLoading)
+    const isLoading = useSelector(categorieSelector.getIsLoading);
+    const numeroStanze = useSelector(categorieSelector.getNumeroStanze)
+
     // todo gestire loading ed error
     useEffect(() => {
         if(!isLoading) {
@@ -34,19 +36,25 @@ const Categorie = () => {
     }, [categorie])
 
     useEffect(() => {
-        if(categorie && categorie.length > 0) {
+        if(categorie && categorie.length > 0 && numeroStanze) {
+            console.log('numStanze', numeroStanze)
+            categorie.forEach(c => {
+                const stanza = numeroStanze.find(s => s.hasOwnProperty(c.id))
+                if(stanza) {
+                    console.log('countStanze', stanza[c.id])
+                }
+            })
             setDataPie({
-                labels: categorie.map(categorie => categorie.nome),
+                labels: categorie.map(c => c.nome),
                 datasets: [{
                     label: 'Stato delle stanze',
-                    data: [1,1,1
-                    ],
+                    data: numeroStanze.map(n => n[categorie.find(c => n.hasOwnProperty(c.id))!.id]),
                     backgroundColor: categorie.map(() => getRandomColor()),
                     hoverOffset: 2
                 }]
             })
         }
-    }, [categorie])
+    }, [categorie, numeroStanze])
     const columns:ColumnsType<CategoriaDTO> = [{
         title: 'Nome',
         dataIndex: 'nome',

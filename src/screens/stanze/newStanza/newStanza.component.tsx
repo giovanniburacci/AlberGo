@@ -16,7 +16,9 @@ const NewStanza = () => {
     const {Title} = Typography;
     const {Option} = Select;
     const dispatch = useDispatch();
-    const [newStanza,setNewStanza] = useState<Partial<StanzaDTO>>();
+    const [newStanza,setNewStanza] = useState<Partial<StanzaDTO>>({
+        fuoriServizio: false
+    });
     const categorie = useSelector(categorieSelector.getCategorie);
     const isLoading = useSelector(categorieSelector.getIsLoading);
     const isError = useSelector(categorieSelector.getIsError);

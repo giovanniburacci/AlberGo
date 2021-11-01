@@ -1,5 +1,6 @@
 import {RootState} from '../reducer.config';
 import {CategoriaDTO} from '../../models/models';
+import {NumeroStanze} from '../categorie/types';
 
 const getCategorie = (state:RootState): CategoriaDTO[] | undefined => state.categorie.categorie;
 
@@ -11,10 +12,15 @@ const getIsErrorCreate = (state:RootState): boolean => state.categorie.isErrorCr
 
 const getIsLoadingCreate = (state:RootState): boolean => state.categorie.isLoadingCreate;
 
+const getNumeroStanze = (state:RootState): NumeroStanze[] | undefined => state.categorie.numeroStanze;
+
 export const categorieSelector = {
     getCategorie,
     getIsError,
-    getIsLoading
+    getIsLoading,
+    getIsErrorCreate,
+    getIsLoadingCreate,
+    getNumeroStanze
 }
 
 export default categorieSelector;

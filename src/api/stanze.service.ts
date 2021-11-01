@@ -15,7 +15,8 @@ const stanzaEndpoints = {
     libere: 'libere',
     occupate: 'occupate',
     update: 'update',
-    delete: 'delete'
+    delete: 'delete',
+    categoriaId: 'categoriaId'
 }
 
 export const searchStanze = async (idHotel: number): Promise<AxiosResponse<StanzaDTO[]>> => {
@@ -55,6 +56,14 @@ export const searchStanzeOccupateWithDates = async (params: FetchWithDatesBean):
 export const createStanza = async (stanza: Partial<StanzaDTO>): Promise<AxiosResponse<StanzaDTO>> => {
     return axios.post(apiURL+stanzaEndpoints.create,{
         ...stanza
+    });
+}
+
+export const searchNumeroStanzeForCategoria = async (idCategoria: number): Promise<AxiosResponse<number>> => {
+    return axios.get(apiURL+stanzaEndpoints.categoriaId,{
+        params: {
+            idCategoria
+        }
     });
 }
 

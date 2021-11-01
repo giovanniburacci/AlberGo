@@ -1,13 +1,24 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {CategorieState} from './types';
+import {CategorieCreateState, CategorieState, NumeroStanzeState} from './types';
 import categorieActions from './categorie.action';
+
+const initialNumeroStanzeState: NumeroStanzeState = {
+    isLoadingNumeroStanze: false,
+    isErrorNumeroStanze: false
+}
+
+const initialCreateState: CategorieCreateState = {
+    isLoadingCreate: false,
+    isErrorCreate: false,
+}
 
 const initialState: CategorieState = {
     isLoading: false,
     isError: false,
-    isLoadingCreate: false,
-    isErrorCreate: false
+    ...initialNumeroStanzeState,
+    ...initialCreateState
 }
+
 
 export const categorieReducer = {
     categorie: createReducer(initialState, (builder) => {
@@ -66,6 +77,25 @@ export const categorieReducer = {
                 ...state,
                 isLoadingCreate: true,
                 isErrorCreate: false
+            }
+        }).addCase(categorieActions.fetchNumeroStanzeForCategoria.pending, (state,action) => {
+            return {
+                ...state,
+                isLoadingNumeroStanze: true,
+                isErrorNumeroStanze: false
+            }
+        }).addCase(categorieActions.fetchNumeroStanzeForCategoria.rejected, (state,action) => {
+            return {
+                ...state,
+                isLoadingNumeroStanze: false,
+                isErrorNumeroStanze: true
+            }
+        }).addCase(categorieActions.fetchNumeroStanzeForCategoria.fulfilled, (state,action) => {
+            return {
+                ...state,
+                numeroStanze: action.payload,
+                isLoadingNumeroStanze: false,
+                isErrorNumeroStanze: false
             }
         })
 
