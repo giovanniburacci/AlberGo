@@ -80,8 +80,8 @@ export const NewCategoria = () => {
                         setIsCheckboxChecked(val.target.checked);
                         setNewCategoria((prevState => ({
                             ...prevState,
-                            giorniPenale: undefined,
-                            qtaPenale: undefined
+                            giorniPenale: 0,
+                            qtaPenale: 0
                         })))
                     }}
                     checked={isCheckboxChecked}>Voglio applicare delle penali a questa categoria di stanze</Checkbox>
@@ -124,16 +124,23 @@ export const NewCategoria = () => {
             <Button onClick={() => {
                 if(newCategoria && newCategoria.descrizione && newCategoria.nome && newCategoria.prezzo && newCategoria.giorniBlocco) {
                     if(!isCheckboxChecked) {
+                        dispatch(categorieActions.addCategoria({
+                            ...newCategoria,
+                            giorniPenale: 0,
+                            qtaPenale: 0,
+                            idHotel: 1 // todo fix idHotel
+                        }));
                         setNewCategoria((prevState => ({
                             ...prevState,
                             giorniPenale: 0,
                             qtaPenale: 0
                         })))
+                    } else {
+                        dispatch(categorieActions.addCategoria({
+                            ...newCategoria,
+                            idHotel: 1 // todo fix idHotel
+                        }));
                     }
-                    dispatch(categorieActions.addCategoria({
-                        ...newCategoria,
-                        idHotel: 1 // todo fix idHotel
-                    }));
                 }
             }}>Conferma</Button>
         </div>

@@ -53,7 +53,7 @@ const PrenotazioniFilters = () => {
                 renderCount ++;
             }
         }, 500)
-    }, [searchFilter, dateFilter])
+    }, [searchFilter, dateFilter, utenteFilter])
 
     useEffect(() => {
         return () => {

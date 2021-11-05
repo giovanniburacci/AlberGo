@@ -9,6 +9,7 @@ import {isEqual} from 'lodash';
 import stanzeSelector from '../../../store/stanze/stanze.selector';
 import {StanzaWithStatus} from '../../../store/stanze/types';
 const componentClassName = 'DettaglioStanza';
+const {Title} = Typography;
 
 interface PrenotazioneProps {
     stanza: StanzaWithStatus,
@@ -16,7 +17,6 @@ interface PrenotazioneProps {
 }
 
 export const DettaglioStanza = (props:PrenotazioneProps) => {
-    const {Title} = Typography;
 
     const {stanza} = props
 

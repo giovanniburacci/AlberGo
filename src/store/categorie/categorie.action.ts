@@ -1,15 +1,22 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {createCategoria, searchCategorie, searchFilteredByNome} from '../../api/categorie.service';
+import {
+    createCategoria,
+    deleteCategoria,
+    searchCategorie,
+    searchFilteredByNome,
+    updateCategoria
+} from '../../api/categorie.service';
 import {CategoriaDTO, FetchCategorieWithName} from '../../models/models';
 import {searchNumeroStanzeForCategoria} from '../../api/stanze.service';
 import {NumeroStanze} from './types';
-import {RootState} from '../reducer.config';
 
 const categorieLabels = {
     fetchCategorie: 'fetchCategorie',
     addCategoria: 'addCategoria',
     fetchFilteredCategorie: 'fetchFilteredCategorie',
-    fetchNumeroStanzeForCategoria: 'fetchNumeroStanzeForCategoria'
+    fetchNumeroStanzeForCategoria: 'fetchNumeroStanzeForCategoria',
+    removeCategoria: 'removeCategoria',
+    updateCategoria: 'updateCategoria'
 }
 const fetchCategorie = createAsyncThunk(categorieLabels.fetchCategorie, async (hotelId:number, thunkAPI) => {
     try {
@@ -48,7 +55,7 @@ const fetchFilteredCategorie = createAsyncThunk(categorieLabels.fetchFilteredCat
 const fetchNumeroStanzeForCategoria = createAsyncThunk(categorieLabels.fetchNumeroStanzeForCategoria, async (categorie: CategoriaDTO[], thunkAPI) => {
     try {
         const numeroStanze: NumeroStanze[] = []
-
+        console.log('call')
         for(const c of categorie) {
             const num = await searchNumeroStanzeForCategoria(c.id)
             numeroStanze.push({
@@ -62,11 +69,35 @@ const fetchNumeroStanzeForCategoria = createAsyncThunk(categorieLabels.fetchNume
     }
 });
 
+export const removeCategoria = createAsyncThunk(categorieLabels.removeCategoria, async (categoria: CategoriaDTO, thunkAPI) => {
+    try {
+        await deleteCategoria(categoria.idHotel);
+        thunkAPI.dispatch(fetchCategorie(categoria.idHotel))
+        return null;
+    } catch(e) {
+        console.log('removeCategoria request failed')
+        throw e;
+    }
+});
+
+export const editCategoria = createAsyncThunk(categorieLabels.updateCategoria, async (categoria: CategoriaDTO, thunkAPI) => {
+    try {
+        await updateCategoria(categoria);
+        thunkAPI.dispatch(fetchCategorie(categoria.idHotel))
+        return null;
+    } catch(e) {
+        console.log('removeCategoria request failed')
+        throw e;
+    }
+});
+
 export const categorieActions = {
     fetchCategorie,
     addCategoria,
     fetchFilteredCategorie,
-    fetchNumeroStanzeForCategoria
+    fetchNumeroStanzeForCategoria,
+    removeCategoria,
+    editCategoria
 }
 
 export default categorieActions;

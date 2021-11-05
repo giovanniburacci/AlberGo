@@ -32,23 +32,13 @@ const Categorie = () => {
     },[])
 
     useEffect(() => {
-
-    }, [categorie])
-
-    useEffect(() => {
         if(categorie && categorie.length > 0 && numeroStanze) {
             console.log('numStanze', numeroStanze)
-            categorie.forEach(c => {
-                const stanza = numeroStanze.find(s => s.hasOwnProperty(c.id))
-                if(stanza) {
-                    console.log('countStanze', stanza[c.id])
-                }
-            })
             setDataPie({
-                labels: categorie.map(c => c.nome),
+                labels: [...categorie].sort((a,b) => a.id - b.id).map(c => c.nome),
                 datasets: [{
                     label: 'Stato delle stanze',
-                    data: numeroStanze.map(n => n[categorie.find(c => n.hasOwnProperty(c.id))!.id]),
+                    data: numeroStanze.filter(n => categorie.map(c => ''+c.id).includes(Object.keys(n)[0])).map(n => Object.values(n)[0]).sort(),
                     backgroundColor: categorie.map(() => getRandomColor()),
                     hoverOffset: 2
                 }]
@@ -66,6 +56,16 @@ const Categorie = () => {
             key: 'prezzo'
         }]
 
+    const numStanzeColumns = [{
+        title: 'Nome',
+        dataIndex: 'nome',
+        key: 'nome',
+    },
+        {
+            title: 'Numero Stanze',
+            dataIndex: 'numStanze',
+            key: 'numStanze'
+        }]
     return (
         <>
             <div className={`${componentClassName}`}>
@@ -84,13 +84,16 @@ const Categorie = () => {
 
                 <div className={`${componentClassName}__column`}>
                     <div className={`${componentClassName}__column__box bb`}>
-                        {
-                            selectedCategoria ? (
-                                <DettaglioCategoria categoria={selectedCategoria}/>
-                            ) : (
-                                <Empty className={`${componentClassName}__column__box__center-margin bb`} description={false}/>
-                            )
-                        }
+                        <div className={`${componentClassName}__column__box__table`}>
+                            <Table
+                                columns={numStanzeColumns}
+                                dataSource={
+                                    numeroStanze?.map(n => ({
+                                        nome: categorie?.find(c => n.hasOwnProperty(c.id))?.nome,
+                                        numStanze: Object.values(n)[0]
+                                    }))
+                                }/>
+                        </div>
                     </div>
 
                     <div className={`${componentClassName}__column__box`}>
@@ -113,6 +116,19 @@ const Categorie = () => {
                     title={'Nuova categoria'}
                     width={'348px'}>
                     <NewCategoria/>
+                </Drawer>
+                <Drawer
+                    destroyOnClose={true}
+                    headerStyle={{
+                        background: '#191919',
+                        color: '#ffffff !important'
+                    }}
+                    visible={!!selectedCategoria}
+                    className={'ant-drawer-title-white'}
+                    onClose={() => {setSelectedCategoria(undefined)}}
+                    title={'Dettaglio Categoria'}
+                    width={'348px'}>
+                    <DettaglioCategoria categoria={selectedCategoria}/>
                 </Drawer>
             </div>
         </>

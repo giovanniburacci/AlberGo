@@ -1,5 +1,11 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {CategorieCreateState, CategorieState, NumeroStanzeState} from './types';
+import {
+    CategorieCreateState,
+    CategorieDeleteState,
+    CategorieState,
+    CategorieUpdateState,
+    NumeroStanzeState
+} from './types';
 import categorieActions from './categorie.action';
 
 const initialNumeroStanzeState: NumeroStanzeState = {
@@ -12,11 +18,23 @@ const initialCreateState: CategorieCreateState = {
     isErrorCreate: false,
 }
 
+const initialDeleteState: CategorieDeleteState = {
+    isLoadingDelete: false,
+    isErrorDelete: false,
+}
+
+const initialUpdateState: CategorieUpdateState = {
+    isLoadingUpdate: false,
+    isErrorUpdate: false,
+}
+
 const initialState: CategorieState = {
     isLoading: false,
     isError: false,
     ...initialNumeroStanzeState,
-    ...initialCreateState
+    ...initialCreateState,
+    ...initialDeleteState,
+    ...initialUpdateState
 }
 
 
@@ -96,6 +114,42 @@ export const categorieReducer = {
                 numeroStanze: action.payload,
                 isLoadingNumeroStanze: false,
                 isErrorNumeroStanze: false
+            }
+        }).addCase(categorieActions.removeCategoria.fulfilled, (state,action) => {
+            return {
+                ...state,
+                isLoadingDelete: false,
+                isErrorDelete: false
+            }
+        }).addCase(categorieActions.removeCategoria.pending, (state,action) => {
+            return {
+                ...state,
+                isLoadingDelete: true,
+                isErrorDelete: false
+            }
+        }).addCase(categorieActions.removeCategoria.rejected, (state,action) => {
+            return {
+                ...state,
+                isLoadingDelete: false,
+                isErrorDelete: true
+            }
+        }).addCase(categorieActions.editCategoria.fulfilled, (state,action) => {
+            return {
+                ...state,
+                isLoadingUpdate: false,
+                isErrorUpdate: false
+            }
+        }).addCase(categorieActions.editCategoria.pending, (state,action) => {
+            return {
+                ...state,
+                isLoadingUpdate: true,
+                isErrorUpdate: false
+            }
+        }).addCase(categorieActions.editCategoria.rejected, (state,action) => {
+            return {
+                ...state,
+                isLoadingUpdate: false,
+                isErrorUpdate: true
             }
         })
 
