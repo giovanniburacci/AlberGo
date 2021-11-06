@@ -8,9 +8,29 @@ import {ClienteDTO} from '../../models/models';
 import clientiSelector from '../../store/clienti/clienti.selector';
 import clientiActions from '../../store/clienti/clienti.action';
 import ClientiFilters from './clientiFilters/clientiFilters.component';
+import DettaglioCliente from './dettaglioCliente/dettaglioCliente.component';
 
 const componentClassName = 'Clienti';
-
+const columns:ColumnsType<ClienteDTO> = [{
+    title: 'Nome',
+    dataIndex: 'nome',
+    key: 'nome',
+},
+    {
+        title: 'Cognome',
+        dataIndex: 'cognome',
+        key: 'cognome'
+    },
+    {
+        title: 'Numero di telefono',
+        dataIndex: 'telefono',
+        key: 'telefono',
+    },
+    {
+        title: 'Numero del documento',
+        dataIndex: 'documento',
+        key: 'documento'
+    }];
 const Clienti = () => {
 
     const dispatch = useDispatch();
@@ -27,27 +47,6 @@ const Clienti = () => {
     const selectCliente = (record:ClienteDTO) => {
         setSelectedCliente(record);
     }
-
-    const columns:ColumnsType<ClienteDTO> = [{
-        title: 'Nome',
-        dataIndex: 'nome',
-        key: 'nome',
-    },
-        {
-            title: 'Cognome',
-            dataIndex: 'cognome',
-            key: 'cognome'
-        },
-        {
-            title: 'Numero di telefono',
-            dataIndex: 'telefono',
-            key: 'telefono',
-        },
-        {
-            title: 'Numero del documento',
-            dataIndex: 'documento',
-            key: 'documento'
-        }];
 
     return (
         <>
@@ -80,8 +79,7 @@ const Clienti = () => {
                 title={'Dettaglio cliente'}
                 width={'348px'}>
                 { selectedCliente && (
-                    <>
-                    </> // todo aggiungere dettaglio cliente
+                    <DettaglioCliente selectedCliente={selectedCliente}/>
                 )
                 }
             </Drawer>

@@ -4,7 +4,6 @@ export interface ClienteDTO {
     cognome: string,
     telefono: string,
     documento: string,
-    idHotel: number,
     username: string
 }
 
