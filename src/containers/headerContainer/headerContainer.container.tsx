@@ -36,7 +36,7 @@ export const HeaderContainer = (props:HeaderContainerProps) => {
             <Button type="primary"
                     icon={<LogoutOutlined />}
                     size={'large'}
-                    onClick={() => {dispatch(loginActions.logoutAction())}}>Esci</Button>
+                    onClick={() => {dispatch(loginActions.adminLogoutAction())}}>Esci</Button>
         </div>
     )
 }

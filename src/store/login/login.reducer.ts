@@ -24,7 +24,7 @@ const initialState:AmministratoreLogin = {
 
 export const loginReducer = {
     login: createReducer(initialState, (builder) => {
-        builder.addCase(loginActions.loginRequest.fulfilled, (state,action) => {
+        builder.addCase(loginActions.adminLoginRequest.fulfilled, (state,action) => {
             const {amministratore, token } = action.payload
             const idHotel = amministratore?.idHotel
             const id = amministratore?.id
@@ -41,19 +41,19 @@ export const loginReducer = {
                 isLoading: false,
                 isError: false
             }
-        }).addCase(loginActions.loginRequest.rejected, (state,action) => {
+        }).addCase(loginActions.adminLoginRequest.rejected, (state,action) => {
             return {
                 ...state,
                 isLoading: false,
                 isError: true
             }
-        }).addCase(loginActions.loginRequest.pending, (state,action) => {
+        }).addCase(loginActions.adminLoginRequest.pending, (state,action) => {
             return {
                 ...state,
                 isLoading: true,
                 isError: false
             }
-        }).addCase(loginActions.logoutAction, (state) => {
+        }).addCase(loginActions.adminLogoutAction, (state) => {
             return {
                 ...state,
                 idAmministratore: undefined,

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Typography, Card, Input, Button, Skeleton} from 'antd'
+import {Typography, Card, Input, Button, Skeleton, Tabs} from 'antd'
 import {LockOutlined, UserOutlined } from '@ant-design/icons';
 import landing from '../../assets/landing.jpg'
 import polimi from '../../assets/polimi.png'
@@ -7,34 +7,19 @@ import './login.scss'
 import {useDispatch, useSelector} from 'react-redux';
 import loginActions from '../../store/login/login.action';
 import {loginSelector} from '../../store/login/login.selector';
+import UserAuth from './userAuth/userAuth.component';
+import AdminAuth from './adminAuth/adminAuth.component';
 
-interface LoginData {
-    username: string,
-    password: string
-}
-
-const componentClassName = 'login'
-export const LoginComponent = () => {
+const componentClassName = 'Auth'
+const {TabPane} = Tabs;
+export const AuthComponent = () => {
 
     const {Text, Title} = Typography;
-    const [isLogging,setIsLogging] = useState<boolean>(true);
-    const [isShowingSkeleton, setIsShowingSkeleton] = useState<boolean>(false);
-    const [loginData,setLoginData] = useState<LoginData>({
-        username: '',
-        password: ''
-    });
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        setIsShowingSkeleton(true);
-        setTimeout(() => {
-            setIsShowingSkeleton(false);
-        }, 2000)
-    }, [isLogging]);
-
-    const login = () => {
+    /*const login = () => {
         dispatch(loginActions.loginRequest(loginData));
-    }
+    }*/
 
     const isLoadingLogin = useSelector(loginSelector.getIsLoading)
 
@@ -55,7 +40,15 @@ export const LoginComponent = () => {
             </div>
             <div className={`${componentClassName}__col flex_col bg_login`}>
                 <Card className={`${componentClassName}__col__card`} bordered={true}>
-                    {isShowingSkeleton ? (
+                    <Tabs>
+                        <TabPane key={1} tab={'Amministratore'}>
+                            <AdminAuth/>
+                        </TabPane>
+                        <TabPane key={2} tab={'Utente'}>
+                            <UserAuth/>
+                        </TabPane>
+                    </Tabs>
+                    {/*isShowingSkeleton ? (
                         <Skeleton active />
                     ) : isLogging ? (
                             <>
@@ -119,7 +112,7 @@ export const LoginComponent = () => {
                                     </Button>
                                 </div>
                             </>
-                        )}
+                        )*/}
 
                 </Card>
             </div>
@@ -127,4 +120,4 @@ export const LoginComponent = () => {
         )
 }
 
-export default LoginComponent;
+export default AuthComponent;

@@ -1,0 +1,13 @@
+.UserAuth {
+
+  &__input {
+    margin-bottom: 24px;
+  }
+
+  &__dialog {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+}

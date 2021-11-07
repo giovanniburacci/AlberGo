@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Switch, Route, Redirect} from 'react-router-dom'
 import {Layout, Menu} from 'antd';
-import { LoginComponent } from './screens/login/login.component';
+import { AuthComponent } from './screens/auth/auth.component';
 import './App.scss'
 import { MenuContainer } from './containers/menuContainer/menuContainer.container';
 import HeaderContainer from './containers/headerContainer/headerContainer.container';
@@ -27,9 +27,6 @@ const getCurrentSection = () => {
     }
 }
 
-interface partResp {
-    data: {}
-}
 function App() {
     const { Header, Content, Sider } = Layout;
     const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
@@ -41,7 +38,7 @@ function App() {
             { !token ? (
                 <Switch>
                     <Route path='/*'>
-                        <LoginComponent />
+                        <AuthComponent />
                     </Route>
                 </Switch>
             ) : (

@@ -16,5 +16,4 @@ export const login = async (data:AdminData):Promise<Partial<AmministratoreLogin>
             })
         }, 2000)
     })
-
 }

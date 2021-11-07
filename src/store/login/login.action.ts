@@ -3,11 +3,11 @@ import {login} from '../../mocks/api';
 import {AdminData} from '../../models/login';
 
 enum LOGIN_ACTIONS {
-    login = 'login/',
-    logout = 'logout/'
+    adminLogin = 'adminLogin/',
+    adminLogout = 'adminLogout/'
 }
 
-const loginRequest = createAsyncThunk(LOGIN_ACTIONS.login, async (userData: AdminData) => {
+const adminLoginRequest = createAsyncThunk(LOGIN_ACTIONS.adminLogin, async (userData: AdminData) => {
     try {
         return await login(userData);
     } catch(e) {
@@ -16,7 +16,7 @@ const loginRequest = createAsyncThunk(LOGIN_ACTIONS.login, async (userData: Admi
     }
 });
 
-const logoutAction = createAction(LOGIN_ACTIONS.logout, () => {
+const adminLogoutAction = createAction(LOGIN_ACTIONS.adminLogout, () => {
     localStorage.removeItem('AlberGOData');
     return {
         payload: null
@@ -24,8 +24,8 @@ const logoutAction = createAction(LOGIN_ACTIONS.logout, () => {
 });
 
 export const logoutActions = {
-    loginRequest,
-    logoutAction
+    adminLoginRequest,
+    adminLogoutAction
 };
 
 export default logoutActions;
