@@ -247,10 +247,10 @@ const NuovaPrenotazione = () => {
                         </div>
                         <Button onClick={() => {
                             if(newPrenotazione && newPrenotazione.idCliente && newPrenotazione.idStanza && newPrenotazione.dataInizio && newPrenotazione.dataFine) {
-                                console.log('prova')
                                 dispatch(prenotazioniActions.addPrenotazione({
-                                    ...newPrenotazione,
-                                    idHotel: 1 // todo handle hotel id, handle servizi
+                                    prenotazione: newPrenotazione,
+                                    idHotel: 1, // todo handle hotel id, handle servizi,
+                                    servizi: newListaServizi
                                 }))
                             }
                         }}>Conferma</Button>

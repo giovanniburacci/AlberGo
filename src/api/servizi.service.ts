@@ -9,7 +9,9 @@ const servizioEndpoints = {
     lista: 'lista',
     create: 'create',
     delete: 'delete',
-    update: 'update'
+    update: 'update',
+    listaNotInPrenotazione: 'listaNotInPrenotazione',
+    insertServizioPrenotazione: 'insertServizioPrenotazione'
 }
 
 const apiURL = localhostURL + postfix;
@@ -17,6 +19,24 @@ const apiURL = localhostURL + postfix;
 export const searchServizi = async (idHotel: number): Promise<AxiosResponse<ServizioDTO[]>> => {
     return axios.get(apiURL+servizioEndpoints.lista,{
         params: {
+            idHotel
+        }
+    });
+}
+
+export const searchServiziDisponibiliByPrenotazione = async (idPrenotazione: number): Promise<AxiosResponse<ServizioDTO[]>> => {
+    return axios.get(apiURL+servizioEndpoints.listaNotInPrenotazione,{
+        params: {
+            idPrenotazione
+        }
+    });
+}
+// todo ask why idHotel??
+export const addServizioToPrenotazione = async (idServizio: number, idPrenotazione: number, idHotel:number): Promise<AxiosResponse<ServizioDTO[]>> => {
+    return axios.get(apiURL+servizioEndpoints.insertServizioPrenotazione,{
+        params: {
+            idPrenotazione,
+            idServizio,
             idHotel
         }
     });

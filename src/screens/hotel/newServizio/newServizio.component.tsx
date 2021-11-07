@@ -53,7 +53,6 @@ const NewServizio = () => {
                     dispatch(serviziActions.addServizio({
                         ...newServizio,
                         idHotel: 1, // todo fix idHotel,
-                        idPrenotazione: 1 // todo remove idPrenotazione
                     }));
                 }
             }}>Conferma</Button>

@@ -1,16 +1,41 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {ServiziState} from './types';
+import {
+    ServiziCreateState,
+    ServiziDeleteState,
+    ServiziDisponibiliState,
+    ServiziState,
+    ServiziUpdateState
+} from './types';
 import {serviziActions} from './servizi.action';
+
+
+const initialCreateState: ServiziCreateState = {
+    isLoadingCreate: false,
+    isErrorCreate: false
+}
+
+const initialUpdateState: ServiziUpdateState = {
+    isLoadingUpdate: false,
+    isErrorUpdate: false
+}
+
+const initialDeleteState: ServiziDeleteState = {
+    isLoadingDelete: false,
+    isErrorDelete: false
+}
+
+const initialServiziDisponibiliState : ServiziDisponibiliState = {
+    isLoadingServiziDisponibili: false,
+    isErrorServiziDisponibili: false
+}
 
 const initialState: ServiziState = {
     isLoading: false,
     isError: false,
-    isLoadingCreate: false,
-    isErrorCreate: false,
-    isLoadingDelete: false,
-    isLoadingUpdate: false,
-    isErrorDelete: false,
-    isErrorUpdate: false
+    ...initialUpdateState,
+    ...initialDeleteState,
+    ...initialCreateState,
+    ...initialServiziDisponibiliState
 }
 export const serviziReducer = {
     servizi: createReducer(initialState, (builder) => {
@@ -50,6 +75,25 @@ export const serviziReducer = {
                 ...state,
                 isLoadingCreate: false,
                 isErrorCreate: true
+            }
+        }).addCase(serviziActions.fetchServiziByPrenotazione.pending, (state) => {
+            return {
+                ...state,
+                isLoadingServiziDisponibili: true,
+                isErrorServiziDisponibili: false
+            }
+        }).addCase(serviziActions.fetchServiziByPrenotazione.rejected, (state) => {
+            return {
+                ...state,
+                isLoadingServiziDisponibili: false,
+                isErrorServiziDisponibili: true
+            }
+        }).addCase(serviziActions.fetchServiziByPrenotazione.fulfilled, (state, action) => {
+            return {
+                ...state,
+                isLoadingServiziDisponibili: false,
+                isErrorServiziDisponibili: false,
+                serviziDisponibili: action.payload
             }
         })
     })

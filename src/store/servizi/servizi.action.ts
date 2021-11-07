@@ -1,12 +1,19 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {searchServizi, createServizio, deleteServizio, updateServizio} from '../../api/servizi.service';
+import {
+    searchServizi,
+    createServizio,
+    deleteServizio,
+    updateServizio,
+    searchServiziDisponibiliByPrenotazione
+} from '../../api/servizi.service';
 import {ServizioDTO} from '../../models/models';
 
 const serviziLabels = {
     fetchServizi: 'fetchServizi',
     addServizio: 'addServizio',
     removeServizio: 'removeServizio',
-    editServizio: 'editServizio'
+    editServizio: 'editServizio',
+    fetchServiziByPrenotazione: 'fetchServiziByPrenotazione'
 }
 const fetchServizi = createAsyncThunk(serviziLabels.fetchServizi, async (hotelId:number) => {
     try {
@@ -14,6 +21,16 @@ const fetchServizi = createAsyncThunk(serviziLabels.fetchServizi, async (hotelId
         return resp.data;
     } catch(e) {
         console.log('searchServizi request failed')
+        throw e;
+    }
+});
+
+const fetchServiziByPrenotazione = createAsyncThunk(serviziLabels.fetchServiziByPrenotazione, async (prenotazioneId:number) => {
+    try {
+        const resp = await searchServiziDisponibiliByPrenotazione(prenotazioneId)
+        return resp.data;
+    } catch(e) {
+        console.log('searchServiziDisponibiliByPrenotazione request failed')
         throw e;
     }
 });
@@ -54,7 +71,8 @@ export const serviziActions = {
     fetchServizi,
     addServizio,
     removeServizio,
-    editServizio
+    editServizio,
+    fetchServiziByPrenotazione
 }
 
 export default serviziActions;
