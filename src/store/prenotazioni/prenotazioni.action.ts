@@ -6,7 +6,7 @@ import {
     updatePrenotazione
 } from '../../api/prenotazioni.service';
 import {FilterBean, PrenotazioneDTO, ServizioDTO} from '../../models/models';
-import {addServizioToPrenotazione} from '../../api/servizi.service';
+import {insertServizioIntoPrenotazione} from '../../api/servizi.service';
 
 interface AddPrenotazioneBean {
     prenotazione: Partial<PrenotazioneDTO>,
@@ -45,7 +45,7 @@ const addPrenotazione = createAsyncThunk(prenotazioniLabels.addPrenotazione, asy
         const {prenotazione, servizi, idHotel} = prenotazioneBean;
         const resp = await createPrenotazione(prenotazione)
         for(const s of servizi) {
-            await addServizioToPrenotazione(s.id, resp.data.id, idHotel)
+            await insertServizioIntoPrenotazione(s.id, resp.data.id, idHotel)
         }
         if(prenotazione.idHotel) {
             thunkAPI.dispatch(fetchPrenotazioni(prenotazione.idHotel));

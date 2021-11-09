@@ -4,17 +4,30 @@ import {
     createServizio,
     deleteServizio,
     updateServizio,
-    searchServiziDisponibiliByPrenotazione
+    searchServiziDisponibiliByPrenotazione,
+    searchServiziByPrenotazione,
+    deleteServizioInPrenotazione,
+    insertServizioIntoPrenotazione
 } from '../../api/servizi.service';
 import {ServizioDTO} from '../../models/models';
+import {RootState} from '../../store/reducer.config';
 
 const serviziLabels = {
     fetchServizi: 'fetchServizi',
     addServizio: 'addServizio',
     removeServizio: 'removeServizio',
     editServizio: 'editServizio',
-    fetchServiziByPrenotazione: 'fetchServiziByPrenotazione'
+    fetchServiziDisponibiliByPrenotazione: 'fetchServiziDisponibiliByPrenotazione',
+    fetchServiziSceltiByPrenotazione: 'fetchServiziSceltiByPrenotazione',
+    removeServizioInPrenotazione: 'removeServizioInPrenotazione',
+    addServizioToPrenotazione: 'addServizioToPrenotazione'
 }
+
+interface ServizioInPrenotazioneBean {
+    prenotazioneId: number,
+    servizioId:number
+}
+
 const fetchServizi = createAsyncThunk(serviziLabels.fetchServizi, async (hotelId:number) => {
     try {
         const resp = await searchServizi(hotelId)
@@ -25,12 +38,22 @@ const fetchServizi = createAsyncThunk(serviziLabels.fetchServizi, async (hotelId
     }
 });
 
-const fetchServiziByPrenotazione = createAsyncThunk(serviziLabels.fetchServiziByPrenotazione, async (prenotazioneId:number) => {
+const fetchServiziDisponibiliByPrenotazione = createAsyncThunk(serviziLabels.fetchServiziDisponibiliByPrenotazione, async (prenotazioneId:number) => {
     try {
         const resp = await searchServiziDisponibiliByPrenotazione(prenotazioneId)
         return resp.data;
     } catch(e) {
         console.log('searchServiziDisponibiliByPrenotazione request failed')
+        throw e;
+    }
+});
+
+const fetchServiziSceltiByPrenotazione = createAsyncThunk(serviziLabels.fetchServiziSceltiByPrenotazione, async (prenotazioneId:number) => {
+    try {
+        const resp = await searchServiziByPrenotazione(prenotazioneId)
+        return resp.data;
+    } catch(e) {
+        console.log('searchServiziByPrenotazione request failed')
         throw e;
     }
 });
@@ -47,10 +70,37 @@ const addServizio = createAsyncThunk(serviziLabels.addServizio, async (servizio:
     }
 });
 
+const removeServizioFromPrenotazione = createAsyncThunk(serviziLabels.removeServizioInPrenotazione, async (bean:ServizioInPrenotazioneBean, thunkAPI) => {
+    try {
+        const {prenotazioneId, servizioId} = bean;
+        const resp = await deleteServizioInPrenotazione(servizioId, prenotazioneId)
+        thunkAPI.dispatch(fetchServiziDisponibiliByPrenotazione(prenotazioneId));
+        thunkAPI.dispatch(fetchServiziSceltiByPrenotazione(prenotazioneId));
+    } catch(e) {
+        console.log('removeServizio request failed')
+        throw e;
+    }
+});
+
+const addServizioToPrenotazione = createAsyncThunk(serviziLabels.addServizioToPrenotazione, async (bean:ServizioInPrenotazioneBean, thunkAPI) => {
+    try {
+        const {prenotazioneId, servizioId} = bean;
+        const state = thunkAPI.getState() as RootState;
+        const hotelId = state.hotel.hotel.id;
+        const resp = await insertServizioIntoPrenotazione(servizioId, prenotazioneId, hotelId)
+        thunkAPI.dispatch(fetchServiziDisponibiliByPrenotazione(prenotazioneId));
+        thunkAPI.dispatch(fetchServiziSceltiByPrenotazione(prenotazioneId));
+    } catch(e) {
+        console.log('addServizioToPrenotazione request failed')
+        throw e;
+    }
+});
+
 const removeServizio = createAsyncThunk(serviziLabels.removeServizio, async (servizio:ServizioDTO, thunkAPI) => {
     try {
         const resp = await deleteServizio(servizio.id)
-        thunkAPI.dispatch(fetchServizi(servizio.idHotel))
+        thunkAPI.dispatch(fetchServizi(servizio.idHotel));
+        return {};
     } catch(e) {
         console.log('removeServizio request failed')
         throw e;
@@ -72,7 +122,10 @@ export const serviziActions = {
     addServizio,
     removeServizio,
     editServizio,
-    fetchServiziByPrenotazione
+    fetchServiziDisponibiliByPrenotazione,
+    fetchServiziSceltiByPrenotazione,
+    removeServizioFromPrenotazione,
+    addServizioToPrenotazione
 }
 
 export default serviziActions;

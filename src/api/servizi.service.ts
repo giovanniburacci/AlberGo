@@ -11,7 +11,9 @@ const servizioEndpoints = {
     delete: 'delete',
     update: 'update',
     listaNotInPrenotazione: 'listaNotInPrenotazione',
-    insertServizioPrenotazione: 'insertServizioPrenotazione'
+    insertServizioPrenotazione: 'insertServizioPrenotazione',
+    removeServizioPrenotazione: 'removeServizioPrenotazione',
+    listaServiziPrenotazione: 'listaServiziPrenotazione'
 }
 
 const apiURL = localhostURL + postfix;
@@ -31,13 +33,25 @@ export const searchServiziDisponibiliByPrenotazione = async (idPrenotazione: num
         }
     });
 }
-// todo ask why idHotel??
-export const addServizioToPrenotazione = async (idServizio: number, idPrenotazione: number, idHotel:number): Promise<AxiosResponse<ServizioDTO[]>> => {
-    return axios.get(apiURL+servizioEndpoints.insertServizioPrenotazione,{
+
+export const searchServiziByPrenotazione = async (idPrenotazione: number): Promise<AxiosResponse<ServizioDTO[]>> => {
+    return axios.get(apiURL+servizioEndpoints.listaServiziPrenotazione,{
+        params: {
+            idPrenotazione
+        }
+    });
+}
+
+export const insertServizioIntoPrenotazione = async (idServizio: number, idPrenotazione: number, idHotel:number): Promise<AxiosResponse<number>> => {
+    return axios.post(apiURL+servizioEndpoints.insertServizioPrenotazione+'?idServizio=' + idServizio + '&idPrenotazione=' + idPrenotazione +
+    '&idHotel='+idHotel);
+}
+
+export const deleteServizioInPrenotazione = async (idServizio: number, idPrenotazione: number): Promise<AxiosResponse<Boolean>> => {
+    return axios.delete(apiURL+servizioEndpoints.removeServizioPrenotazione,{
         params: {
             idPrenotazione,
             idServizio,
-            idHotel
         }
     });
 }

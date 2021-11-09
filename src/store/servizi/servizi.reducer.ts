@@ -2,7 +2,7 @@ import {createReducer} from '@reduxjs/toolkit';
 import {
     ServiziCreateState,
     ServiziDeleteState,
-    ServiziDisponibiliState,
+    ServiziDisponibiliState, ServiziSceltiState,
     ServiziState,
     ServiziUpdateState
 } from './types';
@@ -29,13 +29,19 @@ const initialServiziDisponibiliState : ServiziDisponibiliState = {
     isErrorServiziDisponibili: false
 }
 
+const initialServiziSceltiState : ServiziSceltiState = {
+    isLoadingServiziScelti: false,
+    isErrorServiziScelti: false
+}
+
 const initialState: ServiziState = {
     isLoading: false,
     isError: false,
     ...initialUpdateState,
     ...initialDeleteState,
     ...initialCreateState,
-    ...initialServiziDisponibiliState
+    ...initialServiziDisponibiliState,
+    ...initialServiziSceltiState
 }
 export const serviziReducer = {
     servizi: createReducer(initialState, (builder) => {
@@ -76,24 +82,43 @@ export const serviziReducer = {
                 isLoadingCreate: false,
                 isErrorCreate: true
             }
-        }).addCase(serviziActions.fetchServiziByPrenotazione.pending, (state) => {
+        }).addCase(serviziActions.fetchServiziDisponibiliByPrenotazione.pending, (state) => {
             return {
                 ...state,
                 isLoadingServiziDisponibili: true,
                 isErrorServiziDisponibili: false
             }
-        }).addCase(serviziActions.fetchServiziByPrenotazione.rejected, (state) => {
+        }).addCase(serviziActions.fetchServiziDisponibiliByPrenotazione.rejected, (state) => {
             return {
                 ...state,
                 isLoadingServiziDisponibili: false,
                 isErrorServiziDisponibili: true
             }
-        }).addCase(serviziActions.fetchServiziByPrenotazione.fulfilled, (state, action) => {
+        }).addCase(serviziActions.fetchServiziDisponibiliByPrenotazione.fulfilled, (state, action) => {
             return {
                 ...state,
                 isLoadingServiziDisponibili: false,
                 isErrorServiziDisponibili: false,
                 serviziDisponibili: action.payload
+            }
+        }).addCase(serviziActions.fetchServiziSceltiByPrenotazione.fulfilled, (state, action) => {
+            return {
+                ...state,
+                isLoadingServiziScelti: false,
+                isErrorServiziScelti: false,
+                serviziScelti: action.payload
+            }
+        }).addCase(serviziActions.fetchServiziSceltiByPrenotazione.pending, (state, action) => {
+            return {
+                ...state,
+                isLoadingServiziScelti: true,
+                isErrorServiziScelti: false,
+            }
+        }).addCase(serviziActions.fetchServiziSceltiByPrenotazione.rejected, (state, action) => {
+            return {
+                ...state,
+                isLoadingServiziScelti: false,
+                isErrorServiziScelti: true,
             }
         })
     })

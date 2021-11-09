@@ -1,7 +1,7 @@
 import {HotelDTO, Stelle} from '../../models/models';
 
 export const getHotelStub = ():HotelDTO => ({
-    id: 0,
+    id: 1,
     nome: 'Hotel balordo',
     indirizzo: 'Via del degrado 27',
     stelle: Stelle.UNO,

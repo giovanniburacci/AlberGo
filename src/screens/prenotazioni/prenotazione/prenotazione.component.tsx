@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './prenotazione.scss'
-import {Button, DatePicker, Input, Select, Typography} from 'antd';
+import {Button, DatePicker, Input, Select, Tag, Typography} from 'antd';
 import {FatturaDTO, PrenotazioneDTO} from '../../../models/models';
 import {UserOutlined} from '@ant-design/icons';
 import {useDispatch, useSelector} from 'react-redux';
@@ -8,16 +8,18 @@ import clientiActions from '../../../store/clienti/clienti.action';
 import stanzeActions from '../../../store/stanze/stanze.action';
 import moment from 'moment';
 import prenotazioniActions from '../../../store/prenotazioni/prenotazioni.action';
+import serviziActions from '../../../store/servizi/servizi.action';
 import prenotazioniSelector from '../../../store/prenotazioni/prenotazioni.selector';
 import {isEqual} from 'lodash';
+import serviziSelector from '../../../store/servizi/servizi.selector';
 const componentClassName = 'Prenotazione';
 
 interface PrenotazioneProps {
     prenotazione: FatturaDTO
 }
-
+const {Title} = Typography;
+const {Option} = Select;
 export const Prenotazione = (props:PrenotazioneProps) => {
-    const {Title} = Typography;
 
     const {prenotazione} = props
 
@@ -37,7 +39,13 @@ export const Prenotazione = (props:PrenotazioneProps) => {
         });
         dispatch(clientiActions.fetchClienti(1)) // todo handle hotel id
         dispatch(stanzeActions.fetchStanze(1)) // todo handle hotel id
+        dispatch(serviziActions.fetchServiziDisponibiliByPrenotazione(prenotazione.prenotazione.id))
+        dispatch(serviziActions.fetchServiziSceltiByPrenotazione(prenotazione.prenotazione.id))
     }, [prenotazione]);
+
+    const isLoadingEdit = useSelector(prenotazioniSelector.getIsLoadingEdit);
+    const serviziDisponibili = useSelector(serviziSelector.getServiziDisponibili);
+    const serviziScelti = useSelector(serviziSelector.getServiziScelti);
 
     useEffect(() => {
         if(!isEqual(prenotazione.prenotazione, newPrenotazione)) {
@@ -46,7 +54,6 @@ export const Prenotazione = (props:PrenotazioneProps) => {
             setIsMakingChanges(false);
         }
     }, [newPrenotazione])
-    const isLoadingEdit = useSelector(prenotazioniSelector.getIsLoadingEdit);
     return (
         <div className={`${componentClassName}`}>
             <div className={`${componentClassName}__inputgroup`}>
@@ -131,6 +138,52 @@ export const Prenotazione = (props:PrenotazioneProps) => {
                     value={'Stanza ' + prenotazione.stanza.numeroStanza}
                     disabled={true} />
             </div>
+
+            <div className={`${componentClassName}__inputgroup`}>
+                <Title level={5}>
+                    Servizi
+                </Title>
+                <Select
+                    style={{width: '100%'}}
+                    showSearch
+                    placeholder="Servizi"
+                    optionFilterProp="children"
+                    filterOption={(input, option) =>
+                        option!.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                    onChange={(value) => {
+                        if(value) {
+                            dispatch(serviziActions.addServizioToPrenotazione({
+                                prenotazioneId: (newPrenotazione && newPrenotazione.id) || prenotazione.prenotazione.id,
+                                servizioId: value as number
+                            }))
+                        }}}
+                >
+                    {
+
+                        serviziDisponibili && (serviziDisponibili.length > 0) &&
+                        serviziDisponibili.map((servizio) => (
+                            <Option key={servizio.id} value={servizio.id}>{servizio.nome + ', ' + servizio.prezzo}</Option>
+                        ))
+                    }
+                </Select>
+            </div>
+
+            <div className={`${componentClassName}__taglist`}>
+                {serviziScelti && serviziScelti.map(s => (
+                    <Tag
+                        key={s.id}
+                        onClose={() => {dispatch(serviziActions.removeServizioFromPrenotazione({
+                            prenotazioneId: (newPrenotazione && newPrenotazione.id) || prenotazione.prenotazione.id,
+                            servizioId: s.id
+                        }))}}
+                        closable
+                    >
+                        {s.nome + ', ' + s.prezzo}
+                    </Tag>
+                ))}
+            </div>
+
             <Button
                 size={'large'}
                 className={isMakingChanges ? 'button-edit' : ''}

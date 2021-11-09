@@ -79,7 +79,7 @@ const PrenotazioniFilters = () => {
                 value={utenteFilter} style={{ width: 120 }}
                 onChange={setUtenteFilter}>
                 {
-                    filterOptions.map((option) => <Option value={option.value}>{option.label}</Option>)
+                    filterOptions.map((option) => <Option key={option.value} value={option.value}>{option.label}</Option>)
                 }
             </Select>
             <RangePicker

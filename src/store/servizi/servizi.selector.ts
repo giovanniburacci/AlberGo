@@ -3,6 +3,18 @@ import {ServizioDTO} from '../../models/models';
 
 const getServizi = (state:RootState): ServizioDTO[] | undefined => state.servizi.servizi;
 
+const getServiziDisponibili = (state:RootState): ServizioDTO[] | undefined => state.servizi.serviziDisponibili;
+
+const getIsLoadingServiziDisponibili = (state:RootState): boolean => state.servizi.isLoadingServiziDisponibili;
+
+const getIsErrorServiziDisponibili = (state:RootState): boolean => state.servizi.isErrorServiziDisponibili;
+
+const getServiziScelti = (state:RootState): ServizioDTO[] | undefined => state.servizi.serviziScelti;
+
+const getIsLoadingServiziScelti = (state:RootState): boolean => state.servizi.isLoadingServiziScelti;
+
+const getIsErrorServiziScelti = (state:RootState): boolean => state.servizi.isErrorServiziScelti;
+
 const getIsError = (state:RootState): boolean => state.servizi.isError;
 
 const getIsLoading = (state:RootState): boolean => state.servizi.isLoading;
@@ -16,7 +28,13 @@ export const serviziSelector = {
     getIsError,
     getIsLoading,
     getIsErrorCreate,
-    getIsLoadingCreate
+    getIsLoadingCreate,
+    getServiziScelti,
+    getServiziDisponibili,
+    getIsErrorServiziScelti,
+    getIsErrorServiziDisponibili,
+    getIsLoadingServiziScelti,
+    getIsLoadingServiziDisponibili
 }
 
 export default serviziSelector;
