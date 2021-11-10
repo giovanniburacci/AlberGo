@@ -2,9 +2,11 @@ import {createReducer} from '@reduxjs/toolkit';
 import {HotelState} from './types';
 import {getHotelStub} from '../../mocks/stubs/hotel';
 import hotelActions from './hotel.action';
+import {getAmministratoreStub} from '../../mocks/stubs/amministratore';
 
 const initialState: HotelState = {
-    hotel: getHotelStub()
+    hotel: getHotelStub(),
+    amministratore: getAmministratoreStub()
 }
 
 export const hotelReducer = {

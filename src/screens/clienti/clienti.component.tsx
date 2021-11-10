@@ -9,6 +9,7 @@ import clientiSelector from '../../store/clienti/clienti.selector';
 import clientiActions from '../../store/clienti/clienti.action';
 import ClientiFilters from './clientiFilters/clientiFilters.component';
 import DettaglioCliente from './dettaglioCliente/dettaglioCliente.component';
+import hotelSelector from '../../store/hotel/hotel.selector';
 
 const componentClassName = 'Clienti';
 const columns:ColumnsType<ClienteDTO> = [{
@@ -39,9 +40,10 @@ const Clienti = () => {
     const isLoading = useSelector(clientiSelector.getIsLoading);
     const isError = useSelector(clientiSelector.getIsError); //todo gestire loading ed error
     const clienti = useSelector(clientiSelector.getClienti);
+    const idHotel = useSelector(hotelSelector.getHotelId)
 
     useEffect(() => {
-        dispatch(clientiActions.fetchClienti(1)) // todo gestire idHotel
+        dispatch(clientiActions.fetchClienti(idHotel))
     }, [])
 
     const selectCliente = (record:ClienteDTO) => {

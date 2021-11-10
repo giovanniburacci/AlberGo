@@ -8,6 +8,7 @@ import stanzeActions from '../../../store/stanze/stanze.action';
 import {isEqual} from 'lodash';
 import stanzeSelector from '../../../store/stanze/stanze.selector';
 import {StanzaWithStatus} from '../../../store/stanze/types';
+import hotelSelector from '../../../store/hotel/hotel.selector';
 const componentClassName = 'DettaglioStanza';
 const {Title} = Typography;
 
@@ -27,9 +28,9 @@ export const DettaglioStanza = (props:PrenotazioneProps) => {
     const [isMakingChanges, setIsMakingChanges] = useState<boolean>(false);
 
     const isLoadingEdit = useSelector(stanzeSelector.getIsLoadingEdit);
-
+    const idHotel = useSelector(hotelSelector.getHotelId)
     useEffect(() => {
-        dispatch(categorieActions.fetchCategorie(1)) // todo handle hotel id
+        dispatch(categorieActions.fetchCategorie(idHotel))
     }, [stanza]);
 
     useEffect(() => {

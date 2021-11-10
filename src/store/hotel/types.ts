@@ -1,5 +1,6 @@
-import {HotelDTO} from '../../models/models';
+import {AmministratoreDTO, HotelDTO} from '../../models/models';
 
 export interface HotelState {
-    hotel: HotelDTO
+    hotel: HotelDTO,
+    amministratore: AmministratoreDTO
 }

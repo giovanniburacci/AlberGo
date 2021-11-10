@@ -12,6 +12,7 @@ import PieContainer from '../../containers/pies/pieContainer/pie.component';
 import DettaglioStanza from './dettaglioStanza/dettaglioStanza.component';
 import {StanzaStatus, StanzaWithStatus} from '../../store/stanze/types';
 import moment from 'moment';
+import hotelSelector from '../../store/hotel/hotel.selector';
 
 const componentClassName = 'Stanze';
 const columns:ColumnsType<StanzaDTO> = [{
@@ -32,6 +33,7 @@ const Stanze = () => {
     const stanze = useSelector(stanzeSelector.getStanze)
     const isLoading = useSelector(stanzeSelector.getIsLoading);
     const isError = useSelector(stanzeSelector.getIsError); //todo gestire loading ed error
+    const idHotel = useSelector(hotelSelector.getHotelId)
 
     const [dataPie,setDataPie] = useState<{}>();
     const [filteredDataPie,setFilteredDataPie] = useState<{}>();
@@ -40,7 +42,7 @@ const Stanze = () => {
     const [dateFilter, setDateFilter] = useState<[moment.Moment,moment.Moment] | null>();
 
     useEffect( () => {
-        dispatch(stanzeActions.fetchStanze(1)) //todo gestire idHotel
+        dispatch(stanzeActions.fetchStanze(idHotel))
     }, [])
 
     useEffect(() => {

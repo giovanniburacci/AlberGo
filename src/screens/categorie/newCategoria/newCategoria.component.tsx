@@ -2,16 +2,18 @@ import React, {useState} from 'react'
 import {Button, Checkbox, Input, InputNumber, Select, Typography} from 'antd';
 import './newCategoria.scss'
 import {CategoriaDTO} from '../../../models/models';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import categorieActions from '../../../store/categorie/categorie.action';
+import hotelSelector from '../../../store/hotel/hotel.selector';
 const componentClassName = 'NewCategoria';
 
 export const NewCategoria = () => {
     const {Title} = Typography;
-    const {Option} = Select;
 
     const [newCategoria, setNewCategoria] = useState<Partial<CategoriaDTO>>();
     const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
+    const idHotel = useSelector(hotelSelector.getHotelId)
+
     const dispatch = useDispatch();
     return (
         <div className={`${componentClassName}`}>
@@ -128,7 +130,7 @@ export const NewCategoria = () => {
                             ...newCategoria,
                             giorniPenale: 0,
                             qtaPenale: 0,
-                            idHotel: 1 // todo fix idHotel
+                            idHotel
                         }));
                         setNewCategoria((prevState => ({
                             ...prevState,
@@ -138,7 +140,7 @@ export const NewCategoria = () => {
                     } else {
                         dispatch(categorieActions.addCategoria({
                             ...newCategoria,
-                            idHotel: 1 // todo fix idHotel
+                            idHotel
                         }));
                     }
                 }

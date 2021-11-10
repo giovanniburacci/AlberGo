@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {CategoriaDTO} from '../../../../models/models';
 import categorieActions from '../../../../store/categorie/categorie.action';
 import stanzeActions from '../../../../store/stanze/stanze.action';
+import hotelSelector from '../../../../store/hotel/hotel.selector';
 
 
 const componentClassName = 'StanzeFilters'
@@ -22,6 +23,8 @@ const StanzeFilters = (props: StanzeFilterProps) => {
     const [selectedCategoria, setSelectedCategoria] = useState<CategoriaDTO>()
     const listaCategorie = useSelector(categorieSelector.getCategorie)
     const {dateFilter, setDateFilter} = props;
+    const idHotel = useSelector(hotelSelector.getHotelId)
+
     const dispatch = useDispatch();
     useEffect(() => {
         if(dateFilter) {
@@ -32,7 +35,7 @@ const StanzeFilters = (props: StanzeFilterProps) => {
                     dataInizio,
                     dataFine,
                     idCategoria: selectedCategoria?.id,
-                    idHotel: 1 //todo handle hotel id
+                    idHotel
                 }));
                 renderCount ++;
             }
@@ -54,7 +57,7 @@ const StanzeFilters = (props: StanzeFilterProps) => {
     }, [selectedCategoria])
 
     if(!listaCategorie) {
-        dispatch(categorieActions.fetchCategorie(1)) //todo handle hotelId
+        dispatch(categorieActions.fetchCategorie(idHotel))
         return <Spin/>
     }
 

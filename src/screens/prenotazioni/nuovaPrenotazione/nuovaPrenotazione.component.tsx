@@ -12,6 +12,7 @@ import prenotazioniActions from '../../../store/prenotazioni/prenotazioni.action
 import serviziActions from '../../../store/servizi/servizi.action';
 import serviziSelector from '../../../store/servizi/servizi.selector';
 import {SelectValue} from 'antd/es/select';
+import hotelSelector from '../../../store/hotel/hotel.selector';
 
 const componentClassName = 'NuovaPrenotazione';
 const NuovaPrenotazione = () => {
@@ -28,6 +29,8 @@ const NuovaPrenotazione = () => {
     const isErrorStanze = useSelector(stanzeSelector.getIsError);
     const isErrorUtenti = useSelector(clientiSelector.getIsError);
     const listaServizi = useSelector(serviziSelector.getServizi);
+    const idHotel = useSelector(hotelSelector.getHotelId)
+
     const [newPrenotazione, setNewPrenotazione] = useState<Partial<PrenotazioneDTO>>();
     const [newListaServizi, setNewListaServizi] = useState<ServizioDTO[]>([]);
 
@@ -82,9 +85,9 @@ const NuovaPrenotazione = () => {
     }
 
     useEffect(() => {
-        dispatch(clientiActions.fetchClienti(1)) // todo handle hotel id
-        dispatch(stanzeActions.fetchStanze(1)) // todo handle hotel id
-        dispatch(serviziActions.fetchServizi(1)) //todo handle hotel id
+        dispatch(clientiActions.fetchClienti(idHotel))
+        dispatch(stanzeActions.fetchStanze(idHotel))
+        dispatch(serviziActions.fetchServizi(idHotel))
     }, [])
 
     return (
@@ -248,8 +251,10 @@ const NuovaPrenotazione = () => {
                         <Button onClick={() => {
                             if(newPrenotazione && newPrenotazione.idCliente && newPrenotazione.idStanza && newPrenotazione.dataInizio && newPrenotazione.dataFine) {
                                 dispatch(prenotazioniActions.addPrenotazione({
-                                    prenotazione: newPrenotazione,
-                                    idHotel: 1, // todo handle hotel id, handle servizi,
+                                    prenotazione: {
+                                        ...newPrenotazione,
+                                        idHotel
+                                    },
                                     servizi: newListaServizi
                                 }))
                             }

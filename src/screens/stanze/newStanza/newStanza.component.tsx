@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import categorieSelector from '../../../store/categorie/categorie.selector';
 import categorieActions from '../../../store/categorie/categorie.action';
 import stanzeActions from '../../../store/stanze/stanze.action';
+import hotelSelector from '../../../store/hotel/hotel.selector';
 
 const componentClassName = 'NewStanza';
 
@@ -22,9 +23,10 @@ const NewStanza = () => {
     const categorie = useSelector(categorieSelector.getCategorie);
     const isLoading = useSelector(categorieSelector.getIsLoading);
     const isError = useSelector(categorieSelector.getIsError);
+    const idHotel = useSelector(hotelSelector.getHotelId)
 
     useEffect(() => {
-        dispatch(categorieActions.fetchCategorie(1)) // todo gestire idHotel
+        dispatch(categorieActions.fetchCategorie(idHotel))
     }, [])
 
     const changeNumeroStanza = (value:Key) => {

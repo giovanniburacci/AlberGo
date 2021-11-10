@@ -10,6 +10,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import PieContainer from '../../containers/pies/pieContainer/pie.component';
 import CategorieBar from './categorieBar/categorieBar.component';
 import NewCategoria from './newCategoria/newCategoria.component';
+import hotelSelector from '../../store/hotel/hotel.selector';
 const componentClassName = 'Categorie';
 
 const getRandomColor = ():string => 'rgb('+Math.floor(Math.random()*256)+', '+Math.floor(Math.random()*256)+', '+Math.floor(Math.random()*256)+')'
@@ -23,11 +24,13 @@ const Categorie = () => {
     const categorie = useSelector(categorieSelector.getCategorie);
     const isLoading = useSelector(categorieSelector.getIsLoading);
     const numeroStanze = useSelector(categorieSelector.getNumeroStanze)
+    const hotelId = useSelector(hotelSelector.getHotelId)
+
 
     // todo gestire loading ed error
     useEffect(() => {
         if(!isLoading) {
-            dispatch(categorieActions.fetchCategorie(1)); // todo gestire idHotel
+            dispatch(categorieActions.fetchCategorie(hotelId));
         }
     },[])
 

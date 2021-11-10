@@ -2,19 +2,17 @@ import React, {useState} from 'react';
 import {Input, Typography, Select, Spin, Button, InputNumber} from 'antd';
 import './newServizio.scss';
 import {ServizioDTO} from '../../../models/models';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import serviziActions from '../../../store/servizi/servizi.action';
+import hotelSelector from '../../../store/hotel/hotel.selector';
 
 const componentClassName = 'NewServizio';
 const NewServizio = () => {
 
     const {Title} = Typography;
-
     const dispatch = useDispatch();
-
-
-
     const [newServizio, setNewServizio] = useState<Partial<ServizioDTO>>();
+    const idHotel = useSelector(hotelSelector.getHotelId)
 
     return (
         <div className={`${componentClassName}`}>
@@ -52,7 +50,7 @@ const NewServizio = () => {
                 if(newServizio && newServizio.prezzo && newServizio.nome) {
                     dispatch(serviziActions.addServizio({
                         ...newServizio,
-                        idHotel: 1, // todo fix idHotel,
+                        idHotel
                     }));
                 }
             }}>Conferma</Button>

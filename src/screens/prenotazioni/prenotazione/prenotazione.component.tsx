@@ -12,6 +12,7 @@ import serviziActions from '../../../store/servizi/servizi.action';
 import prenotazioniSelector from '../../../store/prenotazioni/prenotazioni.selector';
 import {isEqual} from 'lodash';
 import serviziSelector from '../../../store/servizi/servizi.selector';
+import hotelSelector from '../../../store/hotel/hotel.selector';
 const componentClassName = 'Prenotazione';
 
 interface PrenotazioneProps {
@@ -37,8 +38,8 @@ export const Prenotazione = (props:PrenotazioneProps) => {
             idStanza: prenotazione.stanza.id,
             idHotel: prenotazione.hotel.id
         });
-        dispatch(clientiActions.fetchClienti(1)) // todo handle hotel id
-        dispatch(stanzeActions.fetchStanze(1)) // todo handle hotel id
+        dispatch(clientiActions.fetchClienti(idHotel))
+        dispatch(stanzeActions.fetchStanze(idHotel))
         dispatch(serviziActions.fetchServiziDisponibiliByPrenotazione(prenotazione.prenotazione.id))
         dispatch(serviziActions.fetchServiziSceltiByPrenotazione(prenotazione.prenotazione.id))
     }, [prenotazione]);
@@ -46,6 +47,8 @@ export const Prenotazione = (props:PrenotazioneProps) => {
     const isLoadingEdit = useSelector(prenotazioniSelector.getIsLoadingEdit);
     const serviziDisponibili = useSelector(serviziSelector.getServiziDisponibili);
     const serviziScelti = useSelector(serviziSelector.getServiziScelti);
+    const idHotel = useSelector(hotelSelector.getHotelId)
+
 
     useEffect(() => {
         if(!isEqual(prenotazione.prenotazione, newPrenotazione)) {

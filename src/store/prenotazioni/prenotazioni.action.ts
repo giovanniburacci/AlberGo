@@ -11,7 +11,6 @@ import {insertServizioIntoPrenotazione} from '../../api/servizi.service';
 interface AddPrenotazioneBean {
     prenotazione: Partial<PrenotazioneDTO>,
     servizi: ServizioDTO[],
-    idHotel: number
 }
 const prenotazioniLabels = {
     fetchPrenotazioni: 'fetchPrenotazioni',
@@ -42,10 +41,10 @@ const fetchFilteredPrenotazioni = createAsyncThunk(prenotazioniLabels.fetchFilte
 
 const addPrenotazione = createAsyncThunk(prenotazioniLabels.addPrenotazione, async (prenotazioneBean: AddPrenotazioneBean, thunkAPI) => {
     try {
-        const {prenotazione, servizi, idHotel} = prenotazioneBean;
+        const {prenotazione, servizi} = prenotazioneBean;
         const resp = await createPrenotazione(prenotazione)
         for(const s of servizi) {
-            await insertServizioIntoPrenotazione(s.id, resp.data.id, idHotel)
+            await insertServizioIntoPrenotazione(s.id, resp.data.id, prenotazione.idHotel!)
         }
         if(prenotazione.idHotel) {
             thunkAPI.dispatch(fetchPrenotazioni(prenotazione.idHotel));

@@ -71,7 +71,7 @@ const fetchNumeroStanzeForCategoria = createAsyncThunk(categorieLabels.fetchNume
 
 export const removeCategoria = createAsyncThunk(categorieLabels.removeCategoria, async (categoria: CategoriaDTO, thunkAPI) => {
     try {
-        await deleteCategoria(categoria.idHotel);
+        await deleteCategoria(categoria.id);
         thunkAPI.dispatch(fetchCategorie(categoria.idHotel))
         return null;
     } catch(e) {

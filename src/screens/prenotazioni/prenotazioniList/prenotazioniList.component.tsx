@@ -6,6 +6,7 @@ import {FatturaDTO} from '../../../models/models';
 import {useDispatch, useSelector} from 'react-redux';
 import {prenotazioniSelector} from '../../../store/prenotazioni/prenotazioni.selector';
 import prenotazioniActions from '../../../store/prenotazioni/prenotazioni.action';
+import hotelSelector from '../../../store/hotel/hotel.selector';
 
 const columns:ColumnsType<FatturaMapped> = [{
     title: 'Stanza',
@@ -38,6 +39,7 @@ export const PrenotazioniList = (props:PrenotazioniListProps) => {
     const listaPren: FatturaDTO[] | undefined = useSelector(prenotazioniSelector.getPrenotazioni)
     const isLoading = useSelector(prenotazioniSelector.getIsLoading);
     const isError = useSelector(prenotazioniSelector.getIsError);
+    const idHotel = useSelector(hotelSelector.getHotelId)
     const selectPrenotazione = (record?:FatturaDTO) => {
         setSelectedPrenotazione(record);
         setIsDrawerVisible();
@@ -45,7 +47,7 @@ export const PrenotazioniList = (props:PrenotazioniListProps) => {
 
     const dispatch = useDispatch();
     useEffect( () => {
-        dispatch(prenotazioniActions.fetchPrenotazioni(1)) //todo fix hotelid
+        dispatch(prenotazioniActions.fetchPrenotazioni(idHotel));
     }, [])
 
     // @ts-ignore

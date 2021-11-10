@@ -4,6 +4,7 @@ import {Button, Input} from 'antd';
 import {PlusCircleOutlined} from '@ant-design/icons';
 import categorieActions from '../../../store/categorie/categorie.action';
 import {useDispatch, useSelector} from 'react-redux';
+import hotelSelector from '../../../store/hotel/hotel.selector';
 const componentClassName = 'CategorieBar'
 
 interface CategorieBarProps {
@@ -16,15 +17,16 @@ const CategorieBar = (props:CategorieBarProps) => {
 
     const [searchCategoria, setSearchCategoria] = useState<string>();
     const dispatch = useDispatch();
+    const hotelId = useSelector(hotelSelector.getHotelId)
     useEffect(() => {
         timeout = setTimeout(() => {
             if(!searchCategoria) {
                 if(renderCount !== 0) {
-                    dispatch(categorieActions.fetchCategorie(1)) //todo edit hotel id
+                    dispatch(categorieActions.fetchCategorie(hotelId))
                 }
             } else {
                 dispatch(categorieActions.fetchFilteredCategorie({
-                        idHotel: 1, // todo fix hotel id
+                        idHotel: hotelId,
                         nome: searchCategoria
                     }
                 ))
