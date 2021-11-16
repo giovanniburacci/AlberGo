@@ -26,6 +26,18 @@ const Categorie = () => {
     const numeroStanze = useSelector(categorieSelector.getNumeroStanze)
     const hotelId = useSelector(hotelSelector.getHotelId)
 
+    const getLabels = () => {
+        if(categorie && categorie.length > 0 && numeroStanze) {
+            return [...categorie].filter(c => numeroStanze[c.id] > 0).map(c => c.nome).sort()
+        }
+    }
+
+    const getData = () => {
+        if(categorie && categorie.length > 0 && numeroStanze) {
+
+            return Object.entries(numeroStanze).map(n => n[1]).filter(n => n > 0)
+        }
+    }
 
     // todo gestire loading ed error
     useEffect(() => {
@@ -38,10 +50,10 @@ const Categorie = () => {
         if(categorie && categorie.length > 0 && numeroStanze) {
             console.log('numStanze', numeroStanze)
             setDataPie({
-                labels: [...categorie].sort((a,b) => a.id - b.id).map(c => c.nome),
+                labels: getLabels(),
                 datasets: [{
                     label: 'Stato delle stanze',
-                    data: numeroStanze.filter(n => categorie.map(c => ''+c.id).includes(Object.keys(n)[0])).map(n => Object.values(n)[0]).sort(),
+                    data: getData(),
                     backgroundColor: categorie.map(() => getRandomColor()),
                     hoverOffset: 2
                 }]
@@ -90,11 +102,10 @@ const Categorie = () => {
                         <div className={`${componentClassName}__column__box__table`}>
                             <Table
                                 columns={numStanzeColumns}
-                                dataSource={
-                                    numeroStanze?.map(n => ({
-                                        nome: categorie?.find(c => n.hasOwnProperty(c.id))?.nome,
-                                        numStanze: Object.values(n)[0]
-                                    }))
+                                dataSource={(numeroStanze && categorie) && categorie.map(c => ({
+                                    nome: c.nome,
+                                    numStanze: numeroStanze[c.id]
+                                }))
                                 }/>
                         </div>
                     </div>

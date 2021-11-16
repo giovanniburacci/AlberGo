@@ -12,7 +12,7 @@ const getIsErrorCreate = (state:RootState): boolean => state.categorie.isErrorCr
 
 const getIsLoadingCreate = (state:RootState): boolean => state.categorie.isLoadingCreate;
 
-const getNumeroStanze = (state:RootState): NumeroStanze[] | undefined => state.categorie.numeroStanze;
+const getNumeroStanze = (state:RootState): NumeroStanze | undefined => state.categorie.numeroStanze;
 
 export const categorieSelector = {
     getCategorie,

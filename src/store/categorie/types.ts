@@ -8,7 +8,7 @@ export interface CategorieState extends CategorieCreateState, CategorieDeleteSta
 }
 
 export interface NumeroStanzeState {
-    numeroStanze?: NumeroStanze[]
+    numeroStanze?: NumeroStanze
     isLoadingNumeroStanze: boolean,
     isErrorNumeroStanze: boolean
 }
