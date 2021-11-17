@@ -12,6 +12,7 @@ import Stanze from './screens/stanze/stanze.component';
 import Categorie from './screens/categorie/categorie.component';
 import Clienti from './screens/clienti/clienti.component';
 import Hotel from './screens/hotel/hotel.component';
+import Hotels from './screens/userScreens/hotels/hotels.component';
 
 const componentClassName = 'App';
 
@@ -33,6 +34,7 @@ function App() {
     const [selectedKey,setSelectedKey] = useState<string>(getCurrentSection());
     const token = useSelector(loginSelector.getToken);
     const amministratore = useSelector(loginSelector.getAmministratore);
+    const user = useSelector(loginSelector.getUser);
 
     return (
         <div className={`${componentClassName}`}>
@@ -43,60 +45,68 @@ function App() {
                     </Route>
                 </Switch>
             ) : (
-                amministratore ? (
-                    <Layout style={{ minHeight: '100vh' }}>
-                        <Sider
-                            theme={'dark'}
-                            collapsible
-                            trigger={null}
-                            collapsed={isCollapsed}>
-                            <Menu theme={'dark'}
-                                  defaultSelectedKeys={[selectedKey]}
-                                  className={`${componentClassName}__menu`}
-                                  selectedKeys={[selectedKey]}
-                                  onSelect={(key) => {setSelectedKey(key.key)}}
-                            >
-                                <MenuContainer isCollapsed={isCollapsed}/>
-                            </Menu>
-                        </Sider>
-                        <Layout>
-                            <Header className={`${componentClassName}__header`}>
-                                <HeaderContainer
-                                    isCollapsed={isCollapsed}
-                                    setCollapsed={(value) => {setIsCollapsed(value)}}
-                                    selectedKey={selectedKey}/>
-                            </Header>
-                            <Content className={`${componentClassName}__content`}>
-                                <div className={`${componentClassName}__content__box`}>
-                                    <Switch>
-                                        <Route path='/' exact>
-                                            <Prenotazioni />
-                                        </Route>
-                                        <Route path='/stanze'>
-                                            <Stanze />
-                                        </Route>
-                                        <Route path='/categorie'>
-                                            <Categorie />
-                                        </Route>
-                                        <Route path='/clienti'>
-                                            <Clienti />
-                                        </Route>
-                                        <Route path='/hotel'>
-                                            <Hotel />
-                                        </Route>
-                                        <Route path='/*'>
-                                            <Redirect to='/' />
-                                        </Route>
-                                    </Switch>
-                                </div>
-                            </Content>
-                        </Layout>
+                <Layout style={{ minHeight: '100vh' }}>
+                    <Sider
+                        theme={'dark'}
+                        collapsible
+                        trigger={null}
+                        collapsed={isCollapsed}>
+                        <Menu theme={'dark'}
+                              defaultSelectedKeys={[selectedKey]}
+                              className={`${componentClassName}__menu`}
+                              selectedKeys={[selectedKey]}
+                              onSelect={(key) => {setSelectedKey(key.key)}}
+                        >
+                            <MenuContainer isAdmin={!!amministratore} isCollapsed={isCollapsed}/>
+                        </Menu>
+                    </Sider>
+                    <Layout>
+                        <Header className={`${componentClassName}__header`}>
+                            <HeaderContainer
+                                isAdmin={!!amministratore}
+                                isCollapsed={isCollapsed}
+                                setCollapsed={(value) => {setIsCollapsed(value)}}
+                                selectedKey={selectedKey}/>
+                        </Header>
+                        <Content className={`${componentClassName}__content`}>
+                            <div className={`${componentClassName}__content__box`}>
+                                {
+                                    amministratore ? (
+                                        <Switch>
+                                            <Route path='/' exact>
+                                                <Prenotazioni />
+                                            </Route>
+                                            <Route path='/stanze'>
+                                                <Stanze />
+                                            </Route>
+                                            <Route path='/categorie'>
+                                                <Categorie />
+                                            </Route>
+                                            <Route path='/clienti'>
+                                                <Clienti />
+                                            </Route>
+                                            <Route path='/hotel'>
+                                                <Hotel />
+                                            </Route>
+                                            <Route path='/*'>
+                                                <Redirect to='/' />
+                                            </Route>
+                                        </Switch>
+                                    ) : user && (
+                                        <Switch>
+                                            <Route path={'/'} exact>
+                                                <Hotels />
+                                            </Route>
+                                            <Route path='/*'>
+                                                <Redirect to='/' />
+                                            </Route>
+                                        </Switch>
+                                    )
+                                }
+                            </div>
+                        </Content>
                     </Layout>
-                    ) : ( // todo add utente && here
-                        <>
-
-                        </>
-                )
+                </Layout>
             )
             }
         </div>

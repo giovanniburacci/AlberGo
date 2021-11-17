@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import {Button, Input, Typography, Modal} from 'antd';
 import {LockOutlined, UserOutlined} from '@ant-design/icons';
 import './userAuth.scss'
+import loginActions from '../../../store/login/login.action'
+import {useDispatch} from 'react-redux';
 const {Text} = Typography;
 const componentClassName = 'UserAuth'
 
@@ -11,6 +13,7 @@ export const UserAuth = () => {
     const [password, setPassword] = useState<string>('');
     const [isSigningUp, setIsSigningUp] = useState<boolean>(false);
 
+    const dispatch = useDispatch();
     return (
         <>
             <div className={`${componentClassName}`}>
@@ -41,7 +44,7 @@ export const UserAuth = () => {
                             <Text type={'secondary'}>Non hai un account?</Text>
                         </div>
                     </div>
-                    <Button type="primary" onClick={() => null}>
+                    <Button type="primary" onClick={() => {dispatch(loginActions.userLoginRequest({username, password}))}}>
                         Login
                     </Button>
                 </div>

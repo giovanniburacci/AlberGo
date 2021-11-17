@@ -1,7 +1,7 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {AmministratoreLogin} from './types';
 import loginActions from './login.action';
 import {getAmministratoreStub} from '../../mocks/stubs/amministratore';
+import {LoginData} from './types';
 
 const storedData = localStorage.getItem('AlberGOData');
 
@@ -15,9 +15,8 @@ if(storedData) {
     }
 }
 
-const initialState:AmministratoreLogin = {
+const initialState:LoginData = {
     token,
-    amministratore: getAmministratoreStub(),
     isLoading: false,
     isError: false
 }
@@ -34,10 +33,8 @@ export const loginReducer = {
                 token
             }));
             return {
-                ...state,
-                idHotel,
-                id,
                 token,
+                amministratore,
                 isLoading: false,
                 isError: false
             }
@@ -56,11 +53,31 @@ export const loginReducer = {
         }).addCase(loginActions.adminLogoutAction, (state) => {
             return {
                 ...state,
-                idAmministratore: undefined,
-                idHotel: undefined,
+                amministratore: undefined,
                 token: undefined,
                 isError: false,
                 isLoading: false
+            }
+        }).addCase(loginActions.userLoginRequest.fulfilled, (state, action) => {
+            const {token, user} = action.payload
+            return {
+                ...state,
+                token,
+                isError: false,
+                isLoading: false,
+                user
+            }
+        }).addCase(loginActions.userLoginRequest.pending, (state, action) => {
+            return {
+                ...state,
+                isError: false,
+                isLoading: true,
+            }
+        }).addCase(loginActions.userLoginRequest.rejected, (state, action) => {
+            return {
+                ...state,
+                isError: true,
+                isLoading: false,
             }
         })
     })

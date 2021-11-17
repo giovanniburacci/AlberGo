@@ -17,13 +17,14 @@ interface Option {
 const componentClassName = 'MenuContainer'
 
 interface MenuContainerProps {
-    isCollapsed: boolean
+    isCollapsed: boolean,
+    isAdmin: boolean
 }
 
 export const MenuContainer = (props:MenuContainerProps) => {
-    const {isCollapsed} = props;
+    const {isCollapsed, isAdmin} = props;
     const history = useHistory();
-    const menuOptions: Option[] = [{
+    const menuOptions: Option[] = isAdmin ? [{
         title: 'Prenotazioni',
         icon: <ContactsOutlined style={{fontSize: isCollapsed ? '32px' : 'unset'}}/>,
         path: '/'
@@ -47,7 +48,13 @@ export const MenuContainer = (props:MenuContainerProps) => {
             title: 'Hotel',
             icon: <ShopOutlined style={{fontSize: isCollapsed ? '32px' : 'unset'}}/>,
             path: '/hotel'
-        }];
+        }] : [
+        {
+            title: 'Hotels',
+            icon: <ShopOutlined style={{fontSize: isCollapsed ? '32px' : 'unset'}}/>,
+            path: '/'
+        }
+    ];
 
     //todo ignazio mi serve il count
     const categorie = useSelector(categorieSelector.getCategorie);
@@ -59,50 +66,54 @@ export const MenuContainer = (props:MenuContainerProps) => {
                 {
                     menuOptions.map( (option,index) => {
                         return (
-                                <MenuItem
-                                    style={isCollapsed ? {
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center'
-                                    } : undefined }
-                                    eventKey={String(index)}
-                                    icon={option.icon}
-                                    onClick={() => {history.push(option.path)}}
-                                    key={index}>
-                                    {
-                                        !isCollapsed && option.title
-                                    }
-                                </MenuItem>
+                            <MenuItem
+                                style={isCollapsed ? {
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                } : undefined }
+                                eventKey={String(index)}
+                                icon={option.icon}
+                                onClick={() => {history.push(option.path)}}
+                                key={index}>
+                                {
+                                    !isCollapsed && option.title
+                                }
+                            </MenuItem>
                         )
                     })
                 }
             </div>
+            {
+                isAdmin && (
                     <div className={`${componentClassName}__badges`}>
                         <Tag color={'default'}
                              style={{backgroundImage: 'linear-gradient( 135deg, #70F570 10%, #49C628 100%)',
-                                     color: '#ffffff'}}
+                                 color: '#ffffff'}}
                              className={!isCollapsed ? `${componentClassName}__badges__tag green` : `${componentClassName}__badges__tag__collapsed green`}>
                             {stanze && stanze.length} {!isCollapsed && <>Stanze totali</>}
                         </Tag>
                         <Tag color={'default'}
                              style={{backgroundImage: 'linear-gradient( 135deg, #F05F57 10%, #360940 100%)',
-                                     color: '#ffffff'}}
+                                 color: '#ffffff'}}
                              className={!isCollapsed ? `${componentClassName}__badges__tag` : `${componentClassName}__badges__tag__collapsed`}>
                             X {!isCollapsed && <>Stanze occupate</>}
                         </Tag>
                         <Tag color={'default'}
                              style={{backgroundImage: 'linear-gradient( 135deg, #FCCF31 10%, #F55555 100%)',
-                                     color: '#ffffff'}}
+                                 color: '#ffffff'}}
                              className={!isCollapsed ? `${componentClassName}__badges__tag` : `${componentClassName}__badges__tag__collapsed`}>
                             {categorie && categorie.length} {!isCollapsed && <>Categorie</>}
                         </Tag>
                         <Tag color={'default'}
                              className={!isCollapsed ? `${componentClassName}__badges__tag` : `${componentClassName}__badges__tag__collapsed`}
                              style={{backgroundImage: 'linear-gradient( 135deg, #3B2667 10%, #BC78EC 100%)',
-                                     color: '#ffffff'}}>
+                                 color: '#ffffff'}}>
                             X {!isCollapsed && <>Clienti registrati</>}
                         </Tag>
                     </div>
+                )
+            }
         </div>
     )
 }

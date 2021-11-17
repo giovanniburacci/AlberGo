@@ -9,14 +9,15 @@ const componentClassName = 'HeaderContainer'
 interface HeaderContainerProps {
     setCollapsed: (value:boolean) => void,
     isCollapsed: boolean,
-    selectedKey: string
+    selectedKey: string,
+    isAdmin: boolean
 }
-
-const screens = ['Prenotazioni', 'Stanze', 'Categorie', 'Clienti', 'Hotel']
 
 export const HeaderContainer = (props:HeaderContainerProps) => {
     const {Title} = Typography;
-    const {setCollapsed, isCollapsed,selectedKey } = props;
+    const {setCollapsed, isCollapsed,selectedKey, isAdmin } = props;
+    const screens = isAdmin ? ['Prenotazioni', 'Stanze', 'Categorie', 'Clienti', 'Hotel'] : ['Hotels']
+
     const dispatch = useDispatch();
 
     return (
