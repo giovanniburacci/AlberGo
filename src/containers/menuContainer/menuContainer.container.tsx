@@ -5,7 +5,7 @@ import {
     HomeOutlined,
     UserOutlined,
     ShopOutlined,
-    ContainerOutlined
+    ContainerOutlined, CreditCardOutlined
 } from '@ant-design/icons';
 import './menuContainer.scss'
 import MenuItem from 'antd/es/menu/MenuItem';
@@ -65,6 +65,11 @@ export const MenuContainer = (props:MenuContainerProps) => {
             title: 'Fatture',
             icon: <ContainerOutlined style={{fontSize: isCollapsed ? '32px' : 'unset'}}/>,
             path: '/fatture'
+        },
+        {
+            title: 'Carta',
+            icon: <CreditCardOutlined style={{fontSize: isCollapsed ? '32px' : 'unset'}}/>,
+            path: '/card'
         }
     ];
 

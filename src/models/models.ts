@@ -77,7 +77,6 @@ export interface CardDataDTO {
     number: string,
     cvc: string,
     idCliente: number,
-    idHotel: number,
     exp_month: string,
     exp_year: string
 }

@@ -1,6 +1,5 @@
-import {AdminData} from '../models/login';
 import {LoginData} from '../store/login/types';
-import {ClienteDTO} from '../models/models';
+import {CardDataDTO} from '../models/models';
 
 export const login = async ():Promise<Partial<LoginData>> => {
     return await new Promise((resolve,reject) => {
@@ -32,6 +31,21 @@ export const loginUser = async ():Promise<Partial<LoginData>> => {
                     username: 'fabio.orazi'
                 },
                 token: 'tokenprova'
+            })
+        }, 2000)
+    })
+}
+
+export const mockedSearchCard = async (userId: number) : Promise<CardDataDTO> => {
+    return await new Promise((resolve) => {
+        setTimeout(() => {
+            resolve({
+                cardId: '1',
+                number: '424242424242',
+                cvc: '908',
+                idCliente: 1,
+                exp_month: '10',
+                exp_year: '2021'
             })
         }, 2000)
     })

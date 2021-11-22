@@ -14,6 +14,7 @@ import Clienti from './screens/clienti/clienti.component';
 import Hotel from './screens/hotel/hotel.component';
 import Hotels from './screens/userScreens/hotels/hotels.component';
 import 'react-credit-cards/lib/styles.scss';
+import CardDetail from './screens/userScreens/cardDetail/cardDetail.component';
 const componentClassName = 'App';
 
 const screens = ['Prenotazioni', 'Stanze', 'Categorie', 'Clienti']
@@ -99,6 +100,9 @@ function App() {
                                             </Route>
                                             <Route path={'/fatture'} exact>
                                                 <Prenotazioni />
+                                            </Route>
+                                            <Route path={'/card'} exact>
+                                                <CardDetail />
                                             </Route>
                                             <Route path='/*'>
                                                 <Redirect to='/' />
