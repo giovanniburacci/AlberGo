@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Switch, Route, Redirect} from 'react-router-dom'
-import {Layout, Menu} from 'antd';
+import {Layout, Menu, Modal} from 'antd';
 import { AuthComponent } from './screens/auth/auth.component';
 import './App.scss'
 import { MenuContainer } from './containers/menuContainer/menuContainer.container';
@@ -21,7 +21,9 @@ const screens = ['Prenotazioni', 'Stanze', 'Categorie', 'Clienti']
 
 const getCurrentSection = () => {
     const currentURL = window.location.pathname;
+    console.log(currentURL);
     const currentScreen =  ''+screens.findIndex(screen => screen.toLocaleLowerCase() === currentURL.substring(1))
+    console.log(currentScreen);
     if(currentScreen === '-1') {
         return '0';
     } else {
@@ -33,11 +35,16 @@ function App() {
     const { Header, Content, Sider } = Layout;
     const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
     const [selectedKey,setSelectedKey] = useState<string>(getCurrentSection());
+    const [isOpeningCardDetail, setIsOpeningCardDetail] = useState<boolean>(false)
     const token = useSelector(loginSelector.getToken);
     const amministratore = useSelector(loginSelector.getAmministratore);
     const user = useSelector(loginSelector.getUser);
 
+    useEffect(() => {
+        setSelectedKey(getCurrentSection())
+    }, [amministratore, user])
     return (
+        <>
         <div className={`${componentClassName}`}>
             { !token ? (
                 <Switch>
@@ -64,6 +71,7 @@ function App() {
                     <Layout>
                         <Header className={`${componentClassName}__header`}>
                             <HeaderContainer
+                                setIsOpeningCardDetail={() => setIsOpeningCardDetail(true)}
                                 isAdmin={!!amministratore}
                                 isCollapsed={isCollapsed}
                                 setCollapsed={(value) => {setIsCollapsed(value)}}
@@ -101,9 +109,6 @@ function App() {
                                             <Route path={'/fatture'} exact>
                                                 <Prenotazioni />
                                             </Route>
-                                            <Route path={'/card'} exact>
-                                                <CardDetail />
-                                            </Route>
                                             <Route path='/*'>
                                                 <Redirect to='/' />
                                             </Route>
@@ -117,6 +122,16 @@ function App() {
             )
             }
         </div>
+        <Modal
+            centered
+            footer={null}
+            destroyOnClose={true}
+            maskClosable={true}
+            visible={isOpeningCardDetail}
+            onCancel={() => setIsOpeningCardDetail(false)}>
+            <CardDetail />
+        </Modal>
+        </>
     );
 }
 

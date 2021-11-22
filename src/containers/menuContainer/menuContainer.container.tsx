@@ -65,11 +65,6 @@ export const MenuContainer = (props:MenuContainerProps) => {
             title: 'Fatture',
             icon: <ContainerOutlined style={{fontSize: isCollapsed ? '32px' : 'unset'}}/>,
             path: '/fatture'
-        },
-        {
-            title: 'Carta',
-            icon: <CreditCardOutlined style={{fontSize: isCollapsed ? '32px' : 'unset'}}/>,
-            path: '/card'
         }
     ];
 

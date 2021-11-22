@@ -1,13 +1,20 @@
 import React from 'react';
-import {MenuUnfoldOutlined, MenuFoldOutlined, LogoutOutlined} from '@ant-design/icons';
+import {
+    MenuUnfoldOutlined,
+    MenuFoldOutlined,
+    LogoutOutlined,
+    CreditCardOutlined
+} from '@ant-design/icons';
 import loginActions from '../../store/login/login.action'
 import './headerContainer.scss'
 import {Button, Typography} from 'antd';
 import {useDispatch} from 'react-redux';
+import {useHistory} from 'react-router-dom';
 const componentClassName = 'HeaderContainer'
 
 interface HeaderContainerProps {
     setCollapsed: (value:boolean) => void,
+    setIsOpeningCardDetail: () => void,
     isCollapsed: boolean,
     selectedKey: string,
     isAdmin: boolean
@@ -15,29 +22,45 @@ interface HeaderContainerProps {
 
 export const HeaderContainer = (props:HeaderContainerProps) => {
     const {Title} = Typography;
-    const {setCollapsed, isCollapsed,selectedKey, isAdmin } = props;
-    const screens = isAdmin ? ['Prenotazioni', 'Stanze', 'Categorie', 'Clienti', 'Hotel'] : ['Hotels', 'Fatture', 'Dettaglio Carta']
+    const {setCollapsed, isCollapsed,selectedKey, isAdmin, setIsOpeningCardDetail} = props;
+    const history = useHistory();
+    const screens = isAdmin ? ['Prenotazioni', 'Stanze', 'Categorie', 'Clienti', 'Hotel'] : ['Hotels', 'Fatture']
 
     const dispatch = useDispatch();
 
     return (
         <div className={`${componentClassName}`}>
-            <>
+            {
+                isCollapsed ? (
+                    <MenuUnfoldOutlined style={{fontSize: '32px'}} onClick={() => {setCollapsed(false)}}/>
+                ) : (
+                    <MenuFoldOutlined style={{fontSize: '32px'}} onClick={() => {setCollapsed(true)}}/>
+                )
+            }
+            <Title level={2} style={{margin: '0'}}>
+                {screens[Number(selectedKey)]}
+            </Title>
+            <div>
                 {
-                    isCollapsed ? (
-                        <MenuUnfoldOutlined style={{fontSize: '32px'}} onClick={() => {setCollapsed(false)}}/>
-                    ) : (
-                        <MenuFoldOutlined style={{fontSize: '32px'}} onClick={() => {setCollapsed(true)}}/>
+                    !isAdmin && (
+                        <Button
+                            type={'primary'}
+                            size={'large'}
+                            icon={<CreditCardOutlined/>}
+                            style={{margin: '0 12px 0 0'}}
+                            onClick={setIsOpeningCardDetail}>
+                            Gestisci carta
+                        </Button>
                     )
                 }
-                <Title level={2} style={{margin: '0'}}>
-                    {screens[Number(selectedKey)]}
-                </Title>
-            </>
-            <Button type="primary"
-                    icon={<LogoutOutlined />}
-                    size={'large'}
-                    onClick={() => {dispatch(loginActions.adminLogoutAction())}}>Esci</Button>
+                <Button type="primary"
+                        icon={<LogoutOutlined />}
+                        size={'large'}
+                        onClick={() => {
+                            dispatch(loginActions.adminLogoutAction())
+                            history.push('/')}}>Esci
+                </Button>
+            </div>
         </div>
     )
 }

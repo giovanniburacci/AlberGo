@@ -72,7 +72,7 @@ const ClientiFilters = () => {
                 }}/>
             <Select className={`${componentClassName}__select`} defaultValue={UtenteFilter.COGNOME} value={utenteFilter} style={{ width: 120 }} onChange={setUtenteFilter}>
                 {
-                    filterOptions.map((option) => <Option value={option.value}>{option.label}</Option>)
+                    filterOptions.map((option,index) => <Option key={index} value={option.value}>{option.label}</Option>)
                 }
             </Select>
         </div>
