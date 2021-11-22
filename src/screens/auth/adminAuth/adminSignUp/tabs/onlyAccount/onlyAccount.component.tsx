@@ -1,17 +1,17 @@
 import React, {useState} from 'react';
 import {Input} from 'antd';
 import Title from 'antd/es/typography/Title';
-import {AmministratoreDTO, HotelDTO} from '../../../../../../models/models';
 import './onlyAccount.scss'
+import {AdminCreation} from '../../../types';
 const componentClassName = 'OnlyAccount';
 
-interface AdminCreation extends AmministratoreDTO {
-    password: string,
-    publicKey: string
+interface OnlyAccountProps {
+    isCreatingHotel: boolean,
+    newAdmin?: Partial<AdminCreation>,
+    setNewAdmin:  (item:string, value: string) => void
 }
-export const OnlyAccount = () => {
-
-    const [newAdmin, setNewAdmin] = useState<Partial<AdminCreation>>();
+export const OnlyAccount = (props:OnlyAccountProps) => {
+    const {isCreatingHotel, setNewAdmin, newAdmin} = props;
     return (
         <div className={`${componentClassName}`}>
             <div className={`${componentClassName}__inputgroup`}>
@@ -21,7 +21,7 @@ export const OnlyAccount = () => {
                 <Input
                     placeholder="Nome"
                     value={newAdmin?.nome}
-                    onChange={(value) => {setNewAdmin(prevState => ({...prevState, nome:value.target.value}))}}/>
+                    onChange={(value) => {setNewAdmin('nome',value.target.value)}}/>
             </div>
 
             <div className={`${componentClassName}__inputgroup`}>
@@ -31,7 +31,7 @@ export const OnlyAccount = () => {
                 <Input
                     placeholder="Cognome"
                     value={newAdmin?.cognome}
-                    onChange={(value) => {setNewAdmin(prevState => ({...prevState, cognome:value.target.value}))}}/>
+                    onChange={(value) => {setNewAdmin('cognome',value.target.value)}}/>
             </div>
 
             <div className={`${componentClassName}__inputgroup`}>
@@ -41,18 +41,22 @@ export const OnlyAccount = () => {
                 <Input
                     placeholder="Username"
                     value={newAdmin?.username}
-                    onChange={(value) => {setNewAdmin(prevState => ({...prevState, username:value.target.value}))}}/>
+                    onChange={(value) => {setNewAdmin('username',value.target.value)}}/>
             </div>
 
-            <div className={`${componentClassName}__inputgroup`}>
-                <Title level={5}>
-                    Codice dell'hotel
-                </Title>
-                <Input
-                    placeholder="Codice hotel"
-                    value={newAdmin?.publicKey}
-                    onChange={(value) => {setNewAdmin(prevState => ({...prevState, publicKey:value.target.value}))}}/>
-            </div>
+            {
+                !isCreatingHotel && (
+                    <div className={`${componentClassName}__inputgroup`}>
+                        <Title level={5}>
+                            Codice dell'hotel
+                        </Title>
+                        <Input
+                            placeholder="Codice hotel"
+                            value={newAdmin?.publicKey}
+                            onChange={(value) => {setNewAdmin('publicKey',value.target.value)}}/>
+                    </div>
+                )
+            }
 
             <div className={`${componentClassName}__inputgroup`}>
                 <Title level={5}>
@@ -62,7 +66,7 @@ export const OnlyAccount = () => {
                     placeholder="Password"
                     type={'password'}
                     value={newAdmin?.password}
-                    onChange={(value) => {setNewAdmin(prevState => ({...prevState, password:value.target.value}))}}/>
+                    onChange={(value) => {setNewAdmin('password',value.target.value)}}/>
             </div>
 
         </div>
