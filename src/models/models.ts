@@ -60,7 +60,8 @@ export interface HotelDTO {
     indirizzo: string,
     stelle: Stelle
     descrizione: string,
-    telefono: string
+    telefono: string,
+    publicKey: string
 }
 
 export interface ServizioDTO {
@@ -69,6 +70,16 @@ export interface ServizioDTO {
     prezzo: number,
     idHotel: number,
     idPrenotazione: number
+}
+
+export interface CardDataDTO {
+    cardId: string,
+    number: string,
+    cvc: string,
+    idCliente: number,
+    idHotel: number,
+    exp_month: string,
+    exp_year: string
 }
 
 export enum Stelle  {

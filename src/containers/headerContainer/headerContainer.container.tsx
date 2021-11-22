@@ -16,7 +16,7 @@ interface HeaderContainerProps {
 export const HeaderContainer = (props:HeaderContainerProps) => {
     const {Title} = Typography;
     const {setCollapsed, isCollapsed,selectedKey, isAdmin } = props;
-    const screens = isAdmin ? ['Prenotazioni', 'Stanze', 'Categorie', 'Clienti', 'Hotel'] : ['Hotels']
+    const screens = isAdmin ? ['Prenotazioni', 'Stanze', 'Categorie', 'Clienti', 'Hotel'] : ['Hotels', 'Fatture']
 
     const dispatch = useDispatch();
 

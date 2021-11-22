@@ -24,7 +24,7 @@ export const loginUser = async ():Promise<Partial<LoginData>> => {
         setTimeout(() => {
             resolve({
                 user: {
-                    id: 0,
+                    id: 1,
                     nome: 'Fabio',
                     cognome: 'Orazi',
                     telefono: '3294502297',

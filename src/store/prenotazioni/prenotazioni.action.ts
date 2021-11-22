@@ -1,7 +1,7 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {
     createPrenotazione,
-    deletePrenotazione, searchFilteredByUtenteAndDate,
+    deletePrenotazione, searchByCliente, searchFilteredByUtenteAndDate,
     searchPrenotazioni,
     updatePrenotazione
 } from '../../api/prenotazioni.service';
@@ -17,7 +17,8 @@ const prenotazioniLabels = {
     addPrenotazione: 'addPrenotazione',
     editPrenotazione: 'editPrenotazione',
     removePrenotazione: 'removePrenotazione',
-    fetchFilteredPrenotazioni: 'fetchFilteredPrenotazioni'
+    fetchFilteredPrenotazioni: 'fetchFilteredPrenotazioni',
+    fetchPrenotazioniByCliente: 'fetchPrenotazioniByCliente'
 }
 const fetchPrenotazioni = createAsyncThunk(prenotazioniLabels.fetchPrenotazioni, async (hotelId:number) => {
     try {
@@ -25,6 +26,16 @@ const fetchPrenotazioni = createAsyncThunk(prenotazioniLabels.fetchPrenotazioni,
         return resp.data;
     } catch(e) {
         console.log('fetchPrenotazioni request failed')
+        throw e;
+    }
+});
+
+const fetchPrenotazioniByCliente = createAsyncThunk(prenotazioniLabels.fetchPrenotazioniByCliente, async (idCliente:number) => {
+    try {
+        const resp = await searchByCliente(idCliente)
+        return resp.data;
+    } catch(e) {
+        console.log('fetchPrenotazioniByCliente request failed')
         throw e;
     }
 });
@@ -84,7 +95,8 @@ export const prenotazioniActions = {
     addPrenotazione,
     editPrenotazione,
     removePrenotazione,
-    fetchFilteredPrenotazioni
+    fetchFilteredPrenotazioni,
+    fetchPrenotazioniByCliente
 }
 
 export default prenotazioniActions;

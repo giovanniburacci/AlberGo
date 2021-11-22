@@ -1,5 +1,12 @@
 import React, {ReactNode} from 'react';
-import {ContactsOutlined, ControlOutlined, HomeOutlined, UserOutlined, ShopOutlined} from '@ant-design/icons';
+import {
+    ContactsOutlined,
+    ControlOutlined,
+    HomeOutlined,
+    UserOutlined,
+    ShopOutlined,
+    ContainerOutlined
+} from '@ant-design/icons';
 import './menuContainer.scss'
 import MenuItem from 'antd/es/menu/MenuItem';
 import {Tag} from 'antd';
@@ -53,6 +60,11 @@ export const MenuContainer = (props:MenuContainerProps) => {
             title: 'Hotels',
             icon: <ShopOutlined style={{fontSize: isCollapsed ? '32px' : 'unset'}}/>,
             path: '/'
+        },
+        {
+            title: 'Fatture',
+            icon: <ContainerOutlined style={{fontSize: isCollapsed ? '32px' : 'unset'}}/>,
+            path: '/fatture'
         }
     ];
 

@@ -97,6 +97,9 @@ function App() {
                                             <Route path={'/'} exact>
                                                 <Hotels />
                                             </Route>
+                                            <Route path={'/fatture'} exact>
+                                                <Prenotazioni />
+                                            </Route>
                                             <Route path='/*'>
                                                 <Redirect to='/' />
                                             </Route>

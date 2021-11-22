@@ -1,6 +1,5 @@
 import {createReducer} from '@reduxjs/toolkit';
 import loginActions from './login.action';
-import {getAmministratoreStub} from '../../mocks/stubs/amministratore';
 import {LoginData} from './types';
 
 const storedData = localStorage.getItem('AlberGOData');

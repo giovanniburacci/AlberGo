@@ -72,37 +72,56 @@ export const prenotazioniReducer = {
             return {
                 ...state,
                 isLoadingEdit: false,
-                // isErrorEdit: false
+                isErrorEdit: false
             }
         }).addCase(prenotazioniActions.editPrenotazione.pending, (state,action) => {
             return {
                 ...state,
                 isLoadingEdit: true,
-                // isErrorEdit: false
+                isErrorEdit: false
             }
         }).addCase(prenotazioniActions.editPrenotazione.rejected, (state,action) => {
             return {
                 ...state,
                 isLoadingEdit: false,
-                // isErrorEdit: true
+                isErrorEdit: true
             }
         }).addCase(prenotazioniActions.removePrenotazione.fulfilled, (state,action) => {
             return {
                 ...state,
                 isLoadingDelete: false,
-                // isErrorEdit: true
+                isErrorDelete: false
             }
         }).addCase(prenotazioniActions.removePrenotazione.pending, (state,action) => {
             return {
                 ...state,
                 isLoadingDelete: true,
-                // isErrorEdit: true
+                isErrorDelete: false
             }
         }).addCase(prenotazioniActions.removePrenotazione.rejected, (state,action) => {
             return {
                 ...state,
                 isLoadingDelete: false,
-                // isErrorEdit: true
+                isErrorDelete: true
+            }
+        }).addCase(prenotazioniActions.fetchPrenotazioniByCliente.fulfilled, (state,action) => {
+            return {
+                ...state,
+                prenotazioni: action.payload,
+                isLoading: false,
+                isError: false
+            }
+        }).addCase(prenotazioniActions.fetchPrenotazioniByCliente.pending, (state,action) => {
+            return {
+                ...state,
+                isLoading: true,
+                isError: false
+            }
+        }).addCase(prenotazioniActions.fetchPrenotazioniByCliente.rejected, (state,action) => {
+            return {
+                ...state,
+                isLoading: false,
+                isError: true
             }
         })
     })

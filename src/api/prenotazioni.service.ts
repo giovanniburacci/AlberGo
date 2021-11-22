@@ -10,7 +10,8 @@ const prenotazioniEndpoints = {
     create: 'create',
     update: 'update',
     delete: 'delete',
-    searchNomeCognomeDate: 'searchNomeCognomeDate'
+    searchNomeCognomeDate: 'searchNomeCognomeDate',
+    listaFatture: 'listaFatture'
 }
 
 export const searchPrenotazioni = async (idHotel: number): Promise<AxiosResponse<FatturaDTO[]>> => {
@@ -45,6 +46,14 @@ export const searchFilteredByUtenteAndDate = async (filterBean: FilterBean): Pro
     return axios.get(apiURL + prenotazioniEndpoints.searchNomeCognomeDate, {
         params: {
             ...filterBean
+        }
+    })
+}
+
+export const searchByCliente = async(idCliente: number): Promise<AxiosResponse<FatturaDTO[]>> => {
+    return axios.get(apiURL + prenotazioniEndpoints.listaFatture, {
+        params: {
+            idCliente
         }
     })
 }

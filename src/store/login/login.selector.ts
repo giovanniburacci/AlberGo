@@ -10,6 +10,8 @@ const getAmministratore = (state:RootState) => state.login.amministratore
 
 const getUser = (state:RootState) => state.login.user
 
+const getIdUser = (state:RootState) => state.login.user?.id
+
 const getIsLoading = (state:RootState) => state.login.isLoading;
 
 const getIsError = (state:RootState) => state.login.isError;
@@ -21,5 +23,6 @@ export const loginSelector = {
     getIdHotel,
     getIsError,
     getIsLoading,
-    getUser
+    getUser,
+    getIdUser
 }

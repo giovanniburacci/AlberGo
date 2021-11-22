@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Spin, Table} from 'antd';
 import {ColumnsType} from 'antd/es/table';
 import {FatturaMapped} from '../types';
@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {prenotazioniSelector} from '../../../store/prenotazioni/prenotazioni.selector';
 import prenotazioniActions from '../../../store/prenotazioni/prenotazioni.action';
 import hotelSelector from '../../../store/hotel/hotel.selector';
+import {loginSelector} from '../../../store/login/login.selector';
 
 const columns:ColumnsType<FatturaMapped> = [{
     title: 'Stanza',
@@ -40,6 +41,8 @@ export const PrenotazioniList = (props:PrenotazioniListProps) => {
     const isLoading = useSelector(prenotazioniSelector.getIsLoading);
     const isError = useSelector(prenotazioniSelector.getIsError);
     const idHotel = useSelector(hotelSelector.getHotelId)
+    const isAdmin = !!useSelector(loginSelector.getAmministratore);
+    const idUser = useSelector(loginSelector.getIdUser)
     const selectPrenotazione = (record?:FatturaDTO) => {
         setSelectedPrenotazione(record);
         setIsDrawerVisible();
@@ -47,8 +50,13 @@ export const PrenotazioniList = (props:PrenotazioniListProps) => {
 
     const dispatch = useDispatch();
     useEffect( () => {
-        dispatch(prenotazioniActions.fetchPrenotazioni(idHotel));
-    }, [])
+        if(isAdmin) {
+            dispatch(prenotazioniActions.fetchPrenotazioni(idHotel));
+        } else {
+            console.log(idUser);
+            dispatch(prenotazioniActions.fetchPrenotazioniByCliente(idUser!))
+        }
+    }, [isAdmin])
 
     // @ts-ignore
     return (
