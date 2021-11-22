@@ -3,7 +3,6 @@ import OnlyAccount from '../../tabs/onlyAccount/onlyAccount.component';
 import {AdminCreation} from '../../../types';
 import {Button} from 'antd'
 
-
 export const AccountCreation = () => {
 
     const [newAdmin, setNewAdmin] = useState<Partial<AdminCreation>>();

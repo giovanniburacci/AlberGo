@@ -15,7 +15,8 @@ export const HotelCreation = () => {
                          setNewAdmin={(item,value) => {setNewAdmin(prevState => ({...prevState, [item]: value}))}}
                          isCreatingHotel={true}/>
             <hr/>
-            <CreateHotel newHotel={newHotel} setNewHotel={(item,value) => {setNewHotel(prevState => ({...prevState, [item]: value}))}}/>
+            <CreateHotel newHotel={newHotel}
+                         setNewHotel={(item,value) => {setNewHotel(prevState => ({...prevState, [item]: value}))}}/>
             <Button
                 type={'primary'}
                 style={{float: 'right'}}

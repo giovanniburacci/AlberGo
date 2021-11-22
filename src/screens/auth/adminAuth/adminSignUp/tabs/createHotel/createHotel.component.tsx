@@ -1,13 +1,13 @@
 import React from 'react';
 import Title from 'antd/es/typography/Title';
-import {Input} from 'antd';
+import {Input, Rate} from 'antd';
 import './createHotel.scss'
 import {HotelDTO} from '../../../../../../models/models';
 const componentClassName = 'CreateHotel'
 
 interface CreateHotelProps {
     newHotel?: Partial<HotelDTO>
-    setNewHotel: (item:string, value: string) => void
+    setNewHotel: (item:string, value: string | number) => void
 }
 export const CreateHotel = (props:CreateHotelProps) => {
     const {newHotel, setNewHotel} = props;
@@ -51,6 +51,16 @@ export const CreateHotel = (props:CreateHotelProps) => {
                     placeholder="Telefono"
                     value={newHotel?.telefono}
                     onChange={(value) => {setNewHotel('telefono',value.target.value)}}/>
+            </div>
+
+            <div className={`${componentClassName}__inputgroup`}>
+                <Title level={5}>
+                    Stelle
+                </Title>
+                <Rate
+                    value={newHotel?.stelle}
+                    onChange={(value) => {setNewHotel('stelle',value)}}
+                />
             </div>
 
             <div className={`${componentClassName}__inputgroup`}>

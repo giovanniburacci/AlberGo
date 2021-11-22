@@ -4,6 +4,7 @@ import {LockOutlined, UserOutlined} from '@ant-design/icons';
 import './userAuth.scss'
 import loginActions from '../../../store/login/login.action'
 import {useDispatch} from 'react-redux';
+import UserSignUp from './userSignUp/userSignUp.component';
 const {Text} = Typography;
 const componentClassName = 'UserAuth'
 
@@ -56,6 +57,7 @@ export const UserAuth = () => {
                    destroyOnClose={true}
                    maskClosable={true}
                    onCancel={() => setIsSigningUp(false)}>
+                <UserSignUp />
             </Modal>
         </>
     )

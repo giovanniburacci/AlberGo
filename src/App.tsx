@@ -13,7 +13,7 @@ import Categorie from './screens/categorie/categorie.component';
 import Clienti from './screens/clienti/clienti.component';
 import Hotel from './screens/hotel/hotel.component';
 import Hotels from './screens/userScreens/hotels/hotels.component';
-
+import 'react-credit-cards/lib/styles.scss';
 const componentClassName = 'App';
 
 const screens = ['Prenotazioni', 'Stanze', 'Categorie', 'Clienti']
