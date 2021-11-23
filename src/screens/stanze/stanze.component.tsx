@@ -34,9 +34,9 @@ const Stanze = () => {
     const isLoading = useSelector(stanzeSelector.getIsLoading);
     const isError = useSelector(stanzeSelector.getIsError); //todo gestire loading ed error
     const idHotel = useSelector(hotelSelector.getHotelId)
-
+    const categorieFilter = useSelector(stanzeSelector.getCategoriaFilter)
     const [dataPie,setDataPie] = useState<{}>();
-    const [filteredDataPie,setFilteredDataPie] = useState<{}>();
+    const [filteredDataPie,setFilteredDataPie] = useState<{} | undefined>();
     const [hasClickedNew, setHasClickedNew] = useState<boolean>(false)
     const [selectedStanza, setSelectedStanza] = useState<StanzaWithStatus | undefined>();
     const [dateFilter, setDateFilter] = useState<[moment.Moment,moment.Moment] | null>();
@@ -46,17 +46,37 @@ const Stanze = () => {
     }, [])
 
     useEffect(() => {
-        if(stanze) {
-            if(stanze.length > 0 && stanze[0].status) {
+        if(!stanze || stanze.length === 0) {
+            setDataPie({});
+        } else {
+            setDataPie({
+                labels: ['Fuori Servizio', 'Disponibile'],
+                datasets: [{
+                    label: 'Stato delle stanze',
+                    data: [
+                        stanze.reduce((acc, s) => (
+                            acc + (s.fuoriServizio ? 1 : 0)
+                        ), 0),
+                        stanze.reduce((acc, s) => (
+                            acc + (!s.fuoriServizio ? 1 : 0)
+                        ), 0)],
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)'
+                    ],
+                    hoverOffset: 2
+                }]
+            });
+            if (stanze[0].status) {
                 setFilteredDataPie({
                     labels: ['Libere', 'Occupate'],
                     datasets: [{
                         label: 'Stato delle stanze',
                         data: [
-                            stanze.reduce((acc,s) => (
+                            stanze.reduce((acc, s) => (
                                 acc + (s.status === StanzaStatus.LIBERA ? 1 : 0)
                             ), 0),
-                            stanze.reduce((acc,s) => (
+                            stanze.reduce((acc, s) => (
                                 acc + (s.status === StanzaStatus.OCCUPATA ? 1 : 0)
                             ), 0)],
                         backgroundColor: [
@@ -67,28 +87,10 @@ const Stanze = () => {
                     }]
                 })
             } else {
-                setDataPie({
-                    labels: ['Fuori Servizio', 'Disponibile'],
-                    datasets: [{
-                        label: 'Stato delle stanze',
-                        data: [
-                            stanze.reduce((acc,s) => (
-                                acc + (s.fuoriServizio ? 1 : 0)
-                            ), 0),
-                            stanze.reduce((acc,s) => (
-                                acc + (!s.fuoriServizio ? 1 : 0)
-                            ), 0)],
-                        backgroundColor: [
-                            'rgb(255, 99, 132)',
-                            'rgb(54, 162, 235)'
-                        ],
-                        hoverOffset: 2
-                    }]
-                });
                 setFilteredDataPie(undefined);
             }
         }
-    }, [stanze])
+    }, [stanze, categorieFilter])
 
     return (
         <div className={`${componentClassName}`}>
@@ -131,7 +133,7 @@ const Stanze = () => {
             <div className={`${componentClassName}__column`}>
                 <div className={`${componentClassName}__column__box bb`}>
                     {
-                        filteredDataPie && (
+                        !!filteredDataPie && (
                             <>
                                 <PieContainer data={filteredDataPie}/>
                                 <div>
@@ -148,7 +150,7 @@ const Stanze = () => {
                                             acc + (s.status === StanzaStatus.OCCUPATA ? 1 : 0)
                                         ), 0)
                                     }</Title>
-                                    <Text type={'secondary'}>stanze sono fuori servizio</Text>
+                                    <Text type={'secondary'}>stanze sono occupate</Text>
                                 </div>
                             </>
                         )

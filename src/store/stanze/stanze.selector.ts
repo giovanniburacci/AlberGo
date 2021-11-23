@@ -13,6 +13,8 @@ const getStanze = (state:RootState): StanzaWithStatus[] | undefined => {
     )
 };
 
+const getCategoriaFilter = (state:RootState): number | undefined => state.stanze.categoriaFilter;
+
 const getIsError = (state:RootState): boolean => state.stanze.isError;
 
 const getIsLoading = (state:RootState): boolean => state.stanze.isLoading;
@@ -23,7 +25,8 @@ export const stanzeSelector = {
     getStanze,
     getIsError,
     getIsLoading,
-    getIsLoadingEdit
+    getIsLoadingEdit,
+    getCategoriaFilter
 }
 
 export default stanzeSelector;
