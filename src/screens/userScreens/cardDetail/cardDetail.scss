@@ -1,3 +1,12 @@
 .CardDetail {
   padding: 20px 0;
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &__delete-btn {
+      margin: 24px 0 0 0;
+    }
+  }
 }

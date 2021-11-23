@@ -30,6 +30,44 @@ export const cardReducer = {
                 isLoading: false,
                 isError: true
             }
+        }).addCase(CardActions.removeCard.fulfilled, (state, action) => {
+            return {
+                ...state,
+                isLoading: false,
+                isError: false,
+                card: undefined
+            }
+        }).addCase(CardActions.removeCard.pending, (state, action) => {
+            return {
+                ...state,
+                isLoading: true,
+                isError: false
+            }
+        }).addCase(CardActions.removeCard.rejected, (state, action) => {
+            return {
+                ...state,
+                isLoading: false,
+                isError: true
+            }
+        }).addCase(CardActions.addCard.fulfilled, (state, action) => {
+            return {
+                ...state,
+                isLoading: false,
+                isError: false,
+                card: action.payload
+            }
+        }).addCase(CardActions.addCard.pending, (state, action) => {
+            return {
+                ...state,
+                isLoading: true,
+                isError: false
+            }
+        }).addCase(CardActions.addCard.rejected, (state, action) => {
+            return {
+                ...state,
+                isLoading: false,
+                isError: true
+            }
         })
     })
 };

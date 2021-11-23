@@ -1,6 +1,8 @@
 import {LoginData} from '../store/login/types';
 import {CardDataDTO} from '../models/models';
+import {mockedCard} from './stubs/card';
 
+let callCount = 0;
 export const login = async ():Promise<Partial<LoginData>> => {
     return await new Promise((resolve,reject) => {
         setTimeout(() => {
@@ -37,16 +39,39 @@ export const loginUser = async ():Promise<Partial<LoginData>> => {
 }
 
 export const mockedSearchCard = async (userId: number) : Promise<CardDataDTO | undefined> => {
+    if(callCount == 0) {
+        callCount++;
+        return await new Promise((resolve) => {
+            setTimeout(() => {
+                resolve(mockedCard)
+            }, 2000)
+        })
+    }
+    return await new Promise((resolve) => {
+        callCount = 0;
+        setTimeout(() => {
+            resolve(undefined)
+        }, 2000)
+    })
+}
+
+export const mockedDeleteCard = async () => {
     return await new Promise((resolve) => {
         setTimeout(() => {
-            resolve({
-                cardId: '1',
-                number: '4242424242424242',
-                cvc: '908',
-                idCliente: 1,
-                exp_month: '10',
-                exp_year: '2021'
-            })
+            resolve(null)
+        }, 2000)
+    })
+    /*return await new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(undefined)
+        }, 2000)
+    })*/
+}
+
+export const mockedAddCard = async (card: Partial<CardDataDTO>): Promise<CardDataDTO> => {
+    return await new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(mockedCard)
         }, 2000)
     })
     /*return await new Promise((resolve) => {
