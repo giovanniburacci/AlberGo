@@ -34,8 +34,7 @@ const Categorie = () => {
 
     const getData = () => {
         if(categorie && categorie.length > 0 && numeroStanze) {
-
-            return Object.entries(numeroStanze).map(n => n[1]).filter(n => n > 0)
+            return Object.entries(numeroStanze).filter(n => n[1] > 0 && categorie.find(c => c.id+'' == n[0])).map(n => n[1])
         }
     }
 
@@ -48,7 +47,6 @@ const Categorie = () => {
 
     useEffect(() => {
         if(categorie && categorie.length > 0 && numeroStanze) {
-            console.log('numStanze', numeroStanze)
             setDataPie({
                 labels: getLabels(),
                 datasets: [{

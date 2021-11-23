@@ -55,7 +55,6 @@ const fetchFilteredCategorie = createAsyncThunk(categorieLabels.fetchFilteredCat
 const fetchNumeroStanzeForCategoria = createAsyncThunk(categorieLabels.fetchNumeroStanzeForCategoria, async (categorie: CategoriaDTO[], thunkAPI) => {
     try {
         const numeroStanze: NumeroStanze = {}
-        console.log('call')
         for(const c of categorie) {
             const num = await searchNumeroStanzeForCategoria(c.id);
             numeroStanze[c.id] = num.data
