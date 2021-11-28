@@ -31,7 +31,6 @@ const NewStanza = () => {
 
     const changeNumeroStanza = (value:Key) => {
         const newNumero = Number(value);
-        console.log(newNumero);
         setNewStanza((oldState) => ({
             ...oldState,
             numeroStanza: newNumero
@@ -85,7 +84,7 @@ const NewStanza = () => {
         <div className={`${componentClassName}`}>
             <div className={`${componentClassName}__inputgroup`}>
                 <Title level={5}>Numero Stanza</Title>
-                <InputNumber className={`${componentClassName}__inputgroup__input`} onChange={changeNumeroStanza} min={0}/>
+                <InputNumber placeholder={'Numero stanza'} className={`${componentClassName}__inputgroup__input`} onChange={changeNumeroStanza} min={0}/>
             </div>
             <div className={`${componentClassName}__inputgroup`}>
                 <Title level={5}>Fuori servizio</Title>
@@ -101,9 +100,11 @@ const NewStanza = () => {
                     optionFilterProp="children"
                     value={(newStanza && newStanza.idCategoria) && newStanza.idCategoria}
                     onChange={changeCategoria}
+                    aria-placeholder={'Categoria'}
                     filterOption={(input, option) =>
                         option!.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                     }
+                    id={'select_categoria'}
                     disabled={isLoading || isError}
                 >
                     {
@@ -116,7 +117,7 @@ const NewStanza = () => {
             </div>
             <div className={`${componentClassName}__inputgroup`}>
                 <Title level={5}>Metri quadri</Title>
-                <InputNumber className={`${componentClassName}__inputgroup__input`} onChange={changeMetriQuadri} min={0}/>
+                <InputNumber placeholder={'Metri quadri'} className={`${componentClassName}__inputgroup__input`} onChange={changeMetriQuadri} min={0}/>
             </div>
             <div className={`${componentClassName}__inputgroup`}>
                 <Title level={5}>

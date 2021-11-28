@@ -10,7 +10,7 @@ export const getStanzeStub = ():StanzaDTO[] => {
             fuoriServizio: randStato < 3,
             id: i,
             idCategoria: 1,
-            idHotel: i,
+            idHotel: 1,
             metriQuadri: 20,
             numeroStanza: i
         });

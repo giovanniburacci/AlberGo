@@ -83,7 +83,7 @@ const removePrenotazione = createAsyncThunk(prenotazioniLabels.removePrenotazion
         if(prenotazione.idHotel) {
             thunkAPI.dispatch(fetchPrenotazioni(prenotazione.idHotel));
         }
-        return {};
+        return;
     } catch(e) {
         console.log('editPrenotazione request failed')
         throw e;

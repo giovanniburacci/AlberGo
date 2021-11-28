@@ -17,7 +17,7 @@ interface PrenotazioneProps {
     resetFilters: () => void
 }
 
-export const DettaglioStanza = (props:PrenotazioneProps) => {
+const DettaglioStanza = (props:PrenotazioneProps) => {
 
     const {stanza} = props
 
