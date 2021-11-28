@@ -7,10 +7,8 @@ import * as redux from 'react-redux';
 import * as prenotazioniServices from '../../../api/prenotazioni.service'
 import {Prenotazione} from './prenotazione.component';
 import {actionTypeAdapter, fakeAxiosReturn} from '../../../setupTests';
-import stanzeActions from '../../../store/stanze/stanze.action';
 import {getFatturaStub} from '../../../mocks/stubs/prenotazioni';
 import prenotazioniActions from '../../../store/prenotazioni/prenotazioni.action';
-import * as stanzeServices from 'src/api/stanze.service';
 
 describe('Prenotazione tests', () => {
 
