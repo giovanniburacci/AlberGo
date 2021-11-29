@@ -8,13 +8,13 @@ export const login = async ():Promise<Partial<LoginData>> => {
         setTimeout(() => {
             resolve({
                 amministratore: {
-                    id: 0,
-                    nome: 'Pippo',
-                    cognome: 'Baudo',
-                    username: 'pippobaudo69',
-                    idHotel: 0,
+                    id: 1,
+                    nome: 'nome',
+                    cognome: 'test',
+                    username: 'nome.test',
+                    idHotel: 1,
                 },
-                token: 'tokenprova'
+                adminToken: 'tokenprova'
             })
         }, 2000)
     })
@@ -32,7 +32,7 @@ export const loginUser = async ():Promise<Partial<LoginData>> => {
                     documento: 'AB1234PROVA',
                     username: 'fabio.orazi'
                 },
-                token: 'tokenprova'
+                userToken: 'tokenprova'
             })
         }, 2000)
     })

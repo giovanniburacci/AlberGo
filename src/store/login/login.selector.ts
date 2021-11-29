@@ -1,6 +1,8 @@
 import {RootState} from '../reducer.config';
 
-const getToken = (state:RootState) => state.login.token;
+const getAdminToken = (state:RootState) => state.login.adminToken;
+
+const getUserToken = (state:RootState) => state.login.userToken;
 
 const getIdAmministratore = (state:RootState) => state.login.amministratore?.id;
 
@@ -17,7 +19,8 @@ const getIsLoading = (state:RootState) => state.login.isLoading;
 const getIsError = (state:RootState) => state.login.isError;
 
 export const loginSelector = {
-    getToken,
+    getAdminToken,
+    getUserToken,
     getIdAmministratore,
     getAmministratore,
     getIdHotel,

@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons';
 import './menuContainer.scss'
 import MenuItem from 'antd/es/menu/MenuItem';
-import {Tag} from 'antd';
+import {Spin, Tag} from 'antd';
 import {useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import categorieSelector from '../../store/categorie/categorie.selector';
@@ -80,13 +80,19 @@ export const MenuContainer = (props:MenuContainerProps) => {
     const stanze = useSelector(stanzeSelector.getStanze)
     const hotelId = useSelector(loginSelector.getIdHotel)
     const clienti = useSelector(clientiSelector.getClienti)
+
+    const isLoadingClienti = useSelector(clientiSelector.getIsLoading);
+    const isLoadingStanze = useSelector(stanzeSelector.getIsLoading);
+    const isLoadingCategorie = useSelector(categorieSelector.getIsLoading);
+
+    const isLoading = isLoadingStanze || isLoadingClienti || isLoadingCategorie;
+
     useEffect(() => {
         if(renderCount === 0) {
-            if(hotelId) {
+            if(typeof hotelId !== 'undefined') {
                 dispatch(categorieActions.fetchCategorie(hotelId));
                 dispatch(clientiActions.fetchClienti(hotelId))
                 dispatch(stanzeActions.fetchStanze(hotelId))
-                renderCount ++;
             }
         }
     }, [hotelId])
@@ -123,36 +129,36 @@ export const MenuContainer = (props:MenuContainerProps) => {
                                  color: '#ffffff'}}
                              className={!isCollapsed ? `${componentClassName}__badges__tag green` : `${componentClassName}__badges__tag__collapsed green`}>
 
-                            {stanze && stanze.length}
+                            {stanze ? stanze.length : isLoading && <Spin />}
 
-                            {!isCollapsed && <>Stanze totali</>}
+                            {!isCollapsed && <> Stanze totali</>}
                         </Tag>
                         <Tag color={'default'}
                              style={{backgroundImage: 'linear-gradient( 135deg, #F05F57 10%, #360940 100%)',
                                  color: '#ffffff'}}
                              className={!isCollapsed ? `${componentClassName}__badges__tag` : `${componentClassName}__badges__tag__collapsed`}>
 
-                            {stanze && stanze.filter(s => s.fuoriServizio).length}
+                            {stanze ? stanze.filter(s => s.fuoriServizio).length : isLoading && <Spin />}
 
-                            {!isCollapsed && <>Stanze fuori servizio</>}
+                            {!isCollapsed && <> Stanze fuori servizio</>}
                         </Tag>
                         <Tag color={'default'}
                              style={{backgroundImage: 'linear-gradient( 135deg, #FCCF31 10%, #F55555 100%)',
                                  color: '#ffffff'}}
                              className={!isCollapsed ? `${componentClassName}__badges__tag` : `${componentClassName}__badges__tag__collapsed`}>
 
-                            {categorie && categorie.length}
+                            {categorie ? categorie.length : isLoading && <Spin />}
 
-                            {!isCollapsed && <>Categorie</>}
+                            {!isCollapsed && <> Categorie</>}
                         </Tag>
                         <Tag color={'default'}
                              className={!isCollapsed ? `${componentClassName}__badges__tag` : `${componentClassName}__badges__tag__collapsed`}
                              style={{backgroundImage: 'linear-gradient( 135deg, #3B2667 10%, #BC78EC 100%)',
                                  color: '#ffffff'}}>
 
-                            {clienti && clienti.length}
+                            {clienti ? clienti.length : isLoading && <Spin />}
 
-                            {!isCollapsed && <>Clienti registrati</>}
+                            {!isCollapsed && <> Clienti registrati</>}
                         </Tag>
                     </div>
                 )

@@ -57,8 +57,13 @@ export const HeaderContainer = (props:HeaderContainerProps) => {
                         icon={<LogoutOutlined />}
                         size={'large'}
                         onClick={() => {
-                            dispatch(loginActions.adminLogoutAction())
-                            history.push('/')}}>Esci
+                            if(isAdmin) {
+                                dispatch(loginActions.adminLogoutAction())
+                            } else {
+                                dispatch(loginActions.userLogoutAction())
+                            }
+                            history.push('/')}}>
+                    Esci
                 </Button>
             </div>
         </div>

@@ -1,22 +1,33 @@
 import {createReducer} from '@reduxjs/toolkit';
 import loginActions from './login.action';
 import {LoginData} from './types';
-import {useHistory} from 'react-router-dom';
 
-const storedData = localStorage.getItem('AlberGOData');
+const storedAdminData = localStorage.getItem('AlberGOAdmin');
+const storedUserData = localStorage.getItem('AlberGOUser');
 
-let token = null, id = null, idHotel = null;
-if(storedData) {
-    const parsedData = JSON.parse(storedData);
-    if(parsedData.token && parsedData.id && parsedData.idHotel) {
-        token = parsedData.token;
-        id = parsedData.id;
-        idHotel = parsedData.idHotel;
+let adminToken = null, userToken = null, amministratore = null, user = null;
+
+if(storedAdminData) {
+    const parsedData = JSON.parse(storedAdminData);
+    if(parsedData.token && parsedData.amministratore) {
+        adminToken = parsedData.token;
+        amministratore = parsedData.amministratore;
+    }
+}
+
+if(storedUserData) {
+    const parsedData = JSON.parse(storedUserData);
+    if(parsedData.token && parsedData.user) {
+        userToken = parsedData.token;
+        user = parsedData.user;
     }
 }
 
 const initialState:LoginData = {
-    token,
+    userToken,
+    adminToken,
+    user,
+    amministratore,
     isLoading: false,
     isError: false
 }
@@ -24,16 +35,13 @@ const initialState:LoginData = {
 export const loginReducer = {
     login: createReducer(initialState, (builder) => {
         builder.addCase(loginActions.adminLoginRequest.fulfilled, (state,action) => {
-            const {amministratore, token } = action.payload
-            const idHotel = amministratore?.idHotel
-            const id = amministratore?.id
-            localStorage.setItem('AlberGOData', JSON.stringify({
-                idHotel,
-                id,
-                token
+            const {amministratore, adminToken } = action.payload
+            localStorage.setItem('AlberGOAdmin', JSON.stringify({
+                amministratore,
+                token: adminToken
             }));
             return {
-                token,
+                adminToken,
                 amministratore,
                 isLoading: false,
                 isError: false
@@ -54,15 +62,17 @@ export const loginReducer = {
             return {
                 ...state,
                 amministratore: undefined,
-                token: undefined,
-                isError: false,
-                isLoading: false
+                adminToken: undefined
             }
         }).addCase(loginActions.userLoginRequest.fulfilled, (state, action) => {
-            const {token, user} = action.payload
+            const {userToken, user} = action.payload
+            localStorage.setItem('AlberGOUser', JSON.stringify({
+                user,
+                token: userToken
+            }));
             return {
                 ...state,
-                token,
+                userToken,
                 isError: false,
                 isLoading: false,
                 user
@@ -78,6 +88,12 @@ export const loginReducer = {
                 ...state,
                 isError: true,
                 isLoading: false,
+            }
+        }).addCase(loginActions.userLogoutAction, (state) => {
+            return {
+                ...state,
+                user: undefined,
+                userToken: undefined
             }
         })
     })

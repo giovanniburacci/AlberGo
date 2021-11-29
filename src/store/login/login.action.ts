@@ -4,7 +4,8 @@ import {login, loginUser} from '../../mocks/api';
 enum LOGIN_ACTIONS {
     adminLogin = 'adminLogin/',
     adminLogout = 'adminLogout/',
-    userLogin = 'userLogin/'
+    userLogin = 'userLogin/',
+    userLogout = 'userLogout/'
 }
 
 const adminLoginRequest = createAsyncThunk(LOGIN_ACTIONS.adminLogin, async ({}:{}) => { // params to be replaced with username and pass
@@ -27,7 +28,14 @@ const userLoginRequest = createAsyncThunk(LOGIN_ACTIONS.userLogin, async ({}:{})
 });
 
 const adminLogoutAction = createAction(LOGIN_ACTIONS.adminLogout, () => {
-    localStorage.removeItem('AlberGOData');
+    localStorage.removeItem('AlberGOAdmin');
+    return {
+        payload: null
+    }
+});
+
+const userLogoutAction = createAction(LOGIN_ACTIONS.userLogout, () => {
+    localStorage.removeItem('AlberGOUser');
     return {
         payload: null
     }
@@ -36,7 +44,8 @@ const adminLogoutAction = createAction(LOGIN_ACTIONS.adminLogout, () => {
 export const logoutActions = {
     adminLoginRequest,
     userLoginRequest,
-    adminLogoutAction
+    adminLogoutAction,
+    userLogoutAction
 };
 
 export default logoutActions;

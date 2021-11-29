@@ -21,9 +21,7 @@ const screens = ['Prenotazioni', 'Stanze', 'Categorie', 'Clienti']
 
 const getCurrentSection = () => {
     const currentURL = window.location.pathname;
-    console.log(currentURL);
     const currentScreen =  ''+screens.findIndex(screen => screen.toLocaleLowerCase() === currentURL.substring(1))
-    console.log(currentScreen);
     if(currentScreen === '-1') {
         return '0';
     } else {
@@ -36,17 +34,19 @@ function App() {
     const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
     const [selectedKey,setSelectedKey] = useState<string>(getCurrentSection());
     const [isOpeningCardDetail, setIsOpeningCardDetail] = useState<boolean>(false)
-    const token = useSelector(loginSelector.getToken);
+    const userToken = useSelector(loginSelector.getUserToken);
+    const adminToken = useSelector(loginSelector.getAdminToken);
     const amministratore = useSelector(loginSelector.getAmministratore);
     const user = useSelector(loginSelector.getUser);
 
+    console.log('user', user)
     useEffect(() => {
         setSelectedKey(getCurrentSection())
     }, [amministratore, user])
     return (
         <>
         <div className={`${componentClassName}`}>
-            { !token ? (
+            { ( !adminToken && !userToken) ? (
                 <Switch>
                     <Route path='/*'>
                         <AuthComponent />
@@ -101,7 +101,7 @@ function App() {
                                                 <Redirect to='/' />
                                             </Route>
                                         </Switch>
-                                    ) : user && (
+                                    ) : user ? (
                                         <Switch>
                                             <Route path={'/'} exact>
                                                 <Hotels />
@@ -113,7 +113,7 @@ function App() {
                                                 <Redirect to='/' />
                                             </Route>
                                         </Switch>
-                                    )
+                                    ) : null
                                 }
                             </div>
                         </Content>
