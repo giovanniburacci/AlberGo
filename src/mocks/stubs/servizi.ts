@@ -7,7 +7,7 @@ export const getServiziStub = ():ServizioDTO[] => {
             id: i,
             nome: 'Servizio a caso',
             prezzo: 30,
-            idHotel: 0,
+            idHotel: 1,
             idPrenotazione: i
         })
     }

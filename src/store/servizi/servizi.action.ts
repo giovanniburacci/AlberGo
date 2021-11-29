@@ -100,7 +100,8 @@ const removeServizio = createAsyncThunk(serviziLabels.removeServizio, async (ser
     try {
         const resp = await deleteServizio(servizio.id)
         thunkAPI.dispatch(fetchServizi(servizio.idHotel));
-        return {};
+        return
+            ;
     } catch(e) {
         console.log('removeServizio request failed')
         throw e;

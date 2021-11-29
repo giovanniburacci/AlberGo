@@ -1,5 +1,5 @@
 import React from 'react';
-import {fireEvent, render, waitForDomChange, waitForElement} from '@testing-library/react';
+import {fireEvent, render} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
@@ -53,7 +53,7 @@ describe('Dettaglio stanza tests', () => {
             }
         });
 
-        const categoriaSelect = await dettaglioStanza.getByRole('combobox');
+        const categoriaSelect = dettaglioStanza.getByRole('combobox');
 
         fireEvent.change(categoriaSelect, {
             target: {

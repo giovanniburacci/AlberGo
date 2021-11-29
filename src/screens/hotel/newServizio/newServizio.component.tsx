@@ -36,6 +36,7 @@ const NewServizio = () => {
                 <InputNumber
                     className={`${componentClassName}__inputgroup__inputnumber`}
                     addonAfter={'€'}
+                    placeholder={'Prezzo'}
                     value={newServizio?.prezzo}
                     onChange={(value) => {
                         setNewServizio(prevState => {

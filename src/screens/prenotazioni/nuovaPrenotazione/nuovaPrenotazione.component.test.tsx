@@ -10,7 +10,6 @@ import {actionTypeAdapter, fakeAxiosReturn} from '../../../setupTests';
 import prenotazioniActions from '../../../store/prenotazioni/prenotazioni.action';
 import {getClienteStub} from '../../../mocks/stubs/cliente';
 import {getServiziStub} from '../../../mocks/stubs/servizi';
-import {getPrenotazioniStub} from 'src/mocks/stubs/prenotazioni';
 
 describe('NuovaPrenotazione tests', () => {
 

@@ -34,7 +34,8 @@ export const updatePrenotazione = async (prenotazione: Partial<PrenotazioneDTO>)
     })
 }
 
-export const deletePrenotazione = async (idPrenotazione: number): Promise<AxiosResponse<boolean>> => {
+export const
+    deletePrenotazione = async (idPrenotazione: number): Promise<AxiosResponse<boolean>> => {
     return axios.delete(apiURL + prenotazioniEndpoints.delete, {
         params: {
             idPrenotazione
