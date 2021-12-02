@@ -48,6 +48,7 @@ export const NewCategoria = () => {
                 <InputNumber
                     className={`${componentClassName}__inputgroup__inputnumber`}
                     addonAfter={'€'}
+                    placeholder={'Prezzo'}
                     value={newCategoria && newCategoria.prezzo && newCategoria.prezzo}
                     onChange={(value) => {
                         setNewCategoria(prevState => {
@@ -63,6 +64,7 @@ export const NewCategoria = () => {
                 <InputNumber
                     className={`${componentClassName}__inputgroup__inputnumber`}
                     addonAfter={'giorni'}
+                    placeholder={'Giorni di blocco'}
                     min={0}
                     defaultValue={0}
                     value={newCategoria?.giorniBlocco}
@@ -94,6 +96,7 @@ export const NewCategoria = () => {
                     className={`${componentClassName}__inputgroup__inputnumber`}
                     addonAfter={'giorni'}
                     min={0}
+                    placeholder={'Giorni massimi'}
                     disabled={!isCheckboxChecked}
                     value={newCategoria?.giorniPenale}
                     onChange={(value) => {
@@ -113,6 +116,7 @@ export const NewCategoria = () => {
                     addonAfter={'€'}
                     min={0}
                     value={newCategoria?.qtaPenale}
+                    placeholder={'Costo penale'}
                     disabled={!isCheckboxChecked}
                     onChange={(value) => {
                         setNewCategoria(prevState => {

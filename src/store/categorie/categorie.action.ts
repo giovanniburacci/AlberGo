@@ -32,7 +32,7 @@ const fetchCategorie = createAsyncThunk(categorieLabels.fetchCategorie, async (h
 const addCategoria = createAsyncThunk(categorieLabels.addCategoria, async (categoria: Partial<CategoriaDTO>, thunkAPI) => {
     try {
         const resp = await createCategoria(categoria)
-        if(categoria.idHotel) {
+        if(typeof categoria.idHotel !== 'undefined') {
             thunkAPI.dispatch(fetchCategorie(categoria.idHotel));
         }
         return resp.data;
