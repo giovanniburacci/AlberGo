@@ -19,25 +19,25 @@ export const DettaglioCliente = (props:DettaglioClienteProps) => {
                 <Title level={5}>
                     Nome
                 </Title>
-                <Input disabled value={selectedCliente.nome}/>
+                <Input disabled placeholder={'Nome'} value={selectedCliente.nome}/>
             </div>
             <div className={`${componentClassName}__inputgroup`}>
                 <Title level={5}>
                     Cognome
                 </Title>
-                <Input disabled value={selectedCliente.cognome}/>
+                <Input disabled placeholder={'Cognome'} value={selectedCliente.cognome}/>
             </div>
             <div className={`${componentClassName}__inputgroup`}>
                 <Title level={5}>
                     Telefono
                 </Title>
-                <Input disabled value={selectedCliente.telefono}/>
+                <Input disabled placeholder={'Telefono'} value={selectedCliente.telefono}/>
             </div>
             <div className={`${componentClassName}__inputgroup`}>
                 <Title level={5}>
                     Documento
                 </Title>
-                <Input disabled value={selectedCliente.documento}/>
+                <Input disabled placeholder={'Documento'} value={selectedCliente.documento}/>
             </div>
         </div>
     )
