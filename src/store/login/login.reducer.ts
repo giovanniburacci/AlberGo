@@ -29,18 +29,22 @@ const initialState:LoginData = {
     user,
     amministratore,
     isLoading: false,
-    isError: false
+    isError: false,
+    isLoadingRegister: false,
+    isErrorRegister: false
 }
 
 export const loginReducer = {
     login: createReducer(initialState, (builder) => {
         builder.addCase(loginActions.adminLoginRequest.fulfilled, (state,action) => {
-            const {amministratore, adminToken } = action.payload
+            const amministratore = action.payload.amministratore;
+            const adminToken = action.payload.adminToken;
             localStorage.setItem('AlberGOAdmin', JSON.stringify({
                 amministratore,
                 token: adminToken
             }));
             return {
+                ...state,
                 adminToken,
                 amministratore,
                 isLoading: false,
@@ -94,6 +98,24 @@ export const loginReducer = {
                 ...state,
                 user: undefined,
                 userToken: undefined
+            }
+        }).addCase(loginActions.adminRegister.pending, (state,action) => {
+            return {
+                ...state,
+                isLoadingRegister: true,
+                isErrorRegister: false
+            }
+        }).addCase(loginActions.adminRegister.rejected, (state,action) => {
+            return {
+                ...state,
+                isLoadingRegister: false,
+                isErrorRegister: true
+            }
+        }).addCase(loginActions.adminRegister.fulfilled, (state,action) => {
+            return {
+                ...state,
+                isLoadingRegister: false,
+                isErrorRegister: false
             }
         })
     })

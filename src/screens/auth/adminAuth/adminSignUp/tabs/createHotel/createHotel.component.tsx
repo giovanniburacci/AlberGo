@@ -1,8 +1,10 @@
 import React from 'react';
 import Title from 'antd/es/typography/Title';
-import {Input, Rate} from 'antd';
+import {Button, Input, Rate} from 'antd';
 import './createHotel.scss'
 import {HotelDTO} from '../../../../../../models/models';
+import {useDispatch} from 'react-redux';
+import loginActions from '../../../../../../store/login/login.action';
 const componentClassName = 'CreateHotel'
 
 interface CreateHotelProps {

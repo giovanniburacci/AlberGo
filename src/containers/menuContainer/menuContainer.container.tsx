@@ -88,10 +88,11 @@ export const MenuContainer = (props:MenuContainerProps) => {
 
     useEffect(() => {
         if(renderCount === 0) {
-            if(typeof hotelId !== 'undefined') {
+            if(hotelId && isAdmin) {
                 dispatch(categorieActions.fetchCategorie(hotelId));
                 dispatch(clientiActions.fetchClienti(hotelId))
                 dispatch(stanzeActions.fetchStanze(hotelId))
+                renderCount ++;
             }
         }
     }, [hotelId])
@@ -128,7 +129,7 @@ export const MenuContainer = (props:MenuContainerProps) => {
                                  color: '#ffffff'}}
                              className={!isCollapsed ? `${componentClassName}__badges__tag green` : `${componentClassName}__badges__tag__collapsed green`}>
 
-                            {stanze ? stanze.length : isLoading && <Spin />}
+                            {stanze ? stanze.length : isLoading ? <Spin /> : 'X'}
 
                             {!isCollapsed && <> Stanze totali</>}
                         </Tag>
@@ -137,7 +138,7 @@ export const MenuContainer = (props:MenuContainerProps) => {
                                  color: '#ffffff'}}
                              className={!isCollapsed ? `${componentClassName}__badges__tag` : `${componentClassName}__badges__tag__collapsed`}>
 
-                            {stanze ? stanze.filter(s => s.fuoriServizio).length : isLoading && <Spin />}
+                            {stanze ? stanze.filter(s => s.fuoriServizio).length : isLoading ? <Spin /> : 'X'}
 
                             {!isCollapsed && <> Stanze fuori servizio</>}
                         </Tag>
@@ -146,7 +147,7 @@ export const MenuContainer = (props:MenuContainerProps) => {
                                  color: '#ffffff'}}
                              className={!isCollapsed ? `${componentClassName}__badges__tag` : `${componentClassName}__badges__tag__collapsed`}>
 
-                            {categorie ? categorie.length : isLoading && <Spin />}
+                            {categorie ? categorie.length : isLoading ? <Spin /> : 'X'}
 
                             {!isCollapsed && <> Categorie</>}
                         </Tag>
@@ -155,7 +156,7 @@ export const MenuContainer = (props:MenuContainerProps) => {
                              style={{backgroundImage: 'linear-gradient( 135deg, #3B2667 10%, #BC78EC 100%)',
                                  color: '#ffffff'}}>
 
-                            {clienti ? clienti.length : isLoading && <Spin />}
+                            {clienti ? clienti.length : isLoading ? <Spin /> : 'X'}
 
                             {!isCollapsed && <> Clienti registrati</>}
                         </Tag>

@@ -8,10 +8,12 @@ const componentClassName = 'OnlyAccount';
 interface OnlyAccountProps {
     isCreatingHotel: boolean,
     newAdmin?: Partial<AdminCreation>,
-    setNewAdmin:  (item:string, value: string) => void
+    setNewAdmin:  (item:string, value: string) => void,
+    hotelKey?: string,
+    setHotelKey?: (newValue: string) => void
 }
 export const OnlyAccount = (props:OnlyAccountProps) => {
-    const {isCreatingHotel, setNewAdmin, newAdmin} = props;
+    const {isCreatingHotel, setNewAdmin, newAdmin, hotelKey, setHotelKey} = props;
     return (
         <div className={`${componentClassName}`}>
             <div className={`${componentClassName}__inputgroup`}>
@@ -21,7 +23,7 @@ export const OnlyAccount = (props:OnlyAccountProps) => {
                 <Input
                     placeholder="Nome"
                     value={newAdmin?.nome}
-                    onChange={(value) => {setNewAdmin('nome',value.target.value)}}/>
+                    onChange={(e) => {setNewAdmin('nome',e.target.value)}}/>
             </div>
 
             <div className={`${componentClassName}__inputgroup`}>
@@ -31,7 +33,7 @@ export const OnlyAccount = (props:OnlyAccountProps) => {
                 <Input
                     placeholder="Cognome"
                     value={newAdmin?.cognome}
-                    onChange={(value) => {setNewAdmin('cognome',value.target.value)}}/>
+                    onChange={(e) => {setNewAdmin('cognome',e.target.value)}}/>
             </div>
 
             <div className={`${componentClassName}__inputgroup`}>
@@ -41,19 +43,19 @@ export const OnlyAccount = (props:OnlyAccountProps) => {
                 <Input
                     placeholder="Username"
                     value={newAdmin?.username}
-                    onChange={(value) => {setNewAdmin('username',value.target.value)}}/>
+                    onChange={(e) => {setNewAdmin('username',e.target.value)}}/>
             </div>
 
             {
-                !isCreatingHotel && (
+                (!isCreatingHotel && (typeof setHotelKey === 'function')) && (
                     <div className={`${componentClassName}__inputgroup`}>
                         <Title level={5}>
                             Codice dell'hotel
                         </Title>
                         <Input
                             placeholder="Codice hotel"
-                            value={newAdmin?.publicKey}
-                            onChange={(value) => {setNewAdmin('publicKey',value.target.value)}}/>
+                            value={hotelKey}
+                            onChange={(e) => setHotelKey(e.target.value)}/>
                     </div>
                 )
             }
@@ -66,7 +68,7 @@ export const OnlyAccount = (props:OnlyAccountProps) => {
                     placeholder="Password"
                     type={'password'}
                     value={newAdmin?.password}
-                    onChange={(value) => {setNewAdmin('password',value.target.value)}}/>
+                    onChange={(e) => {setNewAdmin('password',e.target.value)}}/>
             </div>
 
         </div>

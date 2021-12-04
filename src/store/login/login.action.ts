@@ -1,22 +1,57 @@
 import {createAction, createAsyncThunk} from '@reduxjs/toolkit';
-import {login, loginUser} from '../../mocks/api';
+import {login, searchAdmin} from '../../api/auth.service';
+import {loginUser} from '../../mocks/api';
+import {AmministratoreDTO, HotelDTO} from '../../models/models';
+import {createAdmin, createHotel} from '../../api/auth.service';
+import {LoginBean} from '../../models/login';
+import axios from 'axios';
 
-enum LOGIN_ACTIONS {
+const enum LOGIN_ACTIONS {
     adminLogin = 'adminLogin/',
     adminLogout = 'adminLogout/',
     userLogin = 'userLogin/',
-    userLogout = 'userLogout/'
+    userLogout = 'userLogout/',
+    adminRegister = 'adminRegister/'
 }
 
-const adminLoginRequest = createAsyncThunk(LOGIN_ACTIONS.adminLogin, async ({}:{}) => { // params to be replaced with username and pass
+interface AdminRegisterActionBean {
+    admin: Partial<AmministratoreDTO>,
+    hotel: Partial<HotelDTO>,
+    codiceHotel?: number
+}
+const adminLoginRequest = createAsyncThunk(LOGIN_ACTIONS.adminLogin, async (bean:LoginBean) => {
     try {
-        return await login();
+        const adminToken = (await login(bean)).data.access_token;
+        if(adminToken) {
+            axios.defaults.headers['Authorization'] = 'Bearer ' + adminToken;
+        }
+        const amministratore = (await searchAdmin(bean.username, adminToken)).data;
+        return {
+            adminToken,
+            amministratore
+        }
     } catch(e) {
         console.log('Login request failed')
         throw e;
     }
 });
 
+const adminRegister = createAsyncThunk(LOGIN_ACTIONS.adminRegister, async (bean:AdminRegisterActionBean) => {
+    try {
+        const {admin,hotel,codiceHotel} = bean;
+        if(hotel) {
+            const resp = await createHotel(hotel);
+            const newHotel = resp.data;
+            await createAdmin({
+                admin,
+                idHotel: newHotel.id
+            })
+        }
+    } catch(e) {
+        console.log('Login request failed')
+        throw e;
+    }
+});
 
 const userLoginRequest = createAsyncThunk(LOGIN_ACTIONS.userLogin, async ({}:{}) => { // params to be replaced with username and pass
     try {
@@ -41,11 +76,12 @@ const userLogoutAction = createAction(LOGIN_ACTIONS.userLogout, () => {
     }
 });
 
-export const logoutActions = {
+export const loginActions = {
     adminLoginRequest,
     userLoginRequest,
     adminLogoutAction,
-    userLogoutAction
+    userLogoutAction,
+    adminRegister
 };
 
-export default logoutActions;
+export default loginActions;
