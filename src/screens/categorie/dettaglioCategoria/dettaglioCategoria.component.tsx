@@ -1,23 +1,98 @@
 import React, {useEffect, useState} from 'react';
 import {CategoriaDTO} from '../../../models/models';
-import {Button, Checkbox, Input, InputNumber, Typography} from 'antd';
+import {Button, Checkbox, Input, InputNumber, message, Typography} from 'antd';
 import './dettaglioCategoria.scss'
 import categorieActions from '../../../store/categorie/categorie.action';
 import {isEqual} from 'lodash';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import categorieSelector from '../../../store/categorie/categorie.selector';
+import {ArgsProps} from 'antd/es/message';
 const {Title} = Typography;
 const componentClassName = 'DettaglioCategoria';
 
 interface DettaglioCategoriaProps {
     categoria?: CategoriaDTO,
+    closeDrawer: () => void
 }
 export const DettaglioCategoria = (props:DettaglioCategoriaProps) => {
-    const {categoria} = props;
+    const {categoria, closeDrawer} = props;
     const [newCategoria, setNewCategoria] = useState<Partial<CategoriaDTO>>(categoria!);
     const [isMakingChanges, setIsMakingChanges] = useState<boolean>(false);
     const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(!!(categoria?.giorniPenale && categoria?.qtaPenale));
+    const [hasClickedOnEdit, setHasClickedOnEdit] = useState<boolean>(false);
+    const [hasClickedOnDelete, setHasClickedOnDelete] = useState<boolean>(false);
+
+    const isLoadingEdit = useSelector(categorieSelector.getIsLoadingEdit);
+    const isLoadingDelete = useSelector(categorieSelector.getIsLoadingDelete);
+    const isErrorEdit = useSelector(categorieSelector.getIsLoadingEdit);
+    const isErrorDelete = useSelector(categorieSelector.getIsErrorDelete);
 
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if(isLoadingEdit && hasClickedOnEdit) {
+            message.destroy('success');
+            message.destroy('error');
+            message.loading({
+                duration: 3,
+                key: 'loading',
+                content: 'Sto modificando la categoria...'
+            } as ArgsProps);
+        }
+        else if(isErrorEdit && hasClickedOnEdit) {
+            message.destroy('loading');
+            message.destroy('success');
+            message.error({
+                duration: 3,
+                key: 'error',
+                content: 'Errore nella modifica della categoria!'
+            } as ArgsProps);
+            closeDrawer();
+        }
+        else if(!isLoadingEdit && !isErrorEdit && hasClickedOnEdit) {
+            message.destroy('loading');
+            message.destroy('error');
+            message.success({
+                duration: 3,
+                key: 'success',
+                content: 'Categoria modificata con successo!'
+            } as ArgsProps);
+            closeDrawer();
+        }
+    }, [isLoadingEdit, isErrorEdit])
+
+    useEffect(() => {
+        if(isLoadingDelete && hasClickedOnDelete) {
+            message.destroy('success');
+            message.destroy('error');
+            message.loading({
+                duration: 3,
+                key: 'loading',
+                content: 'Sto eliminando la categoria...'
+            } as ArgsProps);
+        }
+        else if(isErrorDelete && hasClickedOnDelete) {
+            message.destroy('loading');
+            message.destroy('success');
+            message.error({
+                duration: 3,
+                key: 'error',
+                content: 'Errore nell\'eliminazione della categoria!'
+            } as ArgsProps);
+            closeDrawer();
+        }
+        else if(!isLoadingDelete && !isErrorDelete && hasClickedOnDelete) {
+            message.destroy('loading');
+            message.destroy('error');
+            message.success({
+                duration: 3,
+                key: 'success',
+                content: 'Categoria eliminata con successo!'
+            } as ArgsProps);
+            closeDrawer();
+        }
+    }, [isLoadingDelete, isErrorDelete])
+
     useEffect(() => {
         if(!isEqual(categoria, newCategoria)) {
             setIsMakingChanges(true);
@@ -37,7 +112,7 @@ export const DettaglioCategoria = (props:DettaglioCategoriaProps) => {
                 </Title>
                 <Input placeholder="Nome" disabled value={newCategoria?.nome}/>
             </div>
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnEdit && !newCategoria.descrizione) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Descrizione
                 </Title>
@@ -50,7 +125,7 @@ export const DettaglioCategoria = (props:DettaglioCategoriaProps) => {
                     }))
                 }} value={newCategoria && newCategoria.descrizione && newCategoria.descrizione}/>
             </div>
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnEdit && !newCategoria.prezzo) ? 'error-input' : ''}`}>
                 <Title level={5}>Prezzo</Title>
                 <InputNumber
                     className={`${componentClassName}__inputgroup__inputnumber`}
@@ -68,21 +143,23 @@ export const DettaglioCategoria = (props:DettaglioCategoriaProps) => {
             </div>
             <div className={`${componentClassName}__inputgroup`}>
                 <Title level={5}>Limite per modifica/cancellazione prenotazioni</Title>
-                <InputNumber
-                    className={`${componentClassName}__inputgroup__inputnumber`}
-                    addonAfter={'giorni'}
-                    min={0}
-                    defaultValue={0}
-                    value={newCategoria?.giorniBlocco}
-                    placeholder={'Giorni di blocco'}
-                    onChange={(value) => {
-                        setNewCategoria(prevState => {
-                            return {
-                                ...prevState,
-                                giorniBlocco: value
-                            }
-                        })
-                    }}/>
+                <div className={`${(hasClickedOnEdit && newCategoria.giorniBlocco === null) ? 'error-input' : ''}`}>
+                    <InputNumber
+                        className={`${componentClassName}__inputgroup__inputnumber`}
+                        addonAfter={'giorni'}
+                        min={0}
+                        defaultValue={0}
+                        value={newCategoria?.giorniBlocco}
+                        placeholder={'Giorni di blocco'}
+                        onChange={(value) => {
+                            setNewCategoria(prevState => {
+                                return {
+                                    ...prevState,
+                                    giorniBlocco: value
+                                }
+                            })
+                        }}/>
+                </div>
             </div>
             <div className={`${componentClassName}__inputgroup`}>
                 <Title level={5}>Penali</Title>
@@ -139,7 +216,8 @@ export const DettaglioCategoria = (props:DettaglioCategoriaProps) => {
                 className={isMakingChanges ? 'button-edit' : ''}
                 disabled={!isMakingChanges}
                 onClick={() => {
-                    if(newCategoria) {
+                    setHasClickedOnEdit(true);
+                    if(newCategoria && newCategoria.descrizione && newCategoria.nome && newCategoria.prezzo && newCategoria.giorniBlocco !== null) {
                         dispatch(categorieActions.editCategoria({
                             ...categoria,
                             ...newCategoria,
@@ -153,6 +231,7 @@ export const DettaglioCategoria = (props:DettaglioCategoriaProps) => {
                 size={'large'}
                 className={'button-delete'}
                 onClick={() => {
+                    setHasClickedOnDelete(true);
                     dispatch(categorieActions.removeCategoria(categoria));
                 }}
             >Elimina</Button>

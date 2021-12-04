@@ -27,7 +27,8 @@ export const prenotazioniSelector = {
     getIsLoadingCreate,
     getIsErrorEdit,
     getIsLoadingEdit,
-    getIsErrorDelete
+    getIsErrorDelete,
+    getIsLoadingDelete
 }
 
 export default prenotazioniSelector;

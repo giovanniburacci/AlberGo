@@ -12,6 +12,14 @@ const getIsErrorCreate = (state:RootState): boolean => state.categorie.isErrorCr
 
 const getIsLoadingCreate = (state:RootState): boolean => state.categorie.isLoadingCreate;
 
+const getIsLoadingEdit = (state:RootState): boolean => state.categorie.isLoadingUpdate;
+
+const getIsErrorEdit = (state:RootState): boolean => state.categorie.isErrorUpdate;
+
+const getIsErrorDelete = (state:RootState): boolean => state.categorie.isErrorDelete;
+
+const getIsLoadingDelete = (state:RootState): boolean => state.categorie.isLoadingDelete;
+
 const getNumeroStanze = (state:RootState): NumeroStanze | undefined => state.categorie.numeroStanze;
 
 export const categorieSelector = {
@@ -20,7 +28,11 @@ export const categorieSelector = {
     getIsLoading,
     getIsErrorCreate,
     getIsLoadingCreate,
-    getNumeroStanze
+    getNumeroStanze,
+    getIsLoadingEdit,
+    getIsErrorEdit,
+    getIsErrorDelete,
+    getIsLoadingDelete
 }
 
 export default categorieSelector;

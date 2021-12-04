@@ -99,14 +99,13 @@ export const NewCategoria = (props: NewCategoriaProps) => {
                         })
                     }}/>
             </div>
-            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newCategoria?.giorniBlocco) ? 'error-input' : ''}`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && typeof newCategoria?.giorniBlocco === 'undefined') ? 'error-input' : ''}`}>
                 <Title level={5}>Limite per modifica/cancellazione prenotazioni</Title>
                 <InputNumber
                     className={`${componentClassName}__inputgroup__inputnumber`}
                     addonAfter={'giorni'}
                     placeholder={'Giorni di blocco'}
                     min={0}
-                    defaultValue={0}
                     value={newCategoria?.giorniBlocco}
                     onChange={(value) => {
                         setNewCategoria(prevState => {
@@ -169,7 +168,7 @@ export const NewCategoria = (props: NewCategoriaProps) => {
             </div>
             <Button onClick={() => {
                 setHasClickedOnConfirm(true);
-                if(newCategoria && newCategoria.descrizione && newCategoria.nome && newCategoria.prezzo && newCategoria.giorniBlocco) {
+                if(newCategoria && newCategoria.descrizione && newCategoria.nome && newCategoria.prezzo && (typeof newCategoria.giorniBlocco !== 'undefined')) {
                     if(!isCheckboxChecked) {
                         dispatch(categorieActions.addCategoria({
                             ...newCategoria,

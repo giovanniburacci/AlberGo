@@ -84,7 +84,7 @@ const Hotel = () => {
                     width={'348px'}>
                     {
                         selectedServizio && (
-                            <Servizio servizio={selectedServizio}/>
+                            <Servizio servizio={selectedServizio} closeDrawer={() => setSelectedServizio(undefined)}/>
                         )
                     }
                 </Drawer>

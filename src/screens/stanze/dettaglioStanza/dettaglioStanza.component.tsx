@@ -75,7 +75,7 @@ const DettaglioStanza = (props:PrenotazioneProps) => {
             message.loading({
                 duration: 3,
                 key: 'loading',
-                content: 'Sto eliminata la stanza...'
+                content: 'Sto eliminando la stanza...'
             } as ArgsProps);
         }
         else if(isErrorDelete && hasClickedOnDelete) {
@@ -86,6 +86,7 @@ const DettaglioStanza = (props:PrenotazioneProps) => {
                 key: 'error',
                 content: 'Errore nell\'eliminazione della stanza!'
             } as ArgsProps);
+            closeDrawer();
         }
         else if(!isLoadingDelete && !isErrorDelete && hasClickedOnDelete) {
             message.destroy('loading');
@@ -95,6 +96,7 @@ const DettaglioStanza = (props:PrenotazioneProps) => {
                 key: 'success',
                 content: 'Stanza eliminata con successo!'
             } as ArgsProps);
+            closeDrawer();
         }
     }, [isLoadingDelete, isErrorDelete])
 

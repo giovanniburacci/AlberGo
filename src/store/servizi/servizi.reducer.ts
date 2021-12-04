@@ -120,6 +120,42 @@ export const serviziReducer = {
                 isLoadingServiziScelti: false,
                 isErrorServiziScelti: true,
             }
+        }).addCase(serviziActions.editServizio.fulfilled, (state, action) => {
+            return {
+                ...state,
+                isLoadingUpdate: false,
+                isErrorUpdate: false,
+            }
+        }).addCase(serviziActions.editServizio.pending, (state, action) => {
+            return {
+                ...state,
+                isLoadingUpdate: true,
+                isErrorUpdate: false,
+            }
+        }).addCase(serviziActions.editServizio.rejected, (state, action) => {
+            return {
+                ...state,
+                isLoadingUpdate: false,
+                isErrorUpdate: true,
+            }
+        }).addCase(serviziActions.removeServizio.fulfilled, (state, action) => {
+            return {
+                ...state,
+                isLoadingDelete: false,
+                isErrorDelete: false,
+            }
+        }).addCase(serviziActions.removeServizio.pending, (state, action) => {
+            return {
+                ...state,
+                isLoadingDelete: true,
+                isErrorDelete: false,
+            }
+        }).addCase(serviziActions.removeServizio.rejected, (state, action) => {
+            return {
+                ...state,
+                isLoadingDelete: false,
+                isErrorDelete: true,
+            }
         })
     })
 }

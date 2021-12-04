@@ -23,6 +23,14 @@ const getIsErrorCreate = (state:RootState): boolean => state.servizi.isErrorCrea
 
 const getIsLoadingCreate = (state:RootState): boolean => state.servizi.isLoadingCreate;
 
+const getIsErrorEdit = (state:RootState): boolean => state.servizi.isErrorUpdate;
+
+const getIsLoadingEdit = (state:RootState): boolean => state.servizi.isLoadingUpdate;
+
+const getIsErrorDelete = (state:RootState): boolean => state.servizi.isErrorDelete;
+
+const getIsLoadingDelete = (state:RootState): boolean => state.servizi.isLoadingDelete;
+
 export const serviziSelector = {
     getServizi,
     getIsError,
@@ -34,7 +42,11 @@ export const serviziSelector = {
     getIsErrorServiziScelti,
     getIsErrorServiziDisponibili,
     getIsLoadingServiziScelti,
-    getIsLoadingServiziDisponibili
+    getIsLoadingServiziDisponibili,
+    getIsErrorDelete,
+    getIsErrorEdit,
+    getIsLoadingDelete,
+    getIsLoadingEdit
 }
 
 export default serviziSelector;

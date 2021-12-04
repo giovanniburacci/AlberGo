@@ -140,7 +140,7 @@ const Categorie = () => {
                     onClose={() => {setSelectedCategoria(undefined)}}
                     title={'Dettaglio Categoria'}
                     width={'348px'}>
-                    <DettaglioCategoria categoria={selectedCategoria}/>
+                    <DettaglioCategoria closeDrawer={() => setSelectedCategoria(undefined)} categoria={selectedCategoria}/>
                 </Drawer>
             </div>
         </>

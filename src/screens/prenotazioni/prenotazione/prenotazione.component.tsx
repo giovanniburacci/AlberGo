@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './prenotazione.scss'
-import {Button, DatePicker, Input, Select, Tag, Typography} from 'antd';
+import {Button, DatePicker, Input, message, Select, Tag, Typography} from 'antd';
 import {FatturaDTO, PrenotazioneDTO} from '../../../models/models';
 import {UserOutlined} from '@ant-design/icons';
 import {useDispatch, useSelector} from 'react-redux';
@@ -13,22 +13,100 @@ import prenotazioniSelector from '../../../store/prenotazioni/prenotazioni.selec
 import {isEqual} from 'lodash';
 import serviziSelector from '../../../store/servizi/servizi.selector';
 import hotelSelector from '../../../store/hotel/hotel.selector';
+import {ArgsProps} from 'antd/es/message';
 const componentClassName = 'Prenotazione';
 
 interface PrenotazioneProps {
-    prenotazione: FatturaDTO
+    prenotazione: FatturaDTO,
+    closeDrawer: () => void
 }
 const {Title} = Typography;
 const {Option} = Select;
 export const Prenotazione = (props:PrenotazioneProps) => {
 
-    const {prenotazione} = props
+    const {prenotazione, closeDrawer} = props
 
     //todo add controlli date
     const dispatch = useDispatch();
 
     const [newPrenotazione, setNewPrenotazione] = useState<Partial<PrenotazioneDTO>>();
     const [isMakingChanges, setIsMakingChanges] = useState<boolean>(false);
+    const [hasClickedOnEdit, setHasClickedOnEdit] = useState<boolean>(false);
+    const [hasClickedOnDelete, setHasClickedOnDelete] = useState<boolean>(false);
+
+    const isLoadingEdit = useSelector(prenotazioniSelector.getIsLoadingEdit);
+    const isErrorEdit = useSelector(prenotazioniSelector.getIsErrorEdit);
+    const isLoadingDelete = useSelector(prenotazioniSelector.getIsLoadingDelete);
+    const isErrorDelete = useSelector(prenotazioniSelector.getIsErrorDelete);
+    const serviziDisponibili = useSelector(serviziSelector.getServiziDisponibili);
+    const serviziScelti = useSelector(serviziSelector.getServiziScelti);
+    const idHotel = useSelector(hotelSelector.getHotelId)
+
+
+    useEffect(() => {
+        if(isLoadingEdit && hasClickedOnEdit) {
+            message.destroy('success');
+            message.destroy('error');
+            message.loading({
+                duration: 3,
+                key: 'loading',
+                content: 'Sto modificando la prenotazione...'
+            } as ArgsProps);
+        }
+        else if(isErrorEdit && hasClickedOnEdit) {
+            message.destroy('loading');
+            message.destroy('success');
+            message.error({
+                duration: 3,
+                key: 'error',
+                content: 'Errore nella modifica della prenotazione!'
+            } as ArgsProps);
+            closeDrawer();
+        }
+        else if(!isLoadingEdit && !isErrorEdit && hasClickedOnEdit) {
+            message.destroy('loading');
+            message.destroy('error');
+            message.success({
+                duration: 3,
+                key: 'success',
+                content: 'Prenotazione modificata con successo!'
+            } as ArgsProps);
+            closeDrawer();
+        }
+    }, [isLoadingEdit, isErrorEdit])
+
+    useEffect(() => {
+        if(isLoadingDelete && hasClickedOnDelete) {
+            message.destroy('success');
+            message.destroy('error');
+            message.loading({
+                duration: 3,
+                key: 'loading',
+                content: 'Sto eliminando la prenotazione...'
+            } as ArgsProps);
+        }
+        else if(isErrorDelete && hasClickedOnDelete) {
+            message.destroy('loading');
+            message.destroy('success');
+            message.error({
+                duration: 3,
+                key: 'error',
+                content: 'Errore nell\'eliminazione della prenotazione!'
+            } as ArgsProps);
+            closeDrawer();
+        }
+        else if(!isLoadingDelete && !isErrorDelete && hasClickedOnDelete) {
+            message.destroy('loading');
+            message.destroy('error');
+            message.success({
+                duration: 3,
+                key: 'success',
+                content: 'Prenotazione eliminata con successo!'
+            } as ArgsProps);
+            closeDrawer();
+        }
+    }, [isLoadingDelete, isErrorDelete])
+
     useEffect(() => {
         setNewPrenotazione({
             id: prenotazione.prenotazione.id,
@@ -43,11 +121,6 @@ export const Prenotazione = (props:PrenotazioneProps) => {
         dispatch(serviziActions.fetchServiziDisponibiliByPrenotazione(prenotazione.prenotazione.id))
         dispatch(serviziActions.fetchServiziSceltiByPrenotazione(prenotazione.prenotazione.id))
     }, [prenotazione]);
-
-    const isLoadingEdit = useSelector(prenotazioniSelector.getIsLoadingEdit);
-    const serviziDisponibili = useSelector(serviziSelector.getServiziDisponibili);
-    const serviziScelti = useSelector(serviziSelector.getServiziScelti);
-    const idHotel = useSelector(hotelSelector.getHotelId)
 
 
     useEffect(() => {
@@ -192,6 +265,7 @@ export const Prenotazione = (props:PrenotazioneProps) => {
                 className={isMakingChanges ? 'button-edit' : ''}
                 disabled={!isMakingChanges}
                 onClick={() => {
+                    setHasClickedOnEdit(true);
                     if(newPrenotazione) {
                         dispatch(prenotazioniActions.editPrenotazione({
                             ...prenotazione.prenotazione,
@@ -204,9 +278,10 @@ export const Prenotazione = (props:PrenotazioneProps) => {
                 size={'large'}
                 className={'button-delete'}
                 onClick={() => {
-                   dispatch(prenotazioniActions.removePrenotazione(prenotazione.prenotazione));
+                    setHasClickedOnDelete(true);
+                    dispatch(prenotazioniActions.removePrenotazione(prenotazione.prenotazione));
                 }}
-                >Elimina</Button>
+            >Elimina</Button>
         </div>
     )
 }

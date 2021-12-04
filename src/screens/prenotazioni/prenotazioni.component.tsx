@@ -61,6 +61,7 @@ const Prenotazioni = () => {
                 { selectedPrenotazione ? (
                     <Prenotazione
                         prenotazione={selectedPrenotazione}
+                        closeDrawer={() => setIsDrawerVisible(false)}
                     />
                 ) :  isCreatingPrenotazione && (
                     <NuovaPrenotazione closeDrawer={() => setIsDrawerVisible(false)}/>
