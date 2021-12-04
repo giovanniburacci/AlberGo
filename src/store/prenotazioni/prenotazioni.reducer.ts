@@ -5,10 +5,11 @@ const initialState: PrenotazioniState = {
     isLoading: false,
     isError: false,
     isLoadingEdit: false,
-    // isErrorCreate: false,
-    // isErrorEdit: false,
+    isErrorCreate: false,
+    isErrorEdit: false,
     isLoadingCreate: false,
-    isLoadingDelete: false
+    isLoadingDelete: false,
+    isErrorDelete: false
 }
 export const prenotazioniReducer = {
     prenotazioni: createReducer(initialState, (builder) => {

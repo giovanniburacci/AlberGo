@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
-import {Input, Typography, Select, InputNumber, Checkbox, Button} from 'antd';
+import {Input, Typography, Select, InputNumber, Checkbox, Button, message} from 'antd';
 import {StanzaDTO} from '../../../models/models';
 import {Key} from 'antd/es/table/interface';
 import './newStanza.scss'
@@ -9,21 +9,61 @@ import categorieSelector from '../../../store/categorie/categorie.selector';
 import categorieActions from '../../../store/categorie/categorie.action';
 import stanzeActions from '../../../store/stanze/stanze.action';
 import hotelSelector from '../../../store/hotel/hotel.selector';
+import stanzeSelector from '../../../store/stanze/stanze.selector';
+import {ArgsProps} from 'antd/es/message';
 
 const componentClassName = 'NewStanza';
 
-const NewStanza = () => {
+interface NewStanzaProps {
+    closeDrawer: () => void
+}
 
+const NewStanza = (props: NewStanzaProps) => {
+
+    const {closeDrawer} = props;
     const {Title} = Typography;
     const {Option} = Select;
     const dispatch = useDispatch();
     const [newStanza,setNewStanza] = useState<Partial<StanzaDTO>>({
         fuoriServizio: false
     });
+    const [hasClickedOnConfirm, setHasClickedOnConfirm] = useState<boolean>(false);
     const categorie = useSelector(categorieSelector.getCategorie);
-    const isLoading = useSelector(categorieSelector.getIsLoading);
-    const isError = useSelector(categorieSelector.getIsError);
-    const idHotel = useSelector(hotelSelector.getHotelId)
+    const isLoadingCategorie = useSelector(categorieSelector.getIsLoading);
+    const isErrorCategorie = useSelector(categorieSelector.getIsError);
+    const idHotel = useSelector(hotelSelector.getHotelId);
+
+    const isLoading = useSelector(stanzeSelector.getIsLoadingCreate);
+    const isError = useSelector(stanzeSelector.getIsErrorCreate);
+    useEffect(() => {
+        if(isLoading && hasClickedOnConfirm) {
+            message.destroy('success');
+            message.destroy('error');
+            message.loading({
+                duration: 3,
+                key: 'loading',
+                content: 'Sto creando la stanza...'
+            } as ArgsProps);
+        }
+        else if(isError && hasClickedOnConfirm) {
+            message.destroy('loading');
+            message.destroy('success');
+            message.error({
+                duration: 3,
+                key: 'error',
+                content: 'Errore nella creazione della stanza!'
+            } as ArgsProps);
+        }
+        else if(!isLoading && !isError && hasClickedOnConfirm) {
+            message.destroy('loading');
+            message.destroy('error');
+            message.success({
+                duration: 3,
+                key: 'success',
+                content: 'Stanza creata con successo!'
+            } as ArgsProps);
+        }
+    }, [isLoading, isError])
 
     useEffect(() => {
         dispatch(categorieActions.fetchCategorie(idHotel))
@@ -82,7 +122,7 @@ const NewStanza = () => {
 
     return (
         <div className={`${componentClassName}`}>
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newStanza.numeroStanza) ? 'error-input' : ''}`}>
                 <Title level={5}>Numero Stanza</Title>
                 <InputNumber placeholder={'Numero stanza'} className={`${componentClassName}__inputgroup__input`} onChange={changeNumeroStanza} min={0}/>
             </div>
@@ -91,7 +131,7 @@ const NewStanza = () => {
                 <Checkbox onChange={changeFuoriServizio}>La stanza è attualmente fuori servizio</Checkbox>
             </div>
 
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newStanza.idCategoria) ? 'error-input' : ''}`}>
                 <Title level={5}>Categoria</Title>
                 <Select
                     style={{width: '100%'}}
@@ -105,7 +145,7 @@ const NewStanza = () => {
                         option!.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                     }
                     id={'select_categoria'}
-                    disabled={isLoading || isError}
+                    disabled={isLoadingCategorie || isErrorCategorie}
                 >
                     {
                         (categorie && categorie.length > 0) &&
@@ -115,19 +155,20 @@ const NewStanza = () => {
                     }
                 </Select>
             </div>
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newStanza.metriQuadri) ? 'error-input' : ''}`}>
                 <Title level={5}>Metri quadri</Title>
                 <InputNumber placeholder={'Metri quadri'} className={`${componentClassName}__inputgroup__input`} onChange={changeMetriQuadri} min={0}/>
             </div>
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newStanza.descrizione) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Descrizione
                 </Title>
                 <Input placeholder="Descrizione" onChange={changeDescrizione} value={(newStanza && newStanza.descrizione) && newStanza.descrizione}/>
             </div>
             <Button onClick={() => {
+                setHasClickedOnConfirm(true);
                 if(newStanza && newStanza.numeroStanza && newStanza.descrizione && newStanza.idCategoria && newStanza.metriQuadri) {
-                    console.log('prova')
+                    closeDrawer();
                     dispatch(stanzeActions.addStanza({
                         ...newStanza,
                         idHotel: 1

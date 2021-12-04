@@ -21,12 +21,21 @@ const getIsLoading = (state:RootState): boolean => state.stanze.isLoading;
 
 const getIsLoadingEdit = (state:RootState): boolean => state.stanze.isLoadingEdit;
 
+const getIsErrorEdit = (state:RootState): boolean => state.stanze.isErrorEdit;
+
+const getIsLoadingCreate = (state:RootState): boolean => state.stanze.isLoadingNewStanza;
+
+const getIsErrorCreate = (state:RootState): boolean => state.stanze.isErrorNewStanza;
+
 export const stanzeSelector = {
     getStanze,
     getIsError,
     getIsLoading,
     getIsLoadingEdit,
-    getCategoriaFilter
+    getCategoriaFilter,
+    getIsErrorCreate,
+    getIsLoadingCreate,
+    getIsErrorEdit
 }
 
 export default stanzeSelector;

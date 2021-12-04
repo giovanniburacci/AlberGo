@@ -35,7 +35,8 @@ export const Hotels = () => {
                 width={'348px'}>
                 <NuovaPrenotazione
                     cliente={loggedUser}
-                    hotel={selectedHotel}/>
+                    hotel={selectedHotel}
+                    closeDrawer={() => setSelectedHotel(undefined)}/>
             </Drawer>
         </>
     )

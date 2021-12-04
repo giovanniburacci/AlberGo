@@ -95,7 +95,7 @@ const Hotel = () => {
                     onClose={() => {setHasClickedNew(false)}}
                     title={'Nuovo servizio'}
                     width={'348px'}>
-                    <NewServizio />
+                    <NewServizio closeDrawer={() => setHasClickedNew(false)}/>
                 </Drawer>
             </>
         ) : (

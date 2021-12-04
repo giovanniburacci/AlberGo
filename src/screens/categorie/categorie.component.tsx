@@ -127,7 +127,7 @@ const Categorie = () => {
                     onClose={() => {setHasClickedNew(false)}}
                     title={'Nuova categoria'}
                     width={'348px'}>
-                    <NewCategoria/>
+                    <NewCategoria closeDrawer={() => setHasClickedNew(false)}/>
                 </Drawer>
                 <Drawer
                     destroyOnClose={true}

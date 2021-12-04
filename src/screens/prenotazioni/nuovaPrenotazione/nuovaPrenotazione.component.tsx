@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {DatePicker, Input, Typography, Select, Spin, Button, Tag} from 'antd';
+import {DatePicker, Input, Typography, Select, Spin, Button, Tag, message} from 'antd';
 import './nuovaPrenotazione.scss';
 import { UserOutlined } from '@ant-design/icons';
 import stanzeSelector from '../../../store/stanze/stanze.selector';
@@ -13,18 +13,21 @@ import serviziActions from '../../../store/servizi/servizi.action';
 import serviziSelector from '../../../store/servizi/servizi.selector';
 import {SelectValue} from 'antd/es/select';
 import hotelSelector from '../../../store/hotel/hotel.selector';
+import prenotazioniSelector from '../../../store/prenotazioni/prenotazioni.selector';
+import {ArgsProps} from 'antd/es/message';
 
 const componentClassName = 'NuovaPrenotazione';
 
 interface NuovaPrenotazioneProps {
     hotel?: HotelDTO,
-    cliente?: ClienteDTO
+    cliente?: ClienteDTO,
+    closeDrawer: () => void
 }
 const NuovaPrenotazione = (props: NuovaPrenotazioneProps) => {
 
     const {Title} = Typography;
     const {Option} = Select;
-    const {hotel, cliente} = props;
+    const {hotel, cliente, closeDrawer} = props;
 
     const dispatch = useDispatch();
 
@@ -37,6 +40,10 @@ const NuovaPrenotazione = (props: NuovaPrenotazioneProps) => {
     const listaServizi = useSelector(serviziSelector.getServizi);
     const idHotel = useSelector(hotelSelector.getHotelId)
 
+    const isLoading = useSelector(prenotazioniSelector.getIsLoadingCreate);
+    const isError = useSelector(prenotazioniSelector.getIsErrorCreate);
+
+    const [hasClickedOnConfirm, setHasClickedOnConfirm] = useState<boolean>(false);
     const [newPrenotazione, setNewPrenotazione] = useState<Partial<PrenotazioneDTO>>();
     const [newListaServizi, setNewListaServizi] = useState<ServizioDTO[]>([]);
 
@@ -112,14 +119,44 @@ const NuovaPrenotazione = (props: NuovaPrenotazioneProps) => {
             dispatch(stanzeActions.fetchStanze(idHotel))
             dispatch(serviziActions.fetchServizi(idHotel))
         }
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        if(isLoading && hasClickedOnConfirm) {
+            message.destroy('success');
+            message.destroy('error');
+            message.loading({
+                duration: 3,
+                key: 'loading',
+                content: 'Sto creando la stanza...'
+            } as ArgsProps);
+        }
+        else if(isError && hasClickedOnConfirm) {
+            message.destroy('loading');
+            message.destroy('success');
+            message.error({
+                duration: 3,
+                key: 'error',
+                content: 'Errore nella creazione della stanza!'
+            } as ArgsProps);
+        }
+        else if(!isLoading && !isError && hasClickedOnConfirm) {
+            message.destroy('loading');
+            message.destroy('error');
+            message.success({
+                duration: 3,
+                key: 'success',
+                content: 'Stanza creata con successo!'
+            } as ArgsProps);
+        }
+    }, [isLoading, isError])
 
     return (
         <div className={`${componentClassName}`}>
             {
                 (!(isLoadingStanze || isLoadingUtenti) && !(isErrorUtenti || isErrorStanze)) ? (
                     <>
-                        <div className={`${componentClassName}__inputgroup`}>
+                        <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newPrenotazione?.idCliente && !cliente) ? 'error-input' : ''}`}>
                             <Title level={5}>Cliente</Title>
                             <Select
                                 style={{width: '100%'}}
@@ -182,7 +219,8 @@ const NuovaPrenotazione = (props: NuovaPrenotazioneProps) => {
                                 disabled={true}
                                 prefix={<UserOutlined />}/>
                         </div>
-                        <div className={`${componentClassName}__inputgroup`}>
+
+                        <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newPrenotazione?.dataInizio) ? 'error-input' : ''}`}>
                             <Title level={5}>Data check-in</Title>
                             <DatePicker
                                 className={`${componentClassName}__inputgroup__datepicker`}
@@ -197,7 +235,7 @@ const NuovaPrenotazione = (props: NuovaPrenotazioneProps) => {
                                 }}
                             />
                         </div>
-                        <div className={`${componentClassName}__inputgroup`}>
+                        <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newPrenotazione?.dataFine) ? 'error-input' : ''}`}>
                             <Title level={5}>Data check-out</Title>
                             <DatePicker
                                 className={`${componentClassName}__inputgroup__datepicker`}
@@ -213,7 +251,7 @@ const NuovaPrenotazione = (props: NuovaPrenotazioneProps) => {
                             />
                         </div>
 
-                        <div className={`${componentClassName}__inputgroup`}>
+                        <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newPrenotazione?.idStanza) ? 'error-input' : ''}`}>
                             <Title level={5}>
                                 Stanza
                             </Title>
@@ -273,7 +311,9 @@ const NuovaPrenotazione = (props: NuovaPrenotazioneProps) => {
                             ))}
                         </div>
                         <Button onClick={() => {
+                            setHasClickedOnConfirm(true);
                             if( newPrenotazione && (newPrenotazione.idCliente || hotel && cliente) && newPrenotazione.idStanza && newPrenotazione.dataInizio && newPrenotazione.dataFine) {
+                                closeDrawer();
                                 dispatch(prenotazioniActions.addPrenotazione({
                                     prenotazione: {
                                         ...newPrenotazione,

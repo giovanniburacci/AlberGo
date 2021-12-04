@@ -1,23 +1,61 @@
-import React, {useState} from 'react'
-import {Button, Checkbox, Input, InputNumber, Select, Typography} from 'antd';
+import React, {useEffect, useState} from 'react'
+import {Button, Checkbox, Input, InputNumber, message, Select, Typography} from 'antd';
 import './newCategoria.scss'
 import {CategoriaDTO} from '../../../models/models';
 import {useDispatch, useSelector} from 'react-redux';
 import categorieActions from '../../../store/categorie/categorie.action';
 import hotelSelector from '../../../store/hotel/hotel.selector';
+import categorieSelector from '../../../store/categorie/categorie.selector';
+import {ArgsProps} from 'antd/es/message';
 const componentClassName = 'NewCategoria';
 
-export const NewCategoria = () => {
+interface NewCategoriaProps {
+    closeDrawer: () => void
+}
+export const NewCategoria = (props: NewCategoriaProps) => {
     const {Title} = Typography;
-
+    const {closeDrawer} = props;
     const [newCategoria, setNewCategoria] = useState<Partial<CategoriaDTO>>();
     const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
+    const [hasClickedOnConfirm, setHasClickedOnConfirm] = useState<boolean>(false);
     const idHotel = useSelector(hotelSelector.getHotelId)
-
+    const isLoading = useSelector(categorieSelector.getIsLoadingCreate);
+    const isError = useSelector(categorieSelector.getIsErrorCreate);
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if(isLoading && hasClickedOnConfirm) {
+            message.destroy('success');
+            message.destroy('error');
+            message.loading({
+                duration: 3,
+                key: 'loading',
+                content: 'Sto creando la categoria...'
+            } as ArgsProps);
+        }
+        else if(isError && hasClickedOnConfirm) {
+            message.destroy('loading');
+            message.destroy('success');
+            message.error({
+                duration: 3,
+                key: 'error',
+                content: 'Errore nella creazione della categoria!'
+            } as ArgsProps);
+        }
+        else if(!isLoading && !isError && hasClickedOnConfirm) {
+            message.destroy('loading');
+            message.destroy('error');
+            message.success({
+                duration: 3,
+                key: 'success',
+                content: 'Categoria creata con successo!'
+            } as ArgsProps);
+        }
+    }, [isLoading, isError])
+
     return (
         <div className={`${componentClassName}`}>
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newCategoria?.nome) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Nome categoria
                 </Title>
@@ -30,7 +68,7 @@ export const NewCategoria = () => {
                     }))
                 }} value={newCategoria && newCategoria.nome && newCategoria.nome}/>
             </div>
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newCategoria?.descrizione) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Descrizione
                 </Title>
@@ -43,7 +81,7 @@ export const NewCategoria = () => {
                     }))
                 }} value={newCategoria && newCategoria.descrizione && newCategoria.descrizione}/>
             </div>
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newCategoria?.prezzo) ? 'error-input' : ''}`}>
                 <Title level={5}>Prezzo</Title>
                 <InputNumber
                     className={`${componentClassName}__inputgroup__inputnumber`}
@@ -59,7 +97,7 @@ export const NewCategoria = () => {
                         })
                     }}/>
             </div>
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newCategoria?.giorniBlocco) ? 'error-input' : ''}`}>
                 <Title level={5}>Limite per modifica/cancellazione prenotazioni</Title>
                 <InputNumber
                     className={`${componentClassName}__inputgroup__inputnumber`}
@@ -128,7 +166,9 @@ export const NewCategoria = () => {
                     }}/>
             </div>
             <Button onClick={() => {
+                setHasClickedOnConfirm(true);
                 if(newCategoria && newCategoria.descrizione && newCategoria.nome && newCategoria.prezzo && newCategoria.giorniBlocco) {
+                    closeDrawer();
                     if(!isCheckboxChecked) {
                         dispatch(categorieActions.addCategoria({
                             ...newCategoria,

@@ -187,7 +187,7 @@ const Stanze = () => {
                     onClose={() => {setHasClickedNew(false)}}
                     title={'Nuova stanza'}
                     width={'348px'}>
-                    <NewStanza/>
+                    <NewStanza closeDrawer={() => setHasClickedNew(false)}/>
                 </Drawer>
                 <Drawer
                     destroyOnClose={true}

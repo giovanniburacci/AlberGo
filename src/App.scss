@@ -35,3 +35,9 @@
   background:#faad14;
   color: #fff;
 }
+
+.error-input {
+  .ant-select, .ant-input, .ant-input-number, .ant-picker {
+    border: 1px solid red;
+  }
+}

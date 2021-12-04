@@ -1,13 +1,14 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import './cardDetail.scss'
 import {useDispatch, useSelector} from 'react-redux';
 import {loginSelector} from '../../../store/login/login.selector';
 import CardActions from '../../../store/card/card.actions';
 import cardSelector from '../../../store/card/card.selector';
-import {Button, Skeleton, Spin} from 'antd';
+import {Button, message, Skeleton, Spin} from 'antd';
 import Cards from 'react-credit-cards';
 import NewCard from './newCard/newCard.component';
 import * as _ from 'lodash'
+import {ArgsProps} from 'antd/es/message';
 const componentClassName = 'CardDetail';
 
 export const CardDetail = () => {
@@ -17,6 +18,41 @@ export const CardDetail = () => {
     const isLoading = useSelector(cardSelector.getIsLoading)
     const isError = useSelector(cardSelector.getIsError)
     const cardData = useSelector(cardSelector.getCard)
+    const [hasClickedOnConfirm, setHasClickedOnConfirm] = useState<boolean>(false);
+
+    const isLoadingCreate = useSelector(cardSelector.getIsLoadingCreate);
+    const isErrorCreate = useSelector(cardSelector.getIsErrorCreate);
+
+    useEffect(() => {
+        console.log('clicked confirm', hasClickedOnConfirm);
+        if(isLoadingCreate && hasClickedOnConfirm) {
+            message.destroy('success');
+            message.destroy('error');
+            message.loading({
+                duration: 3,
+                key: 'loading',
+                content: 'Sto aggiungendo la carta...'
+            } as ArgsProps);
+        }
+        else if(isErrorCreate && hasClickedOnConfirm) {
+            message.destroy('loading');
+            message.destroy('success');
+            message.error({
+                duration: 3,
+                key: 'error',
+                content: 'Errore nell\'aggiunta della carta!'
+            } as ArgsProps);
+        }
+        else if(!isLoadingCreate && !isErrorCreate && hasClickedOnConfirm) {
+            message.destroy('loading');
+            message.destroy('error');
+            message.success({
+                duration: 3,
+                key: 'success',
+                content: 'Carta creata con successo!'
+            } as ArgsProps);
+        }
+    }, [isLoadingCreate, isErrorCreate])
 
     useEffect(() => {
         if(user?.id) {
@@ -51,7 +87,7 @@ export const CardDetail = () => {
                         </div>
                     </>
                 ) : (
-                    <NewCard user={user}/>
+                    <NewCard user={user} hasClickedOnConfirm={hasClickedOnConfirm} setHasClickedOnConfirm={(newValue:boolean) => setHasClickedOnConfirm(newValue)}/>
                 )
             }
         </div>

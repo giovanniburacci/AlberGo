@@ -1,23 +1,35 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Title from 'antd/es/typography/Title';
-import {Button, Input} from 'antd';
+import {Button, Input, message} from 'antd';
 import {CardDataDTO, ClienteDTO} from '../../../../models/models';
 import Cards from 'react-credit-cards';
 import './newCard.scss'
 import CardActions from '../../../../store/card/card.actions';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import cardSelector from '../../../../store/card/card.selector';
+import {ArgsProps} from 'antd/es/message';
 const componentClassName = 'NewCard'
 interface NewCardProps {
-    user?: ClienteDTO
+    user?: ClienteDTO,
+    hasClickedOnConfirm: boolean,
+    setHasClickedOnConfirm: (newValue:boolean) => void
 }
 export const NewCard = (props: NewCardProps) => {
 
-    const {user} = props;
+    const {user, hasClickedOnConfirm, setHasClickedOnConfirm} = props;
     const [newCard, setNewCard] = useState<Partial<CardDataDTO>>()
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        return () => {
+            setTimeout(() => {
+                setHasClickedOnConfirm(false);
+            }, 200)
+        }
+    })
     return (
         <div className={`${componentClassName}`}>
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newCard?.number) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Numero
                 </Title>
@@ -27,7 +39,7 @@ export const NewCard = (props: NewCardProps) => {
                     onChange={(value) => {setNewCard(prevState => ({...prevState, number: value.target.value}))}}/>
             </div>
 
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newCard?.cvc) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     CVC
                 </Title>
@@ -37,7 +49,7 @@ export const NewCard = (props: NewCardProps) => {
                     onChange={(value) => {setNewCard(prevState => ({...prevState, cvc: value.target.value}))}}/>
             </div>
 
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newCard?.exp_month) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Mese scadenza
                 </Title>
@@ -47,7 +59,7 @@ export const NewCard = (props: NewCardProps) => {
                     onChange={(value) => {setNewCard(prevState => ({...prevState, exp_month: value.target.value}))}}/>
             </div>
 
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newCard?.exp_year) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Anno scadenza
                 </Title>
@@ -67,6 +79,7 @@ export const NewCard = (props: NewCardProps) => {
                 <Button type={'primary'}
                         className={`${componentClassName}__footer__add-btn`}
                         onClick={() => {
+                            setHasClickedOnConfirm(true);
                             if(newCard && user) {
                                 dispatch(CardActions.addCard(
                                     {
