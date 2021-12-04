@@ -86,9 +86,7 @@ export enum Stelle  {
     DUE = 2,
     TRE = 3,
     QUATTRO = 4,
-    CINQUE = 5,
-    SEI = 6,
-    SETTE = 7
+    CINQUE = 5
 }
 
 export interface FilterBean {

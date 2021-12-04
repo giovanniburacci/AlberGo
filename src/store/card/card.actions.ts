@@ -1,7 +1,6 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {mockedAddCard, mockedDeleteCard, mockedSearchCard} from '../../mocks/api';
 import {CardDataDTO} from '../../models/models';
-import {searchCard} from '../../api/stripe.service';
+import {createCard, deleteCard, searchCard} from '../../api/stripe.service';
 
 const cardLabels = {
     fetchCard: 'fetchCard',
@@ -19,10 +18,10 @@ const fetchCard = createAsyncThunk(cardLabels.fetchCard, async (userId:number, t
     }
 });
 
-const removeCard = createAsyncThunk(cardLabels.removeCard, async (cardId:number, thunkAPI) => {
+const removeCard = createAsyncThunk(cardLabels.removeCard, async (idCliente:number, thunkAPI) => {
     try {
-        const resp = await mockedDeleteCard()
-        return resp;
+        await deleteCard(idCliente)
+        return ;
     } catch(e) {
         console.log('removeCard request failed')
         throw e;
@@ -31,8 +30,8 @@ const removeCard = createAsyncThunk(cardLabels.removeCard, async (cardId:number,
 
 const addCard = createAsyncThunk(cardLabels.addCard, async (card: Partial<CardDataDTO>, thunkAPI) => {
     try {
-        const resp = await mockedAddCard(card)
-        return resp;
+        await createCard(card)
+        return card as CardDataDTO;
     } catch(e) {
         console.log('addCard request failed')
         throw e;

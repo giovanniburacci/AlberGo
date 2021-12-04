@@ -7,6 +7,7 @@ import cardSelector from '../../../store/card/card.selector';
 import {Button, Skeleton, Spin} from 'antd';
 import Cards from 'react-credit-cards';
 import NewCard from './newCard/newCard.component';
+import * as _ from 'lodash'
 const componentClassName = 'CardDetail';
 
 export const CardDetail = () => {
@@ -29,7 +30,7 @@ export const CardDetail = () => {
                     <Skeleton active />
                 ) : isError ? (
                     'error'
-                ) : cardData ? (
+                ) : !_.isEmpty(cardData) ? (
                     <>
                         <Cards cvc={cardData?.cvc || ''}
                                number={cardData?.number || ''}
@@ -50,7 +51,7 @@ export const CardDetail = () => {
                         </div>
                     </>
                 ) : (
-                    <NewCard nome={user?.nome} cognome={user?.cognome}/>
+                    <NewCard user={user}/>
                 )
             }
         </div>

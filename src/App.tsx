@@ -17,32 +17,39 @@ import 'react-credit-cards/lib/styles.scss';
 import CardDetail from './screens/userScreens/cardDetail/cardDetail.component';
 const componentClassName = 'App';
 
-const screens = ['Prenotazioni', 'Stanze', 'Categorie', 'Clienti']
-
-const getCurrentSection = () => {
-    const currentURL = window.location.pathname;
-    const currentScreen =  ''+screens.findIndex(screen => screen.toLocaleLowerCase() === currentURL.substring(1))
-    if(currentScreen === '-1') {
-        return '0';
-    } else {
-        return currentScreen;
-    }
-}
-
 function App() {
+
+    const getCurrentSection = () => {
+        const currentURL = window.location.pathname;
+        const currentScreen =  ''+screens.findIndex(screen => screen.toLocaleLowerCase() === currentURL.substring(1))
+        if(currentScreen === '-1') {
+            return '0';
+        } else {
+            return currentScreen;
+        }
+    }
+
+    const amministratore = useSelector(loginSelector.getAmministratore);
+
+    const screens = amministratore ? ['Prenotazioni', 'Stanze', 'Categorie', 'Clienti', 'Hotel'] : ['Hotels', 'Fatture']
+
+
     const { Header, Content, Sider } = Layout;
     const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
     const [selectedKey,setSelectedKey] = useState<string>(getCurrentSection());
     const [isOpeningCardDetail, setIsOpeningCardDetail] = useState<boolean>(false)
     const userToken = useSelector(loginSelector.getUserToken);
     const adminToken = useSelector(loginSelector.getAdminToken);
-    const amministratore = useSelector(loginSelector.getAmministratore);
     const user = useSelector(loginSelector.getUser);
 
-    console.log('user', user)
+
     useEffect(() => {
         setSelectedKey(getCurrentSection())
     }, [amministratore, user])
+
+    useEffect(() => {
+        console.log(getCurrentSection());
+    }, [selectedKey])
     return (
         <>
         <div className={`${componentClassName}`}>

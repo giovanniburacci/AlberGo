@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Spin, Table} from 'antd';
 import {ColumnsType} from 'antd/es/table';
 import {FatturaMapped} from '../types';

@@ -1,19 +1,18 @@
 import React, {useState} from 'react';
 import Title from 'antd/es/typography/Title';
 import {Button, Input} from 'antd';
-import {CardDataDTO} from '../../../../models/models';
+import {CardDataDTO, ClienteDTO} from '../../../../models/models';
 import Cards from 'react-credit-cards';
 import './newCard.scss'
 import CardActions from '../../../../store/card/card.actions';
 import {useDispatch} from 'react-redux';
 const componentClassName = 'NewCard'
 interface NewCardProps {
-    nome?: string,
-    cognome?: string
+    user?: ClienteDTO
 }
 export const NewCard = (props: NewCardProps) => {
 
-    const {nome,cognome} = props;
+    const {user} = props;
     const [newCard, setNewCard] = useState<Partial<CardDataDTO>>()
     const dispatch = useDispatch();
     return (
@@ -62,13 +61,19 @@ export const NewCard = (props: NewCardProps) => {
                        number={newCard?.number || ''}
                        expiry={newCard?.exp_month && newCard.exp_year ?
                            (newCard.exp_month + newCard.exp_year) : ''}
-                       name={nome && cognome ? nome + ' ' + cognome : ''}/>
+                       name={user && user.nome && user.cognome ? user.nome + ' ' + user.cognome : ''}/>
             </div>
             <div className={`${componentClassName}__footer`}>
                 <Button type={'primary'}
                         className={`${componentClassName}__footer__add-btn`}
                         onClick={() => {
-                            dispatch(CardActions.addCard({})) // todo fix card partial
+                            if(newCard && user) {
+                                dispatch(CardActions.addCard(
+                                    {
+                                        ...newCard,
+                                        idCliente: user.id
+                                    }))
+                            }
                         }}>
                     Salva carta
                 </Button>

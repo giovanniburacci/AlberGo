@@ -8,6 +8,7 @@ import {clientiReducer} from './clienti/clienti.reducer';
 import {hotelReducer} from './hotel/hotel.reducer';
 import {serviziReducer} from './servizi/servizi.reducer';
 import {cardReducer} from './card/card.reducer';
+import {hotelsReducer} from './hotels/hotels.reducer';
 
 const appReducer = combineReducers({
     ...testReducer,
@@ -18,7 +19,8 @@ const appReducer = combineReducers({
     ...clientiReducer,
     ...hotelReducer,
     ...serviziReducer,
-    ...cardReducer
+    ...cardReducer,
+    ...hotelsReducer
 });
 export const RESET_STORE = 'RESET_STORE';
 

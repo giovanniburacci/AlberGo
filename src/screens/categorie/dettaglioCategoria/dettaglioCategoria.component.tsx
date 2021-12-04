@@ -142,7 +142,9 @@ export const DettaglioCategoria = (props:DettaglioCategoriaProps) => {
                     if(newCategoria) {
                         dispatch(categorieActions.editCategoria({
                             ...categoria,
-                            ...newCategoria
+                            ...newCategoria,
+                            giorniPenale: newCategoria.giorniPenale ? newCategoria.giorniPenale : 0,
+                            qtaPenale: newCategoria.qtaPenale ? newCategoria.qtaPenale : 0
                         }))
                     }
                 }}

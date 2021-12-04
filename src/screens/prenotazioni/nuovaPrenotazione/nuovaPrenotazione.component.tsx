@@ -4,7 +4,7 @@ import './nuovaPrenotazione.scss';
 import { UserOutlined } from '@ant-design/icons';
 import stanzeSelector from '../../../store/stanze/stanze.selector';
 import clientiSelector from '../../../store/clienti/clienti.selector';
-import {PrenotazioneDTO, ServizioDTO} from '../../../models/models';
+import {ClienteDTO, HotelDTO, PrenotazioneDTO, ServizioDTO} from '../../../models/models';
 import {useDispatch, useSelector} from 'react-redux';
 import clientiActions from '../../../store/clienti/clienti.action';
 import stanzeActions from '../../../store/stanze/stanze.action';
@@ -15,10 +15,16 @@ import {SelectValue} from 'antd/es/select';
 import hotelSelector from '../../../store/hotel/hotel.selector';
 
 const componentClassName = 'NuovaPrenotazione';
-const NuovaPrenotazione = () => {
+
+interface NuovaPrenotazioneProps {
+    hotel?: HotelDTO,
+    cliente?: ClienteDTO
+}
+const NuovaPrenotazione = (props: NuovaPrenotazioneProps) => {
 
     const {Title} = Typography;
     const {Option} = Select;
+    const {hotel, cliente} = props;
 
     const dispatch = useDispatch();
 
@@ -35,6 +41,9 @@ const NuovaPrenotazione = () => {
     const [newListaServizi, setNewListaServizi] = useState<ServizioDTO[]>([]);
 
     const getLocalNome = (): string => {
+        if(!!cliente) {
+            return cliente.nome;
+        }
         if(listaUtenti && newPrenotazione && newPrenotazione.idCliente) {
             const cliente = listaUtenti.find(utente => utente.id === newPrenotazione.idCliente);
             if(cliente) {
@@ -44,6 +53,9 @@ const NuovaPrenotazione = () => {
     }
 
     const getLocalCognome = (): string => {
+        if(!!cliente) {
+            return cliente.cognome;
+        }
         if(listaUtenti && newPrenotazione && newPrenotazione.idCliente) {
             const cliente = listaUtenti.find(utente => utente.id === newPrenotazione.idCliente);
             if(cliente) {
@@ -53,6 +65,9 @@ const NuovaPrenotazione = () => {
     }
 
     const getLocalTelefono = (): string => {
+        if(!!cliente) {
+            return cliente.telefono;
+        }
         if(listaUtenti && newPrenotazione && newPrenotazione.idCliente) {
             const cliente = listaUtenti.find(utente => utente.id === newPrenotazione.idCliente);
             if(cliente) {
@@ -62,6 +77,9 @@ const NuovaPrenotazione = () => {
     }
 
     const getLocalDocumento = (): string => {
+        if(!!cliente) {
+            return cliente.documento;
+        }
         if(listaUtenti && newPrenotazione && newPrenotazione.idCliente) {
             const cliente = listaUtenti.find(utente => utente.id === newPrenotazione.idCliente);
             if(cliente) {
@@ -85,9 +103,15 @@ const NuovaPrenotazione = () => {
     }
 
     useEffect(() => {
-        dispatch(clientiActions.fetchClienti(idHotel))
-        dispatch(stanzeActions.fetchStanze(idHotel))
-        dispatch(serviziActions.fetchServizi(idHotel))
+        if(!!hotel) {
+            dispatch(clientiActions.fetchClienti(hotel.id))
+            dispatch(stanzeActions.fetchStanze(hotel.id))
+            dispatch(serviziActions.fetchServizi(hotel.id));
+        } else {
+            dispatch(clientiActions.fetchClienti(idHotel))
+            dispatch(stanzeActions.fetchStanze(idHotel))
+            dispatch(serviziActions.fetchServizi(idHotel))
+        }
     }, [])
 
     return (
@@ -102,12 +126,12 @@ const NuovaPrenotazione = () => {
                                 showSearch
                                 placeholder="Cliente"
                                 optionFilterProp="children"
-                                value={(newPrenotazione && newPrenotazione.idCliente) && newPrenotazione.idCliente}
-                                onChange={(value) => {setNewPrenotazione((prevState => ({...prevState, idCliente: value})))}}
+                                value={cliente ? cliente.nome + ' ' + cliente.cognome : (newPrenotazione && newPrenotazione.idCliente) && newPrenotazione.idCliente}
+                                onChange={(value) => {setNewPrenotazione((prevState => ({...prevState, idCliente: value as number})))}}
                                 filterOption={(input, option) =>
                                     option!.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                 }
-                                disabled={isErrorStanze}
+                                disabled={isErrorStanze || !!cliente}
                             >
                                 {
                                     (listaUtenti && listaUtenti.length > 0) &&
@@ -249,11 +273,12 @@ const NuovaPrenotazione = () => {
                             ))}
                         </div>
                         <Button onClick={() => {
-                            if(newPrenotazione && newPrenotazione.idCliente && newPrenotazione.idStanza && newPrenotazione.dataInizio && newPrenotazione.dataFine) {
+                            if( newPrenotazione && (newPrenotazione.idCliente || hotel && cliente) && newPrenotazione.idStanza && newPrenotazione.dataInizio && newPrenotazione.dataFine) {
                                 dispatch(prenotazioniActions.addPrenotazione({
                                     prenotazione: {
                                         ...newPrenotazione,
-                                        idHotel
+                                        idHotel: !!hotel ? hotel.id : idHotel,
+                                        idCliente: !!cliente ? cliente.id : newPrenotazione.idCliente
                                     },
                                     servizi: newListaServizi
                                 }))
