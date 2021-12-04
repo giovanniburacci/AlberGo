@@ -53,6 +53,7 @@ const NewStanza = (props: NewStanzaProps) => {
                 key: 'error',
                 content: 'Errore nella creazione della stanza!'
             } as ArgsProps);
+            closeDrawer();
         }
         else if(!isLoading && !isError && hasClickedOnConfirm) {
             message.destroy('loading');
@@ -62,6 +63,7 @@ const NewStanza = (props: NewStanzaProps) => {
                 key: 'success',
                 content: 'Stanza creata con successo!'
             } as ArgsProps);
+            closeDrawer();
         }
     }, [isLoading, isError])
 
@@ -168,7 +170,6 @@ const NewStanza = (props: NewStanzaProps) => {
             <Button onClick={() => {
                 setHasClickedOnConfirm(true);
                 if(newStanza && newStanza.numeroStanza && newStanza.descrizione && newStanza.idCategoria && newStanza.metriQuadri) {
-                    closeDrawer();
                     dispatch(stanzeActions.addStanza({
                         ...newStanza,
                         idHotel: 1

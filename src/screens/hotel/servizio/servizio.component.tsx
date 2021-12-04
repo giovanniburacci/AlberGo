@@ -17,7 +17,6 @@ export const Servizio = (props:ServizioProps) => {
 
     const {servizio} = props
 
-    //todo add controlli date
     const dispatch = useDispatch();
 
     const [newServizio, setNewServizio] = useState<Partial<ServizioDTO>>();

@@ -75,7 +75,6 @@ export const MenuContainer = (props:MenuContainerProps) => {
     ];
     const dispatch = useDispatch();
 
-    //todo ignazio mi serve il count
     const categorie = useSelector(categorieSelector.getCategorie);
     const stanze = useSelector(stanzeSelector.getStanze)
     const hotelId = useSelector(loginSelector.getIdHotel)

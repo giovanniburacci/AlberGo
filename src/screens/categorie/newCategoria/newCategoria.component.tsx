@@ -41,6 +41,7 @@ export const NewCategoria = (props: NewCategoriaProps) => {
                 key: 'error',
                 content: 'Errore nella creazione della categoria!'
             } as ArgsProps);
+            closeDrawer();
         }
         else if(!isLoading && !isError && hasClickedOnConfirm) {
             message.destroy('loading');
@@ -50,6 +51,7 @@ export const NewCategoria = (props: NewCategoriaProps) => {
                 key: 'success',
                 content: 'Categoria creata con successo!'
             } as ArgsProps);
+            closeDrawer();
         }
     }, [isLoading, isError])
 
@@ -168,7 +170,6 @@ export const NewCategoria = (props: NewCategoriaProps) => {
             <Button onClick={() => {
                 setHasClickedOnConfirm(true);
                 if(newCategoria && newCategoria.descrizione && newCategoria.nome && newCategoria.prezzo && newCategoria.giorniBlocco) {
-                    closeDrawer();
                     if(!isCheckboxChecked) {
                         dispatch(categorieActions.addCategoria({
                             ...newCategoria,

@@ -10,23 +10,49 @@ import cardSelector from '../../../../store/card/card.selector';
 import {ArgsProps} from 'antd/es/message';
 const componentClassName = 'NewCard'
 interface NewCardProps {
-    user?: ClienteDTO,
-    hasClickedOnConfirm: boolean,
-    setHasClickedOnConfirm: (newValue:boolean) => void
+    user?: ClienteDTO
 }
 export const NewCard = (props: NewCardProps) => {
 
-    const {user, hasClickedOnConfirm, setHasClickedOnConfirm} = props;
+    const {user} = props;
     const [newCard, setNewCard] = useState<Partial<CardDataDTO>>()
-    const dispatch = useDispatch();
+    const [hasClickedOnConfirm, setHasClickedOnConfirm] = useState<boolean>(false);
+
+    const isLoading = useSelector(cardSelector.getIsLoadingCreate);
+    const isError = useSelector(cardSelector.getIsErrorCreate);
 
     useEffect(() => {
-        return () => {
-            setTimeout(() => {
-                setHasClickedOnConfirm(false);
-            }, 200)
+        console.log('clicked confirm', hasClickedOnConfirm);
+        if(isLoading && hasClickedOnConfirm) {
+            message.destroy('success');
+            message.destroy('error');
+            message.loading({
+                duration: 3,
+                key: 'loading',
+                content: 'Sto aggiungendo la carta...'
+            } as ArgsProps);
         }
-    })
+        else if(isError && hasClickedOnConfirm) {
+            message.destroy('loading');
+            message.destroy('success');
+            message.error({
+                duration: 3,
+                key: 'error',
+                content: 'Errore nell\'aggiunta della carta!'
+            } as ArgsProps);
+        }
+        else if(!isLoading && !isError && hasClickedOnConfirm) {
+            message.destroy('loading');
+            message.destroy('error');
+            message.success({
+                duration: 3,
+                key: 'success',
+                content: 'Carta creata con successo!'
+            } as ArgsProps);
+        }
+    }, [isLoading, isError])
+
+    const dispatch = useDispatch();
     return (
         <div className={`${componentClassName}`}>
             <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newCard?.number) ? 'error-input' : ''}`}>

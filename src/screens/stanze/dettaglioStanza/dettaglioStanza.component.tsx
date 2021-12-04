@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './dettaglioStanza.scss'
-import {Button, Checkbox, DatePicker, Input, InputNumber, Select, Typography} from 'antd';
+import {Button, Checkbox, DatePicker, Input, InputNumber, message, Select, Typography} from 'antd';
 import {StanzaDTO} from '../../../models/models';
 import {useDispatch, useSelector} from 'react-redux';
 import categorieActions from '../../../store/categorie/categorie.action';
@@ -9,26 +9,95 @@ import {isEqual} from 'lodash';
 import stanzeSelector from '../../../store/stanze/stanze.selector';
 import {StanzaWithStatus} from '../../../store/stanze/types';
 import hotelSelector from '../../../store/hotel/hotel.selector';
+import {ArgsProps} from 'antd/es/message';
 const componentClassName = 'DettaglioStanza';
 const {Title} = Typography;
 
 interface PrenotazioneProps {
     stanza: StanzaWithStatus,
-    resetFilters: () => void
+    resetFilters: () => void,
+    closeDrawer: () => void
 }
 
 const DettaglioStanza = (props:PrenotazioneProps) => {
 
-    const {stanza} = props
+    const {stanza, closeDrawer} = props
 
-    //todo add controlli date
     const dispatch = useDispatch();
 
     const [newStanza, setNewStanza] = useState<StanzaDTO>(stanza);
     const [isMakingChanges, setIsMakingChanges] = useState<boolean>(false);
+    const [hasClickedOnEdit, setHasClickedOnEdit] = useState<boolean>(false);
+    const [hasClickedOnDelete, setHasClickedOnDelete] = useState<boolean>(false);
 
     const isLoadingEdit = useSelector(stanzeSelector.getIsLoadingEdit);
+    const isErrorEdit = useSelector(stanzeSelector.getIsErrorEdit);
+    const isLoadingDelete = useSelector(stanzeSelector.getIsLoadingDelete);
+    const isErrorDelete = useSelector(stanzeSelector.getIsErrorDelete);
+
     const idHotel = useSelector(hotelSelector.getHotelId)
+    useEffect(() => {
+        if(isLoadingEdit && hasClickedOnEdit) {
+            message.destroy('success');
+            message.destroy('error');
+            message.loading({
+                duration: 3,
+                key: 'loading',
+                content: 'Sto modificando la stanza...'
+            } as ArgsProps);
+        }
+        else if(isErrorEdit && hasClickedOnEdit) {
+            message.destroy('loading');
+            message.destroy('success');
+            message.error({
+                duration: 3,
+                key: 'error',
+                content: 'Errore nella modifica della stanza!'
+            } as ArgsProps);
+            closeDrawer();
+        }
+        else if(!isLoadingEdit && !isErrorEdit && hasClickedOnEdit) {
+            message.destroy('loading');
+            message.destroy('error');
+            message.success({
+                duration: 3,
+                key: 'success',
+                content: 'Stanza modificata con successo!'
+            } as ArgsProps);
+            closeDrawer();
+        }
+    }, [isLoadingEdit, isErrorEdit])
+    
+    useEffect(() => {
+        if(isLoadingDelete && hasClickedOnDelete) {
+            message.destroy('success');
+            message.destroy('error');
+            message.loading({
+                duration: 3,
+                key: 'loading',
+                content: 'Sto eliminata la stanza...'
+            } as ArgsProps);
+        }
+        else if(isErrorDelete && hasClickedOnDelete) {
+            message.destroy('loading');
+            message.destroy('success');
+            message.error({
+                duration: 3,
+                key: 'error',
+                content: 'Errore nell\'eliminazione della stanza!'
+            } as ArgsProps);
+        }
+        else if(!isLoadingDelete && !isErrorDelete && hasClickedOnDelete) {
+            message.destroy('loading');
+            message.destroy('error');
+            message.success({
+                duration: 3,
+                key: 'success',
+                content: 'Stanza eliminata con successo!'
+            } as ArgsProps);
+        }
+    }, [isLoadingDelete, isErrorDelete])
+
     useEffect(() => {
         dispatch(categorieActions.fetchCategorie(idHotel))
     }, [stanza]);
@@ -47,7 +116,7 @@ const DettaglioStanza = (props:PrenotazioneProps) => {
 
     return (
         <div className={`${componentClassName}`}>
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnEdit && !newStanza.numeroStanza) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Numero stanza
                 </Title>
@@ -66,7 +135,7 @@ const DettaglioStanza = (props:PrenotazioneProps) => {
                     })))}}
                     checked={newStanza.fuoriServizio}>La stanza è attualmente fuori servizio</Checkbox>
             </div>
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnEdit && !newStanza.descrizione) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Descrizione
                 </Title>
@@ -75,7 +144,7 @@ const DettaglioStanza = (props:PrenotazioneProps) => {
                     descrizione: val.target.value
                 }))}} value={newStanza.descrizione}/>
             </div>
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnEdit && !newStanza.metriQuadri) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Metri quadri
                 </Title>
@@ -91,10 +160,13 @@ const DettaglioStanza = (props:PrenotazioneProps) => {
                 disabled={!isMakingChanges}
                 onClick={() => {
                     props.resetFilters();
-                    dispatch(stanzeActions.editStanza({
-                        ...stanza,
-                        ...newStanza,
-                    }))
+                    setHasClickedOnEdit(true);
+                    if(newStanza && newStanza.numeroStanza && newStanza.descrizione && newStanza.idCategoria && newStanza.metriQuadri) {
+                        dispatch(stanzeActions.editStanza({
+                            ...stanza,
+                            ...newStanza,
+                        }))
+                    }
                 }}
                 loading={isLoadingEdit}>Modifica</Button>
             <Button
@@ -102,6 +174,7 @@ const DettaglioStanza = (props:PrenotazioneProps) => {
                 className={'button-delete'}
                 onClick={() => {
                     props.resetFilters();
+                    setHasClickedOnDelete(true);
                     dispatch(stanzeActions.removeStanza(newStanza));
                 }}
             >Elimina</Button>

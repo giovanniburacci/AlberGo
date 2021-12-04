@@ -196,7 +196,7 @@ const Stanze = () => {
                     onClose={() => {setSelectedStanza(undefined)}}
                     title={'Dettaglio stanza'}
                     width={'348px'}>
-                    <DettaglioStanza resetFilters={() => {setDateFilter(undefined)}}stanza={selectedStanza!}/>
+                    <DettaglioStanza resetFilters={() => {setDateFilter(undefined)}}stanza={selectedStanza!} closeDrawer={() => setSelectedStanza(undefined)}/>
                 </Drawer>
             </div>
         </div>

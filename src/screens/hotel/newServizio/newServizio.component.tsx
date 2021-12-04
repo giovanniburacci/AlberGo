@@ -41,6 +41,7 @@ const NewServizio = (props: NewServizioProps) => {
                 key: 'error',
                 content: 'Errore nella creazione del servizio!'
             } as ArgsProps);
+            closeDrawer();
         }
         else if(!isLoading && !isError && hasClickedOnConfirm) {
             message.destroy('loading');
@@ -50,6 +51,7 @@ const NewServizio = (props: NewServizioProps) => {
                 key: 'success',
                 content: 'Servizio creato con successo!'
             } as ArgsProps);
+            closeDrawer();
         }
     }, [isLoading, isError])
     return (
@@ -92,7 +94,6 @@ const NewServizio = (props: NewServizioProps) => {
                         ...newServizio,
                         idHotel
                     }));
-                    closeDrawer();
                 }
             }}>Conferma</Button>
         </div>

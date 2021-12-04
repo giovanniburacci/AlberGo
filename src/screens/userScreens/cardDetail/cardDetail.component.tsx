@@ -18,41 +18,6 @@ export const CardDetail = () => {
     const isLoading = useSelector(cardSelector.getIsLoading)
     const isError = useSelector(cardSelector.getIsError)
     const cardData = useSelector(cardSelector.getCard)
-    const [hasClickedOnConfirm, setHasClickedOnConfirm] = useState<boolean>(false);
-
-    const isLoadingCreate = useSelector(cardSelector.getIsLoadingCreate);
-    const isErrorCreate = useSelector(cardSelector.getIsErrorCreate);
-
-    useEffect(() => {
-        console.log('clicked confirm', hasClickedOnConfirm);
-        if(isLoadingCreate && hasClickedOnConfirm) {
-            message.destroy('success');
-            message.destroy('error');
-            message.loading({
-                duration: 3,
-                key: 'loading',
-                content: 'Sto aggiungendo la carta...'
-            } as ArgsProps);
-        }
-        else if(isErrorCreate && hasClickedOnConfirm) {
-            message.destroy('loading');
-            message.destroy('success');
-            message.error({
-                duration: 3,
-                key: 'error',
-                content: 'Errore nell\'aggiunta della carta!'
-            } as ArgsProps);
-        }
-        else if(!isLoadingCreate && !isErrorCreate && hasClickedOnConfirm) {
-            message.destroy('loading');
-            message.destroy('error');
-            message.success({
-                duration: 3,
-                key: 'success',
-                content: 'Carta creata con successo!'
-            } as ArgsProps);
-        }
-    }, [isLoadingCreate, isErrorCreate])
 
     useEffect(() => {
         if(user?.id) {
@@ -80,14 +45,16 @@ export const CardDetail = () => {
                                     danger
                                     className={`${componentClassName}__footer__delete-btn`}
                                     onClick={() => {
-                                        dispatch(CardActions.removeCard(0)) // todo fix card id
+                                        if(user) {
+                                            dispatch(CardActions.removeCard(user.id))
+                                        }
                                     }}>
                                 Elimina carta
                             </Button>
                         </div>
                     </>
                 ) : (
-                    <NewCard user={user} hasClickedOnConfirm={hasClickedOnConfirm} setHasClickedOnConfirm={(newValue:boolean) => setHasClickedOnConfirm(newValue)}/>
+                    <NewCard user={user} />
                 )
             }
         </div>

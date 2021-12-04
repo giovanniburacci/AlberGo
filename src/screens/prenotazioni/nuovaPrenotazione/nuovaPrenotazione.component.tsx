@@ -139,6 +139,7 @@ const NuovaPrenotazione = (props: NuovaPrenotazioneProps) => {
                 key: 'error',
                 content: 'Errore nella creazione della stanza!'
             } as ArgsProps);
+            closeDrawer();
         }
         else if(!isLoading && !isError && hasClickedOnConfirm) {
             message.destroy('loading');
@@ -148,6 +149,7 @@ const NuovaPrenotazione = (props: NuovaPrenotazioneProps) => {
                 key: 'success',
                 content: 'Stanza creata con successo!'
             } as ArgsProps);
+            closeDrawer();
         }
     }, [isLoading, isError])
 
@@ -313,7 +315,6 @@ const NuovaPrenotazione = (props: NuovaPrenotazioneProps) => {
                         <Button onClick={() => {
                             setHasClickedOnConfirm(true);
                             if( newPrenotazione && (newPrenotazione.idCliente || hotel && cliente) && newPrenotazione.idStanza && newPrenotazione.dataInizio && newPrenotazione.dataFine) {
-                                closeDrawer();
                                 dispatch(prenotazioniActions.addPrenotazione({
                                     prenotazione: {
                                         ...newPrenotazione,
