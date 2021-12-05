@@ -3,8 +3,8 @@ import {Button, Input, Typography, Modal} from 'antd';
 import {LockOutlined, UserOutlined} from '@ant-design/icons';
 import './adminAuth.scss'
 import {useDispatch, useSelector} from 'react-redux';
-import loginActions from '../../../store/login/login.action';
-import {loginSelector} from '../../../store/login/login.selector';
+import loginActions from '../../../store/auth/auth.action';
+import {authSelector} from '../../../store/auth/auth.selector';
 import AdminSignUp from './adminSignUp/adminSignUp.component';
 const {Text} = Typography;
 const componentClassName = 'AdminAuth'
@@ -16,7 +16,7 @@ export const AdminAuth = () => {
     const [isSigningUp, setIsSigningUp] = useState<boolean>(false);
 
     const dispatch = useDispatch();
-    const isLoadingLogin = useSelector(loginSelector.getIsLoading)
+    const isLoadingLogin = useSelector(authSelector.getIsLoading)
 
     return (
         <>

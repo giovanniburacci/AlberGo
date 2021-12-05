@@ -18,7 +18,7 @@ const getIsLoading = (state:RootState) => state.login.isLoading;
 
 const getIsError = (state:RootState) => state.login.isError;
 
-export const loginSelector = {
+export const authSelector = {
     getAdminToken,
     getUserToken,
     getIdAmministratore,

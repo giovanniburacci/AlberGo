@@ -111,7 +111,6 @@ const NuovaPrenotazione = (props: NuovaPrenotazioneProps) => {
 
     useEffect(() => {
         if(!!hotel) {
-            dispatch(clientiActions.fetchClienti(hotel.id))
             dispatch(stanzeActions.fetchStanze(hotel.id))
             dispatch(serviziActions.fetchServizi(hotel.id));
         } else {
@@ -156,7 +155,7 @@ const NuovaPrenotazione = (props: NuovaPrenotazioneProps) => {
     return (
         <div className={`${componentClassName}`}>
             {
-                (!(isLoadingStanze || isLoadingUtenti) && !(isErrorUtenti || isErrorStanze)) ? (
+                (!(isLoadingStanze || (isLoadingUtenti && !cliente)) && !((isErrorUtenti && !cliente) || isErrorStanze)) ? (
                     <>
                         <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newPrenotazione?.idCliente && !cliente) ? 'error-input' : ''}`}>
                             <Title level={5}>Cliente</Title>

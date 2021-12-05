@@ -6,7 +6,7 @@ import './App.scss'
 import { MenuContainer } from './containers/menuContainer/menuContainer.container';
 import HeaderContainer from './containers/headerContainer/headerContainer.container';
 import {useSelector} from 'react-redux';
-import {loginSelector} from './store/login/login.selector';
+import {authSelector} from './store/auth/auth.selector';
 import Prenotazioni from './screens/prenotazioni/prenotazioni.component';
 import Stanze from './screens/stanze/stanze.component';
 import Categorie from './screens/categorie/categorie.component';
@@ -29,7 +29,7 @@ function App() {
         }
     }
 
-    const amministratore = useSelector(loginSelector.getAmministratore);
+    const amministratore = useSelector(authSelector.getAmministratore);
 
     const screens = amministratore ? ['Prenotazioni', 'Stanze', 'Categorie', 'Clienti', 'Hotel'] : ['Hotels', 'Fatture']
 
@@ -38,9 +38,9 @@ function App() {
     const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
     const [selectedKey,setSelectedKey] = useState<string>(getCurrentSection());
     const [isOpeningCardDetail, setIsOpeningCardDetail] = useState<boolean>(false)
-    const userToken = useSelector(loginSelector.getUserToken);
-    const adminToken = useSelector(loginSelector.getAdminToken);
-    const user = useSelector(loginSelector.getUser);
+    const userToken = useSelector(authSelector.getUserToken);
+    const adminToken = useSelector(authSelector.getAdminToken);
+    const user = useSelector(authSelector.getUser);
 
 
     useEffect(() => {

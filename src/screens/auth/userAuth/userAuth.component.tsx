@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Button, Input, Typography, Modal} from 'antd';
 import {LockOutlined, UserOutlined} from '@ant-design/icons';
 import './userAuth.scss'
-import loginActions from '../../../store/login/login.action'
+import loginActions from '../../../store/auth/auth.action'
 import {useDispatch} from 'react-redux';
 import UserSignUp from './userSignUp/userSignUp.component';
 const {Text} = Typography;

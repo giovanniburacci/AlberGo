@@ -1,17 +1,18 @@
 import {createAction, createAsyncThunk} from '@reduxjs/toolkit';
-import {login, searchAdmin} from '../../api/auth.service';
-import {loginUser} from '../../mocks/api';
-import {AmministratoreDTO, HotelDTO} from '../../models/models';
+import {createUser, login, searchAdmin, searchUser} from '../../api/auth.service';
+import {AmministratoreDTO, CardDataDTO, ClienteDTO, HotelDTO} from '../../models/models';
 import {createAdmin, createHotel} from '../../api/auth.service';
 import {LoginBean} from '../../models/login';
 import axios from 'axios';
+import {createCard} from '../../api/stripe.service';
 
 const enum LOGIN_ACTIONS {
     adminLogin = 'adminLogin/',
     adminLogout = 'adminLogout/',
     userLogin = 'userLogin/',
     userLogout = 'userLogout/',
-    adminRegister = 'adminRegister/'
+    adminRegister = 'adminRegister/',
+    userRegister = 'userRegister/'
 }
 
 interface AdminRegisterActionBean {
@@ -19,16 +20,41 @@ interface AdminRegisterActionBean {
     hotel: Partial<HotelDTO>,
     codiceHotel?: number
 }
+
+interface UserRegisterActionBean {
+    user: Partial<ClienteDTO>,
+    card: Partial<CardDataDTO>
+}
 const adminLoginRequest = createAsyncThunk(LOGIN_ACTIONS.adminLogin, async (bean:LoginBean) => {
     try {
         const adminToken = (await login(bean)).data.access_token;
         if(adminToken) {
             axios.defaults.headers['Authorization'] = 'Bearer ' + adminToken;
         }
-        const amministratore = (await searchAdmin(bean.username, adminToken)).data;
+        const amministratore = (await searchAdmin(bean.username)).data;
+        if(amministratore.idHotel === null) { // TODO remove workaround
+            amministratore.idHotel = 1;
+        }
         return {
             adminToken,
             amministratore
+        }
+    } catch(e) {
+        console.log('Login request failed')
+        throw e;
+    }
+});
+
+const userLoginRequest = createAsyncThunk(LOGIN_ACTIONS.userLogin, async (bean:LoginBean) => {
+    try {
+        const userToken = (await login(bean)).data.access_token;
+        if(userToken) {
+            axios.defaults.headers['Authorization'] = 'Bearer ' + userToken;
+        }
+        const user = (await searchUser(bean.username)).data;
+        return {
+            userToken,
+            user
         }
     } catch(e) {
         console.log('Login request failed')
@@ -48,16 +74,23 @@ const adminRegister = createAsyncThunk(LOGIN_ACTIONS.adminRegister, async (bean:
             })
         }
     } catch(e) {
-        console.log('Login request failed')
+        console.log('Admin register request failed')
         throw e;
     }
 });
 
-const userLoginRequest = createAsyncThunk(LOGIN_ACTIONS.userLogin, async ({}:{}) => { // params to be replaced with username and pass
+const userRegister = createAsyncThunk(LOGIN_ACTIONS.userRegister, async (bean:UserRegisterActionBean) => {
     try {
-        return await loginUser();
+        const {user, card} = bean;
+        await createUser(user);
+        const idCliente = (await searchUser(user.username!)).data.id
+        await createCard({
+            ...card,
+            idCliente
+        });
+
     } catch(e) {
-        console.log('Login request failed')
+        console.log('Admin register request failed')
         throw e;
     }
 });
@@ -81,7 +114,8 @@ export const loginActions = {
     userLoginRequest,
     adminLogoutAction,
     userLogoutAction,
-    adminRegister
+    adminRegister,
+    userRegister
 };
 
 export default loginActions;

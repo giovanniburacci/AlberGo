@@ -5,7 +5,7 @@ import {
     LogoutOutlined,
     CreditCardOutlined
 } from '@ant-design/icons';
-import loginActions from '../../store/login/login.action'
+import loginActions from '../../store/auth/auth.action'
 import './headerContainer.scss'
 import {Button, Typography} from 'antd';
 import {useDispatch} from 'react-redux';

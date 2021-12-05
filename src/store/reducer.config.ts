@@ -1,6 +1,6 @@
 import {testReducer} from './test/test.reducer';
 import {combineReducers} from 'redux'
-import {loginReducer} from './login/login.reducer';
+import {authReducer} from '../store/auth/auth.reducer';
 import {prenotazioniReducer} from './prenotazioni/prenotazioni.reducer';
 import {stanzeReducer} from './stanze/stanze.reducer';
 import {categorieReducer} from './categorie/categorie.reducer';
@@ -12,7 +12,7 @@ import {hotelsReducer} from './hotels/hotels.reducer';
 
 const appReducer = combineReducers({
     ...testReducer,
-    ...loginReducer,
+    ...authReducer,
     ...prenotazioniReducer,
     ...stanzeReducer,
     ...categorieReducer,

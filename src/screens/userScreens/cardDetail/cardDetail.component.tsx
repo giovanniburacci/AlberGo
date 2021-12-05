@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import './cardDetail.scss'
 import {useDispatch, useSelector} from 'react-redux';
-import {loginSelector} from '../../../store/login/login.selector';
+import {authSelector} from '../../../store/auth/auth.selector';
 import CardActions from '../../../store/card/card.actions';
 import cardSelector from '../../../store/card/card.selector';
 import {Button, message, Skeleton, Spin} from 'antd';
@@ -14,7 +14,7 @@ const componentClassName = 'CardDetail';
 export const CardDetail = () => {
 
     const dispatch = useDispatch();
-    const user = useSelector(loginSelector.getUser)
+    const user = useSelector(authSelector.getUser)
     const isLoading = useSelector(cardSelector.getIsLoading)
     const isError = useSelector(cardSelector.getIsError)
     const cardData = useSelector(cardSelector.getCard)

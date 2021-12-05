@@ -5,13 +5,13 @@ import {HotelDTO} from '../../../models/models';
 import NuovaPrenotazione from '../../../screens/prenotazioni/nuovaPrenotazione/nuovaPrenotazione.component';
 import {Drawer} from 'antd';
 import {useSelector} from 'react-redux';
-import {loginSelector} from '../../../store/login/login.selector';
+import {authSelector} from '../../../store/auth/auth.selector';
 const componentClassName = 'Hotels'
 export const Hotels = () => {
 
     const [selectedHotel, setSelectedHotel] = useState<HotelDTO | undefined>()
 
-    const loggedUser = useSelector(loginSelector.getUser);
+    const loggedUser = useSelector(authSelector.getUser);
     return (
         <>
             <div className={`${componentClassName}`}>

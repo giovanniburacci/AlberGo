@@ -1,12 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {Typography, Card, Input, Button, Skeleton, Tabs} from 'antd'
-import {LockOutlined, UserOutlined } from '@ant-design/icons';
+import React from 'react';
+import {Typography, Card, Tabs} from 'antd'
 import landing from '../../assets/landing.jpg'
 import polimi from '../../assets/polimi.png'
 import './login.scss'
 import {useDispatch, useSelector} from 'react-redux';
-import loginActions from '../../store/login/login.action';
-import {loginSelector} from '../../store/login/login.selector';
+import {authSelector} from '../../store/auth/auth.selector';
 import UserAuth from './userAuth/userAuth.component';
 import AdminAuth from './adminAuth/adminAuth.component';
 
@@ -21,7 +19,7 @@ export const AuthComponent = () => {
         dispatch(loginActions.loginRequest(loginData));
     }*/
 
-    const isLoadingLogin = useSelector(loginSelector.getIsLoading)
+    const isLoadingLogin = useSelector(authSelector.getIsLoading)
 
     return (
         <div className={`${componentClassName}`}>

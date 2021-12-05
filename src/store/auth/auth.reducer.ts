@@ -1,5 +1,5 @@
 import {createReducer} from '@reduxjs/toolkit';
-import loginActions from './login.action';
+import loginActions from '../auth/auth.action';
 import {LoginData} from './types';
 
 const storedAdminData = localStorage.getItem('AlberGOAdmin');
@@ -34,7 +34,7 @@ const initialState:LoginData = {
     isErrorRegister: false
 }
 
-export const loginReducer = {
+export const authReducer = {
     login: createReducer(initialState, (builder) => {
         builder.addCase(loginActions.adminLoginRequest.fulfilled, (state,action) => {
             const amministratore = action.payload.amministratore;

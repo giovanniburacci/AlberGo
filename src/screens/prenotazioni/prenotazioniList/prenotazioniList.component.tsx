@@ -7,7 +7,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {prenotazioniSelector} from '../../../store/prenotazioni/prenotazioni.selector';
 import prenotazioniActions from '../../../store/prenotazioni/prenotazioni.action';
 import hotelSelector from '../../../store/hotel/hotel.selector';
-import {loginSelector} from '../../../store/login/login.selector';
+import {authSelector} from '../../../store/auth/auth.selector';
 
 const columns:ColumnsType<FatturaMapped> = [{
     title: 'Stanza',
@@ -41,8 +41,8 @@ export const PrenotazioniList = (props:PrenotazioniListProps) => {
     const isLoading = useSelector(prenotazioniSelector.getIsLoading);
     const isError = useSelector(prenotazioniSelector.getIsError);
     const idHotel = useSelector(hotelSelector.getHotelId)
-    const isAdmin = !!useSelector(loginSelector.getAmministratore);
-    const idUser = useSelector(loginSelector.getIdUser)
+    const isAdmin = !!useSelector(authSelector.getAmministratore);
+    const idUser = useSelector(authSelector.getIdUser)
     const selectPrenotazione = (record?:FatturaDTO) => {
         setSelectedPrenotazione(record);
         setIsDrawerVisible();

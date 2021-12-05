@@ -15,7 +15,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import categorieSelector from '../../store/categorie/categorie.selector';
 import stanzeSelector from '../../store/stanze/stanze.selector';
 import categorieActions from '../../store/categorie/categorie.action';
-import {loginSelector} from '../../store/login/login.selector';
+import {authSelector} from '../../store/auth/auth.selector';
 import clientiSelector from '../../store/clienti/clienti.selector';
 import clientiActions from '../../store/clienti/clienti.action';
 import stanzeActions from '../../store/stanze/stanze.action';
@@ -77,7 +77,7 @@ export const MenuContainer = (props:MenuContainerProps) => {
 
     const categorie = useSelector(categorieSelector.getCategorie);
     const stanze = useSelector(stanzeSelector.getStanze)
-    const hotelId = useSelector(loginSelector.getIdHotel)
+    const hotelId = useSelector(authSelector.getIdHotel)
     const clienti = useSelector(clientiSelector.getClienti)
 
     const isLoadingClienti = useSelector(clientiSelector.getIsLoading);

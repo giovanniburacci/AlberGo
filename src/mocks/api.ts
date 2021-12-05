@@ -1,4 +1,4 @@
-import {LoginData} from '../store/login/types';
+import {LoginData} from '../store/auth/types';
 import {CardDataDTO} from '../models/models';
 import {mockedCard} from './stubs/card';
 

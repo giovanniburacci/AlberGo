@@ -1,12 +1,14 @@
 import {localhostURL} from './axiosConfig';
 import axios, {AxiosResponse} from 'axios';
-import {AmministratoreDTO, HotelDTO} from '../models/models';
+import {AmministratoreDTO, ClienteDTO, HotelDTO} from '../models/models';
 import {LoginBean, TokenResponse} from '../models/login';
 
 const enum authEndpoints {
     login = 'login',
     amministratoreRegister = 'amministratore/register',
+    clienteRegister = 'cliente/register',
     searchAdmin = 'amministratore/dettaglio/username',
+    searchUser = 'cliente/dettaglio/username',
     userRegister = 'cliente/register',
     createHotel = 'hotel/create'
 }
@@ -36,6 +38,12 @@ export const createAdmin = async (bean: AdminRegisterBean) => {
     // todo add case of already existing hotel
 }
 
+export const createUser = async (user: Partial<ClienteDTO>) => {
+    return axios.post(localhostURL + authEndpoints.userRegister, {
+        ...user
+    })
+}
+
 export const login = async(bean: LoginBean): Promise<AxiosResponse<TokenResponse>> => {
     const params = new URLSearchParams();
     params.append('username',bean.username);
@@ -43,11 +51,16 @@ export const login = async(bean: LoginBean): Promise<AxiosResponse<TokenResponse
     return axios.post(localhostURL + authEndpoints.login,params);
 }
 
-export const searchAdmin = async (username: string, token:string): Promise<AxiosResponse<AmministratoreDTO>> => {
+export const searchAdmin = async (username: string): Promise<AxiosResponse<AmministratoreDTO>> => {
     return axios.get(localhostURL + authEndpoints.searchAdmin,{
-        headers: {
-            'Authorization': 'Bearer ' + token
-        },
+        params: {
+            username
+        }
+    })
+}
+
+export const searchUser = async (username: string): Promise<AxiosResponse<ClienteDTO>> => {
+    return axios.get(localhostURL + authEndpoints.searchUser,{
         params: {
             username
         }

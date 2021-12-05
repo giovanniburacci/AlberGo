@@ -5,7 +5,7 @@ import CreateHotel from '../../tabs/createHotel/createHotel.component';
 import {HotelDTO} from '../../../../../../models/models';
 import {Button} from 'antd';
 import {useDispatch} from 'react-redux';
-import loginActions from '../../../../../../store/login/login.action';
+import loginActions from '../../../../../../store/auth/auth.action';
 
 export const HotelCreation = () => {
     const [newAdmin, setNewAdmin] = useState<Partial<AdminCreation>>();
