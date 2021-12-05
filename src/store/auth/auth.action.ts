@@ -32,9 +32,6 @@ const adminLoginRequest = createAsyncThunk(LOGIN_ACTIONS.adminLogin, async (bean
             axios.defaults.headers['Authorization'] = 'Bearer ' + adminToken;
         }
         const amministratore = (await searchAdmin(bean.username)).data;
-        if(amministratore.idHotel === null) { // TODO remove workaround
-            amministratore.idHotel = 1;
-        }
         return {
             adminToken,
             amministratore
@@ -82,8 +79,7 @@ const adminRegister = createAsyncThunk(LOGIN_ACTIONS.adminRegister, async (bean:
 const userRegister = createAsyncThunk(LOGIN_ACTIONS.userRegister, async (bean:UserRegisterActionBean) => {
     try {
         const {user, card} = bean;
-        await createUser(user);
-        const idCliente = (await searchUser(user.username!)).data.id
+        const idCliente = (await createUser(user)).data;
         await createCard({
             ...card,
             idCliente

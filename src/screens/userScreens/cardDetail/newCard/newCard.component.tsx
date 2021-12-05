@@ -22,7 +22,6 @@ export const NewCard = (props: NewCardProps) => {
     const isError = useSelector(cardSelector.getIsErrorCreate);
 
     useEffect(() => {
-        console.log('clicked confirm', hasClickedOnConfirm);
         if(isLoading && hasClickedOnConfirm) {
             message.destroy('success');
             message.destroy('error');

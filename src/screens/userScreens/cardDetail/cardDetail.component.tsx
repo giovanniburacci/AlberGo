@@ -31,7 +31,7 @@ export const CardDetail = () => {
                     <Skeleton active />
                 ) : isError ? (
                     'error'
-                ) : !_.isEmpty(cardData) ? (
+                ) : (cardData && cardData.cardId !== null) ? (
                     <>
                         <Cards cvc={cardData?.cvc || ''}
                                number={cardData?.number || ''}

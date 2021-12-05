@@ -38,7 +38,7 @@ export const createAdmin = async (bean: AdminRegisterBean) => {
     // todo add case of already existing hotel
 }
 
-export const createUser = async (user: Partial<ClienteDTO>) => {
+export const createUser = async (user: Partial<ClienteDTO>): Promise<AxiosResponse<number>> => {
     return axios.post(localhostURL + authEndpoints.userRegister, {
         ...user
     })
