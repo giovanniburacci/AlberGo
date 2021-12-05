@@ -7,8 +7,6 @@ import cardSelector from '../../../store/card/card.selector';
 import {Button, message, Skeleton, Spin} from 'antd';
 import Cards from 'react-credit-cards';
 import NewCard from './newCard/newCard.component';
-import * as _ from 'lodash'
-import {ArgsProps} from 'antd/es/message';
 const componentClassName = 'CardDetail';
 
 export const CardDetail = () => {
@@ -31,7 +29,7 @@ export const CardDetail = () => {
                     <Skeleton active />
                 ) : isError ? (
                     'error'
-                ) : (cardData && cardData.cardId !== null) ? (
+                ) : (cardData && cardData.number !== null) ? (
                     <>
                         <Cards cvc={cardData?.cvc || ''}
                                number={cardData?.number || ''}

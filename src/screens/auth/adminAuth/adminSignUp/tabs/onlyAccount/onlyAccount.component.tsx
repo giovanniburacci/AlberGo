@@ -10,13 +10,14 @@ interface OnlyAccountProps {
     newAdmin?: Partial<AdminCreation>,
     setNewAdmin:  (item:string, value: string) => void,
     hotelKey?: string,
-    setHotelKey?: (newValue: string) => void
+    setHotelKey?: (newValue: string) => void,
+    hasClickedOnConfirm: boolean,
 }
 export const OnlyAccount = (props:OnlyAccountProps) => {
-    const {isCreatingHotel, setNewAdmin, newAdmin, hotelKey, setHotelKey} = props;
+    const {isCreatingHotel, setNewAdmin, newAdmin, hotelKey, setHotelKey, hasClickedOnConfirm} = props;
     return (
         <div className={`${componentClassName}`}>
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newAdmin?.nome) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Nome
                 </Title>
@@ -26,7 +27,7 @@ export const OnlyAccount = (props:OnlyAccountProps) => {
                     onChange={(e) => {setNewAdmin('nome',e.target.value)}}/>
             </div>
 
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newAdmin?.cognome) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Cognome
                 </Title>
@@ -36,7 +37,7 @@ export const OnlyAccount = (props:OnlyAccountProps) => {
                     onChange={(e) => {setNewAdmin('cognome',e.target.value)}}/>
             </div>
 
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newAdmin?.username) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Username
                 </Title>
@@ -48,7 +49,7 @@ export const OnlyAccount = (props:OnlyAccountProps) => {
 
             {
                 (!isCreatingHotel && (typeof setHotelKey === 'function')) && (
-                    <div className={`${componentClassName}__inputgroup`}>
+                    <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !hotelKey) ? 'error-input' : ''}`}>
                         <Title level={5}>
                             Codice dell'hotel
                         </Title>
@@ -60,7 +61,7 @@ export const OnlyAccount = (props:OnlyAccountProps) => {
                 )
             }
 
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newAdmin?.password) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Password
                 </Title>

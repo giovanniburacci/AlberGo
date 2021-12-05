@@ -18,6 +18,14 @@ const getIsLoading = (state:RootState) => state.login.isLoading;
 
 const getIsError = (state:RootState) => state.login.isError;
 
+const getIsLoadingAdminLogin = (state:RootState) => state.login.isLoadingAdminLogin;
+
+const getIsErrorAdminLogin = (state:RootState) => state.login.isErrorAdminLogin;
+
+const getIsLoadingUserLogin = (state:RootState) => state.login.isLoadingUserLogin;
+
+const getIsErrorUserLogin = (state:RootState) => state.login.isErrorAdminLogin;
+
 export const authSelector = {
     getAdminToken,
     getUserToken,
@@ -27,5 +35,9 @@ export const authSelector = {
     getIsError,
     getIsLoading,
     getUser,
-    getIdUser
+    getIdUser,
+    getIsLoadingAdminLogin,
+    getIsLoadingUserLogin,
+    getIsErrorAdminLogin,
+    getIsErrorUserLogin
 }

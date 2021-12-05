@@ -47,9 +47,6 @@ function App() {
         setSelectedKey(getCurrentSection())
     }, [amministratore, user])
 
-    useEffect(() => {
-        console.log(getCurrentSection());
-    }, [selectedKey])
     return (
         <>
         <div className={`${componentClassName}`}>

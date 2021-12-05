@@ -5,33 +5,41 @@ import {LoginData} from './types';
 const storedAdminData = localStorage.getItem('AlberGOAdmin');
 const storedUserData = localStorage.getItem('AlberGOUser');
 
-let adminToken = null, userToken = null, amministratore = null, user = null;
+let adminToken = null, userToken = null, amministratore = null, user = null, adminDuration = 0, userDuration = 0;
 
 if(storedAdminData) {
     const parsedData = JSON.parse(storedAdminData);
-    if(parsedData.token && parsedData.amministratore) {
+    if(parsedData.token && parsedData.amministratore && parsedData.duration) {
         adminToken = parsedData.token;
         amministratore = parsedData.amministratore;
+        adminDuration = parsedData.duration
     }
 }
 
 if(storedUserData) {
     const parsedData = JSON.parse(storedUserData);
-    if(parsedData.token && parsedData.user) {
+    if(parsedData.token && parsedData.user && parsedData.duration) {
         userToken = parsedData.token;
         user = parsedData.user;
+        userDuration = parsedData.duration
     }
 }
 
 const initialState:LoginData = {
     userToken,
     adminToken,
+    userDuration,
+    adminDuration,
     user,
     amministratore,
     isLoading: false,
     isError: false,
     isLoadingRegister: false,
-    isErrorRegister: false
+    isErrorRegister: false,
+    isLoadingAdminLogin: false,
+    isErrorAdminLogin: false,
+    isLoadingUserLogin: false,
+    isErrorUserLogin: false
 }
 
 export const authReducer = {
@@ -41,63 +49,69 @@ export const authReducer = {
             const adminToken = action.payload.adminToken;
             localStorage.setItem('AlberGOAdmin', JSON.stringify({
                 amministratore,
-                token: adminToken
+                token: adminToken,
+                duration: 600000
             }));
             return {
                 ...state,
                 adminToken,
                 amministratore,
-                isLoading: false,
-                isError: false
+                adminDuration: 600000,
+                isLoadingAdminLogin: false,
+                isErrorAdminLogin: false
             }
         }).addCase(loginActions.adminLoginRequest.rejected, (state,action) => {
             return {
                 ...state,
-                isLoading: false,
-                isError: true
+                isLoadingAdminLogin: false,
+                isErrorAdminLogin: true
             }
         }).addCase(loginActions.adminLoginRequest.pending, (state,action) => {
             return {
                 ...state,
-                isLoading: true,
-                isError: false
+                isLoadingAdminLogin: true,
+                isErrorAdminLogin: false
             }
         }).addCase(loginActions.adminLogoutAction, (state) => {
             return {
                 ...state,
                 amministratore: undefined,
-                adminToken: undefined
+                adminToken: undefined,
+                adminDuration: 0
             }
         }).addCase(loginActions.userLoginRequest.fulfilled, (state, action) => {
             const {userToken, user} = action.payload
             localStorage.setItem('AlberGOUser', JSON.stringify({
                 user,
-                token: userToken
+                token: userToken,
+                duration: 600000
             }));
             return {
                 ...state,
                 userToken,
-                isError: false,
-                isLoading: false,
+                isErrorUserLogin: false,
+                isLoadingUserLogin: false,
+                userDuration: 600000,
                 user
             }
         }).addCase(loginActions.userLoginRequest.pending, (state, action) => {
             return {
                 ...state,
-                isError: false,
-                isLoading: true,
+                isErrorUserLogin: false,
+                isLoadingUserLogin: true,
             }
         }).addCase(loginActions.userLoginRequest.rejected, (state, action) => {
             return {
                 ...state,
-                isError: true,
-                isLoading: false,
+                isErrorUserLogin: true,
+                isLoadingUserLogin: false,
             }
         }).addCase(loginActions.userLogoutAction, (state) => {
             return {
                 ...state,
                 user: undefined,
-                userToken: undefined
+                userToken: undefined,
+                userDuration: 0
             }
         }).addCase(loginActions.adminRegister.pending, (state,action) => {
             return {

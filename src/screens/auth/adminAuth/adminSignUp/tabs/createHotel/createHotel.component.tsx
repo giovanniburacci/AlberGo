@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Title from 'antd/es/typography/Title';
 import {Button, Input, Rate} from 'antd';
 import './createHotel.scss'
@@ -7,13 +7,15 @@ const componentClassName = 'CreateHotel'
 
 interface CreateHotelProps {
     newHotel?: Partial<HotelDTO>
-    setNewHotel: (item:string, value: string | number) => void
+    setNewHotel: (item:string, value: string | number) => void,
+    hasClickedOnConfirm: boolean,
 }
 export const CreateHotel = (props:CreateHotelProps) => {
-    const {newHotel, setNewHotel} = props;
+    const {newHotel, setNewHotel, hasClickedOnConfirm} = props;
+
     return (
         <div className={`${componentClassName}`}>
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newHotel?.nome) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Nome hotel
                 </Title>
@@ -23,7 +25,7 @@ export const CreateHotel = (props:CreateHotelProps) => {
                     onChange={(value) => {setNewHotel('nome',value.target.value)}}/>
             </div>
 
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newHotel?.indirizzo) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Indirizzo hotel
                 </Title>
@@ -33,7 +35,7 @@ export const CreateHotel = (props:CreateHotelProps) => {
                     onChange={(value) => {setNewHotel('indirizzo',value.target.value)}}/>
             </div>
 
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newHotel?.descrizione) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Descrizione hotel
                 </Title>
@@ -43,7 +45,7 @@ export const CreateHotel = (props:CreateHotelProps) => {
                     onChange={(value) => {setNewHotel('descrizione',value.target.value)}}/>
             </div>
 
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newHotel?.telefono) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Telefono hotel
                 </Title>
@@ -53,7 +55,7 @@ export const CreateHotel = (props:CreateHotelProps) => {
                     onChange={(value) => {setNewHotel('telefono',value.target.value)}}/>
             </div>
 
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newHotel?.stelle) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Stelle
                 </Title>
@@ -63,7 +65,7 @@ export const CreateHotel = (props:CreateHotelProps) => {
                 />
             </div>
 
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newHotel?.publicKey) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Chiave account Stripe
                 </Title>

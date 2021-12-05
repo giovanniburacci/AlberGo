@@ -1,13 +1,26 @@
 import {AmministratoreDTO, ClienteDTO} from '../../models/models';
 
-export interface LoginData extends LoginDataRegisterState{
+export interface LoginData extends LoginDataRegisterState, AdminLoginState, UserLoginState{
     userToken?: string,
     adminToken?: string,
     isLoading: boolean,
     isError: boolean,
     amministratore?: AmministratoreDTO
-    user?: ClienteDTO
+    user?: ClienteDTO,
+    userDuration: number,
+    adminDuration:number
 }
+
+export interface AdminLoginState {
+    isLoadingAdminLogin: boolean,
+    isErrorAdminLogin: boolean
+}
+
+export interface UserLoginState {
+    isLoadingUserLogin: boolean,
+    isErrorUserLogin: boolean
+}
+
 
 interface LoginDataRegisterState {
     isLoadingRegister: boolean,

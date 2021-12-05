@@ -15,12 +15,13 @@ const componentClassName = 'UserSignUp'
 export const UserSignUp = () => {
     const [newUser, setNewUser] = useState<Partial<UserCreation>>();
     const [cardData, setCardData] = useState<Partial<CardDataDTO>>();
+    const [hasClickedOnConfirm, setHasClickedOnConfirm] = useState<boolean>(false);
 
     const dispatch = useDispatch();
 
     return (
         <div className={`${componentClassName}`}>
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newUser?.nome) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Nome
                 </Title>
@@ -30,7 +31,7 @@ export const UserSignUp = () => {
                     onChange={(value) => {setNewUser(prevState => ({...prevState, nome: value.target.value}))}}/>
             </div>
 
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newUser?.cognome) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Cognome
                 </Title>
@@ -40,7 +41,7 @@ export const UserSignUp = () => {
                     onChange={(value) => {setNewUser(prevState => ({...prevState, cognome: value.target.value}))}}/>
             </div>
 
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newUser?.telefono) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Telefono
                 </Title>
@@ -50,7 +51,7 @@ export const UserSignUp = () => {
                     onChange={(value) => {setNewUser(prevState => ({...prevState, telefono: value.target.value}))}}/>
             </div>
 
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newUser?.documento) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Documento
                 </Title>
@@ -60,7 +61,7 @@ export const UserSignUp = () => {
                     onChange={(value) => {setNewUser(prevState => ({...prevState, documento: value.target.value}))}}/>
             </div>
 
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newUser?.username) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Username
                 </Title>
@@ -70,7 +71,7 @@ export const UserSignUp = () => {
                     onChange={(value) => {setNewUser(prevState => ({...prevState, username: value.target.value}))}}/>
             </div>
 
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newUser?.password) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Password
                 </Title>
@@ -83,7 +84,7 @@ export const UserSignUp = () => {
 
             <hr/>
 
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !cardData?.number) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Numero carta
                 </Title>
@@ -93,7 +94,7 @@ export const UserSignUp = () => {
                     onChange={(value) => {setCardData(prevState => ({...prevState, number: value.target.value}))}}/>
             </div>
 
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !cardData?.cvc) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     CVC
                 </Title>
@@ -108,7 +109,7 @@ export const UserSignUp = () => {
                     onChange={(value) => {setCardData(prevState => ({...prevState, cvc: value.target.value}))}}/>
             </div>
 
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !cardData?.exp_month) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Mese scadenza
                 </Title>
@@ -116,18 +117,21 @@ export const UserSignUp = () => {
                     placeholder="Mese scadenza"
                     type={'number'}
                     min={1}
-                    max={12}
+                    max={2}
                     value={cardData?.exp_month}
                     onChange={(value) => {setCardData(prevState => ({...prevState, exp_month: value.target.value}))}}/>
             </div>
 
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !cardData?.exp_year) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Anno scadenza
                 </Title>
                 <Input
                     type={'number'}
-                    min={1900}
+                    min={0}
+                    max={99}
+                    maxLength={2}
+                    minLength={2}
                     placeholder="Anno scadenza"
                     value={cardData?.exp_year}
                     onChange={(value) => {setCardData(prevState => ({...prevState, exp_year: value.target.value}))}}/>
@@ -144,6 +148,7 @@ export const UserSignUp = () => {
                 className={`${componentClassName}__btn`}
                 type={'primary'}
                 onClick={() => {
+                    setHasClickedOnConfirm(true);
                     if(cardData && newUser && newUser.nome && newUser.cognome && newUser.username && newUser.telefono && newUser.documento &&
                         cardData.number && cardData.cvc && cardData.exp_month && cardData.exp_year) {
                         dispatch(loginActions.userRegister({

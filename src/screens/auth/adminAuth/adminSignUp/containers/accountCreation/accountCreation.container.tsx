@@ -7,6 +7,7 @@ export const AccountCreation = () => {
 
     const [newAdmin, setNewAdmin] = useState<Partial<AdminCreation>>();
     const [hotelKey, setHotelKey] = useState<string>()
+    const [hasClickedOnConfirm, setHasClickedOnConfirm] = useState<boolean>(false);
 
     return (
         <>
@@ -16,11 +17,14 @@ export const AccountCreation = () => {
                 setNewAdmin={(item,value) => {setNewAdmin(prevState => ({...prevState, [item]: value}))}}
                 hotelKey={hotelKey}
                 setHotelKey={setHotelKey}
+                hasClickedOnConfirm={hasClickedOnConfirm}
                 />
             <Button
                 style={{float: 'right'}}
                 type={'primary'}
-                onClick={() => null}>
+                onClick={() => {
+                    setHasClickedOnConfirm(true);
+                }}>
                 Registrati
             </Button>
         </>
