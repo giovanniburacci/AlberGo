@@ -5,7 +5,7 @@ import { AuthComponent } from './screens/auth/auth.component';
 import './App.scss'
 import { MenuContainer } from './containers/menuContainer/menuContainer.container';
 import HeaderContainer from './containers/headerContainer/headerContainer.container';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {authSelector} from './store/auth/auth.selector';
 import Prenotazioni from './screens/prenotazioni/prenotazioni.component';
 import Stanze from './screens/stanze/stanze.component';
@@ -15,8 +15,11 @@ import Hotel from './screens/hotel/hotel.component';
 import Hotels from './screens/userScreens/hotels/hotels.component';
 import 'react-credit-cards/lib/styles.scss';
 import CardDetail from './screens/userScreens/cardDetail/cardDetail.component';
+import loginActions from './store/auth/auth.action';
+import moment from 'moment';
 const componentClassName = 'App';
 
+let adminAutoLogout: any, userAutoLogout: any;
 function App() {
 
     const getCurrentSection = () => {
@@ -41,11 +44,37 @@ function App() {
     const userToken = useSelector(authSelector.getUserToken);
     const adminToken = useSelector(authSelector.getAdminToken);
     const user = useSelector(authSelector.getUser);
-
+    const adminExpiration = useSelector(authSelector.getAdminExpiration)
+    const userExpiration = useSelector(authSelector.getUserExpiration)
+    const dispatch = useDispatch();
 
     useEffect(() => {
         setSelectedKey(getCurrentSection())
-    }, [amministratore, user])
+        if(amministratore && adminExpiration) {
+            const newDate = moment(adminExpiration, 'ddd MMM DD HH:mm:ss');
+            const expirationMillis = Date.parse(newDate.toISOString())
+            const remainingTime = expirationMillis - Date.parse(new Date().toISOString())
+            adminAutoLogout = setTimeout(() => {
+                dispatch(loginActions.adminLogoutAction());
+            }, remainingTime)
+        }
+
+        if(user && userExpiration) {
+            const newDate = moment(userExpiration, 'ddd MMM DD HH:mm:ss');
+            const expirationMillis = Date.parse(newDate.toISOString())
+            const remainingTime = expirationMillis - Date.parse(new Date().toISOString())
+            userAutoLogout = setTimeout(() => {
+                dispatch(loginActions.userLogoutAction());
+            }, remainingTime )
+        }
+        if(!amministratore) {
+            clearTimeout(adminAutoLogout)
+        }
+
+        if(!user) {
+            clearTimeout(userAutoLogout)
+        }
+    }, [amministratore, user, adminExpiration, userExpiration])
 
     return (
         <>

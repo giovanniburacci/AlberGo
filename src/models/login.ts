@@ -4,5 +4,6 @@ export interface LoginBean {
 }
 
 export interface TokenResponse {
-    access_token: string
+    access_token: string,
+    token_expiration: string
 }

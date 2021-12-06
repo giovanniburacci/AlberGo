@@ -4,6 +4,10 @@ const getAdminToken = (state:RootState) => state.login.adminToken;
 
 const getUserToken = (state:RootState) => state.login.userToken;
 
+const getAdminExpiration = (state: RootState): string => state.login.adminExpiration;
+
+const getUserExpiration = (state: RootState): string => state.login.userExpiration;
+
 const getIdAmministratore = (state:RootState) => state.login.amministratore?.id;
 
 const getIdHotel = (state:RootState) => state.login.amministratore?.idHotel;
@@ -24,7 +28,7 @@ const getIsErrorAdminLogin = (state:RootState) => state.login.isErrorAdminLogin;
 
 const getIsLoadingUserLogin = (state:RootState) => state.login.isLoadingUserLogin;
 
-const getIsErrorUserLogin = (state:RootState) => state.login.isErrorAdminLogin;
+const getIsErrorUserLogin = (state:RootState) => state.login.isErrorUserLogin;
 
 export const authSelector = {
     getAdminToken,
@@ -39,5 +43,7 @@ export const authSelector = {
     getIsLoadingAdminLogin,
     getIsLoadingUserLogin,
     getIsErrorAdminLogin,
-    getIsErrorUserLogin
+    getIsErrorUserLogin,
+    getAdminExpiration,
+    getUserExpiration
 }

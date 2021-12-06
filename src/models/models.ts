@@ -73,7 +73,7 @@ export interface ServizioDTO {
 }
 
 export interface CardDataDTO {
-    cardId: string,
+    paymentMethodId: string,
     number: string,
     cvc: string,
     idCliente: number,

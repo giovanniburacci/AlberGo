@@ -1,35 +1,39 @@
 import {createReducer} from '@reduxjs/toolkit';
 import loginActions from '../auth/auth.action';
 import {LoginData} from './types';
-
+import axios from 'axios';
 const storedAdminData = localStorage.getItem('AlberGOAdmin');
 const storedUserData = localStorage.getItem('AlberGOUser');
 
-let adminToken = null, userToken = null, amministratore = null, user = null, adminDuration = 0, userDuration = 0;
+let adminToken = null, userToken = null, amministratore = null, user = null, adminExpiration = '', userExpiration = '';
 
 if(storedAdminData) {
     const parsedData = JSON.parse(storedAdminData);
-    if(parsedData.token && parsedData.amministratore && parsedData.duration) {
+    if(parsedData.token && parsedData.amministratore && parsedData.expiration) {
         adminToken = parsedData.token;
         amministratore = parsedData.amministratore;
-        adminDuration = parsedData.duration
+        adminExpiration = parsedData.expiration
+        axios.defaults.headers['Authorization'] = 'Bearer ' + adminToken
     }
 }
 
 if(storedUserData) {
     const parsedData = JSON.parse(storedUserData);
-    if(parsedData.token && parsedData.user && parsedData.duration) {
+    console.log('ciauuu', parsedData)
+    if(parsedData.token && parsedData.user && parsedData.expiration) {
+        console.log('prova if')
         userToken = parsedData.token;
         user = parsedData.user;
-        userDuration = parsedData.duration
+        userExpiration = parsedData.expiration
+        axios.defaults.headers['Authorization'] = 'Bearer ' + userToken
     }
 }
 
 const initialState:LoginData = {
     userToken,
     adminToken,
-    userDuration,
-    adminDuration,
+    userExpiration,
+    adminExpiration,
     user,
     amministratore,
     isLoading: false,
@@ -46,17 +50,18 @@ export const authReducer = {
     login: createReducer(initialState, (builder) => {
         builder.addCase(loginActions.adminLoginRequest.fulfilled, (state,action) => {
             const amministratore = action.payload.amministratore;
-            const adminToken = action.payload.adminToken;
+            const adminToken = action.payload.tokenInfo.access_token;
+            const expiration = action.payload.tokenInfo.token_expiration
             localStorage.setItem('AlberGOAdmin', JSON.stringify({
                 amministratore,
                 token: adminToken,
-                duration: 600000
+                expiration
             }));
             return {
                 ...state,
                 adminToken,
                 amministratore,
-                adminDuration: 600000,
+                adminExpiration: expiration,
                 isLoadingAdminLogin: false,
                 isErrorAdminLogin: false
             }
@@ -80,18 +85,18 @@ export const authReducer = {
                 adminDuration: 0
             }
         }).addCase(loginActions.userLoginRequest.fulfilled, (state, action) => {
-            const {userToken, user} = action.payload
+            const {tokenInfo, user} = action.payload
             localStorage.setItem('AlberGOUser', JSON.stringify({
                 user,
-                token: userToken,
-                duration: 600000
+                token: tokenInfo.access_token,
+                expiration: tokenInfo.token_expiration
             }));
             return {
                 ...state,
-                userToken,
+                userToken: tokenInfo.access_token,
                 isErrorUserLogin: false,
                 isLoadingUserLogin: false,
-                userDuration: 600000,
+                userExpiration: tokenInfo.token_expiration,
                 user
             }
         }).addCase(loginActions.userLoginRequest.pending, (state, action) => {

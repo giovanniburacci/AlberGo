@@ -1,5 +1,5 @@
 export const mockedCard = {
-    cardId: '1',
+    paymentMethodId: '1',
     number: '4242424242424242',
     cvc: '908',
     idCliente: 1,

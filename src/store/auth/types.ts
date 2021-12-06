@@ -7,8 +7,8 @@ export interface LoginData extends LoginDataRegisterState, AdminLoginState, User
     isError: boolean,
     amministratore?: AmministratoreDTO
     user?: ClienteDTO,
-    userDuration: number,
-    adminDuration:number
+    userExpiration: string,
+    adminExpiration: string
 }
 
 export interface AdminLoginState {

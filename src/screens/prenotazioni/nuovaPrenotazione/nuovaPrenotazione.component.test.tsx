@@ -31,7 +31,7 @@ describe('NuovaPrenotazione tests', () => {
     });
 
     it('Prenotazione can be created', () => {
-        const nuovaPrenotazione = render(<NuovaPrenotazione />)
+        const nuovaPrenotazione = render(<NuovaPrenotazione closeDrawer={() => null}/>)
         const nome = nuovaPrenotazione.getByPlaceholderText('Nome');
         const cognome = nuovaPrenotazione.getByPlaceholderText('Cognome');
         const telefono = nuovaPrenotazione.getByPlaceholderText('Telefono');

@@ -21,6 +21,7 @@ export const UserAuth = () => {
     const isErrorLogin = useSelector(authSelector.getIsErrorUserLogin)
 
     useEffect(() => {
+        console.log(hasClickedOnConfirm, isErrorLogin);
         if(isErrorLogin && hasClickedOnConfirm) {
             message.error({
                 duration: 3,

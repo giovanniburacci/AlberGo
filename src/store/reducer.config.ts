@@ -23,6 +23,8 @@ const appReducer = combineReducers({
     ...hotelsReducer
 });
 export const RESET_STORE = 'RESET_STORE';
+export const RESET_USER = 'RESET_USER';
+export const RESET_ADMIN = 'RESET_USER';
 
 export const rootReducer = (state:any, action: any) => {
     if(action.type === RESET_STORE) {

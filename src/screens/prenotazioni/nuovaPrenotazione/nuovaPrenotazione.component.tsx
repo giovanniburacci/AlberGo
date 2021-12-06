@@ -127,7 +127,7 @@ const NuovaPrenotazione = (props: NuovaPrenotazioneProps) => {
             message.loading({
                 duration: 3,
                 key: 'loading',
-                content: 'Sto creando la stanza...'
+                content: 'Sto creando la prenotazione...'
             } as ArgsProps);
         }
         else if(isError && hasClickedOnConfirm) {
@@ -136,7 +136,7 @@ const NuovaPrenotazione = (props: NuovaPrenotazioneProps) => {
             message.error({
                 duration: 3,
                 key: 'error',
-                content: 'Errore nella creazione della stanza!'
+                content: 'Errore nella creazione della prenotazione!'
             } as ArgsProps);
             closeDrawer();
         }
@@ -146,7 +146,7 @@ const NuovaPrenotazione = (props: NuovaPrenotazioneProps) => {
             message.success({
                 duration: 3,
                 key: 'success',
-                content: 'Stanza creata con successo!'
+                content: 'Prenotazione creata con successo!'
             } as ArgsProps);
             closeDrawer();
         }

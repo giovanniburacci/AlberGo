@@ -25,15 +25,17 @@ interface UserRegisterActionBean {
     user: Partial<ClienteDTO>,
     card: Partial<CardDataDTO>
 }
-const adminLoginRequest = createAsyncThunk(LOGIN_ACTIONS.adminLogin, async (bean:LoginBean) => {
+
+const adminLoginRequest = createAsyncThunk(LOGIN_ACTIONS.adminLogin, async (bean:LoginBean, thunkAPI) => {
     try {
-        const adminToken = (await login(bean)).data.access_token;
-        if(adminToken) {
-            axios.defaults.headers['Authorization'] = 'Bearer ' + adminToken;
+        const tokenInfo = (await login(bean)).data;
+        if(tokenInfo) {
+            axios.defaults.headers['Authorization'] = 'Bearer ' + tokenInfo.access_token;
         }
         const amministratore = (await searchAdmin(bean.username)).data;
+        tokenInfo.token_expiration = tokenInfo.token_expiration.substring(0,19)
         return {
-            adminToken,
+            tokenInfo,
             amministratore
         }
     } catch(e) {
@@ -44,13 +46,14 @@ const adminLoginRequest = createAsyncThunk(LOGIN_ACTIONS.adminLogin, async (bean
 
 const userLoginRequest = createAsyncThunk(LOGIN_ACTIONS.userLogin, async (bean:LoginBean) => {
     try {
-        const userToken = (await login(bean)).data.access_token;
-        if(userToken) {
-            axios.defaults.headers['Authorization'] = 'Bearer ' + userToken;
+        const tokenInfo = (await login(bean)).data;
+        if(tokenInfo) {
+            axios.defaults.headers['Authorization'] = 'Bearer ' + tokenInfo.access_token;
         }
         const user = (await searchUser(bean.username)).data;
+        tokenInfo.token_expiration = tokenInfo.token_expiration.substring(0,19)
         return {
-            userToken,
+            tokenInfo,
             user
         }
     } catch(e) {
