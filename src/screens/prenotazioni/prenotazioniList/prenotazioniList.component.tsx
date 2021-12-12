@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Spin, Table} from 'antd';
+import {Empty, Spin, Table} from 'antd';
 import {ColumnsType} from 'antd/es/table';
 import {FatturaMapped} from '../types';
 import {FatturaDTO} from '../../../models/models';
@@ -63,7 +63,7 @@ export const PrenotazioniList = (props:PrenotazioniListProps) => {
             isLoading ? (
                     <Spin />
                 ) : isError ? (
-                    <>boh</>
+                    <Empty />
                 ) : (
                 <Table
                     onRow={(record,index) => {

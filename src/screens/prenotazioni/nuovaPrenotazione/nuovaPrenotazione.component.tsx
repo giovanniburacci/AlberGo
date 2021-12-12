@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {DatePicker, Input, Typography, Select, Spin, Button, Tag, message} from 'antd';
+import {DatePicker, Input, Typography, Select, Spin, Button, Tag, message, Empty} from 'antd';
 import './nuovaPrenotazione.scss';
 import { UserOutlined } from '@ant-design/icons';
 import stanzeSelector from '../../../store/stanze/stanze.selector';
@@ -325,8 +325,10 @@ const NuovaPrenotazione = (props: NuovaPrenotazioneProps) => {
                             }
                         }}>Conferma</Button>
                     </>
-                ) : (
+                ) : (isLoadingStanze || isLoadingUtenti) ? (
                     <Spin size={'large'}/>
+                ) : (
+                    <Empty />
                 )
             }
 

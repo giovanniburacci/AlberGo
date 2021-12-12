@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {authSelector} from '../../../store/auth/auth.selector';
 import CardActions from '../../../store/card/card.actions';
 import cardSelector from '../../../store/card/card.selector';
-import {Button, message, Skeleton, Spin} from 'antd';
+import {Button, Empty, message, Skeleton, Spin} from 'antd';
 import Cards from 'react-credit-cards';
 import NewCard from './newCard/newCard.component';
 import {ArgsProps} from 'antd/es/message';
@@ -98,7 +98,7 @@ export const CardDetail = () => {
                 isLoading ? (
                     <Skeleton active />
                 ) : isError ? (
-                    'error'
+                    <Empty />
                 ) : (cardData && cardData.number !== null) ? (
                     <>
                         <Cards cvc={cardData?.cvc || ''}

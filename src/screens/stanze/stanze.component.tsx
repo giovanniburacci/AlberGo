@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Drawer, Spin, Table, Typography} from 'antd'
+import {Drawer, Empty, Spin, Table, Typography} from 'antd'
 import './stanze.scss';
 import {ColumnsType} from 'antd/es/table';
 import {StanzaDTO} from '../../models/models';
@@ -104,7 +104,7 @@ const Stanze = () => {
                     isLoading ? (
                         <Spin />
                     ) : isError ? (
-                        <>ciao</>
+                        <Empty />
                     ) : (
                         <Table
                             columns={(stanze && stanze.length > 0 && stanze[0].status) ? (

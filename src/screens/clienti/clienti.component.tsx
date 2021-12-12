@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import './clienti.scss'
 import {ColumnsType} from 'antd/es/table';
-import {Drawer, Table} from 'antd';
+import {Drawer, Empty, Table} from 'antd';
 import {useDispatch, useSelector} from 'react-redux';
 import {Spin} from 'antd';
 import {ClienteDTO} from '../../models/models';
@@ -58,7 +58,7 @@ const Clienti = () => {
                     isLoading ? (
                         <Spin size={'large'}/>
                     ) : isError ? (
-                        <>boh</>
+                        <Empty />
                     ) : (
                         <Table
                             onRow={(record,index) => {

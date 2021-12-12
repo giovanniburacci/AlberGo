@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Spin, Table} from 'antd';
+import {Empty, Spin, Table} from 'antd';
 import {HotelDTO} from '../../../../models/models';
 import {useDispatch, useSelector} from 'react-redux';
 import {hotelsSelector} from '../../../../store/hotels/hotels.selector';
@@ -46,7 +46,7 @@ export const HotelsList = (props: HotelsListProps) => {
         isLoading ? (
             <Spin />
         ) : isError ? (
-            <>boh</>
+            <Empty />
         ) : (
             <Table
                 onRow={(record,index) => {
