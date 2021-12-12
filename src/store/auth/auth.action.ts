@@ -89,13 +89,14 @@ const userRegister = createAsyncThunk(LOGIN_ACTIONS.userRegister, async (bean:Us
         });
 
     } catch(e) {
-        console.log('Admin register request failed')
+        console.log('User register request failed')
         throw e;
     }
 });
 
 const adminLogoutAction = createAction(LOGIN_ACTIONS.adminLogout, () => {
     localStorage.removeItem('AlberGOAdmin');
+    axios.defaults.headers['Authorization'] = undefined;
     return {
         payload: null
     }
@@ -103,6 +104,7 @@ const adminLogoutAction = createAction(LOGIN_ACTIONS.adminLogout, () => {
 
 const userLogoutAction = createAction(LOGIN_ACTIONS.userLogout, () => {
     localStorage.removeItem('AlberGOUser');
+    axios.defaults.headers['Authorization'] = undefined;
     return {
         payload: null
     }

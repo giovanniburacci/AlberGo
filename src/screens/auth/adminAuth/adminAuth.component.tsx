@@ -79,7 +79,7 @@ export const AdminAuth = () => {
                    destroyOnClose={true}
                    maskClosable={true}
                    onCancel={() => setIsSigningUp(false)}>
-                <AdminSignUp/>
+                <AdminSignUp closeModal={() => setIsSigningUp(false)}/>
             </Modal>
         </>
     )

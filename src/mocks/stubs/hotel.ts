@@ -2,10 +2,11 @@ import {HotelDTO, Stelle} from '../../models/models';
 
 export const getHotelStub = ():HotelDTO => ({
     id: 1,
-    nome: 'Hotel balordo',
-    indirizzo: 'Via del degrado 27',
+    nome: 'Hotel carino',
+    indirizzo: 'Via del carino 27',
     stelle: Stelle.UNO,
-    descrizione: 'Hotel trasandato per persone disperate',
+    descrizione: 'Hotel carino per persone gentili',
     telefono: '3823401362',
+    codiceHotel: 'codiceprova',
     publicKey: '123'
 })

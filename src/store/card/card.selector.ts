@@ -11,7 +11,7 @@ export const getIsLoadingCreate = (state:RootState): boolean => state.card.isLoa
 
 export const getIsErrorCreate = (state:RootState): boolean => state.card.isErrorCreate
 
-export const getIsLoadingDelete = (state:RootState): boolean => state.card.isErrorDelete
+export const getIsLoadingDelete = (state:RootState): boolean => state.card.isLoadingDelete
 
 export const getIsErrorDelete = (state:RootState): boolean => state.card.isErrorDelete
 

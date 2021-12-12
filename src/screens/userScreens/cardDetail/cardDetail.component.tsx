@@ -7,6 +7,7 @@ import cardSelector from '../../../store/card/card.selector';
 import {Button, message, Skeleton, Spin} from 'antd';
 import Cards from 'react-credit-cards';
 import NewCard from './newCard/newCard.component';
+import {ArgsProps} from 'antd/es/message';
 const componentClassName = 'CardDetail';
 
 export const CardDetail = () => {
@@ -16,12 +17,81 @@ export const CardDetail = () => {
     const isLoading = useSelector(cardSelector.getIsLoading)
     const isError = useSelector(cardSelector.getIsError)
     const cardData = useSelector(cardSelector.getCard)
+    const [hasClickedOnSave, setHasClickedOnSave] = useState<boolean>(false);
+    const [hasClickedOnDelete, setHasClickedOnDelete] = useState<boolean>(false);
+
+    const isLoadingCreate = useSelector(cardSelector.getIsLoadingCreate);
+    const isErrorCreate = useSelector(cardSelector.getIsErrorCreate);
+
+    const isLoadingDelete = useSelector(cardSelector.getIsLoadingDelete)
+    const isErrorDelete = useSelector(cardSelector.getIsErrorDelete)
 
     useEffect(() => {
         if(user?.id) {
             dispatch(CardActions.fetchCard(user.id))
         }
     }, [user])
+
+    useEffect(() => {
+        if(isLoadingCreate && hasClickedOnSave) {
+            message.destroy('success');
+            message.destroy('error');
+            message.loading({
+                duration: 3,
+                key: 'loading',
+                content: 'Sto aggiungendo la carta...'
+            } as ArgsProps);
+        }
+        else if(isErrorCreate && hasClickedOnSave) {
+            message.destroy('loading');
+            message.destroy('success');
+            message.error({
+                duration: 3,
+                key: 'error',
+                content: 'Errore nell\'aggiunta della carta!'
+            } as ArgsProps);
+        }
+        else if(!isLoadingCreate && !isErrorCreate && hasClickedOnSave) {
+            message.destroy('loading');
+            message.destroy('error');
+            message.success({
+                duration: 3,
+                key: 'success',
+                content: 'Carta creata con successo!'
+            } as ArgsProps);
+        }
+    }, [isLoadingCreate, isErrorCreate])
+
+    useEffect(() => {
+        if(isLoadingDelete && hasClickedOnDelete) {
+            message.destroy('success');
+            message.destroy('error');
+            message.loading({
+                duration: 3,
+                key: 'loading',
+                content: 'Sto eliminando la carta...'
+            } as ArgsProps);
+        }
+        else if(isErrorDelete && hasClickedOnDelete) {
+            message.destroy('loading');
+            message.destroy('success');
+            message.error({
+                duration: 3,
+                key: 'error',
+                content: 'Errore nell\'eliminazione della carta!'
+            } as ArgsProps);
+        }
+        else if(!isLoadingDelete && !isErrorDelete && hasClickedOnDelete) {
+            message.destroy('loading');
+            message.destroy('error');
+            message.success({
+                duration: 3,
+                key: 'success',
+                content: 'Carta eliminata con successo!'
+            } as ArgsProps);
+        }
+    }, [isLoadingDelete, isErrorDelete])
+
     return (
         <div className={`${componentClassName}`}>
             {
@@ -43,6 +113,7 @@ export const CardDetail = () => {
                                     danger
                                     className={`${componentClassName}__footer__delete-btn`}
                                     onClick={() => {
+                                        setHasClickedOnDelete(true);
                                         if(user) {
                                             dispatch(CardActions.removeCard(user.id))
                                         }
@@ -52,7 +123,7 @@ export const CardDetail = () => {
                         </div>
                     </>
                 ) : (
-                    <NewCard user={user} />
+                    <NewCard hasClickedOnConfirm={hasClickedOnSave} resetHasClickedOnDelete={() => setHasClickedOnDelete(true)} setHasClickedOnConfirm={(value) => setHasClickedOnSave(value)} user={user} />
                 )
             }
         </div>

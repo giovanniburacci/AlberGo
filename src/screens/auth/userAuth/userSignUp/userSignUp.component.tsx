@@ -89,7 +89,7 @@ export const UserSignUp = () => {
                     Numero carta
                 </Title>
                 <Input
-                    placeholder="Username"
+                    placeholder="Numero carta"
                     value={cardData?.number}
                     onChange={(value) => {setCardData(prevState => ({...prevState, number: value.target.value}))}}/>
             </div>

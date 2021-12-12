@@ -10,16 +10,22 @@ import cardSelector from '../../../../store/card/card.selector';
 import {ArgsProps} from 'antd/es/message';
 const componentClassName = 'NewCard'
 interface NewCardProps {
-    user?: ClienteDTO
+    user?: ClienteDTO,
+    hasClickedOnConfirm: boolean,
+    setHasClickedOnConfirm: (value: boolean) => void,
+    resetHasClickedOnDelete: () => void
 }
 export const NewCard = (props: NewCardProps) => {
 
-    const {user} = props;
+    const {user, hasClickedOnConfirm, setHasClickedOnConfirm, resetHasClickedOnDelete} = props;
     const [newCard, setNewCard] = useState<Partial<CardDataDTO>>()
-    const [hasClickedOnConfirm, setHasClickedOnConfirm] = useState<boolean>(false);
 
     const isLoading = useSelector(cardSelector.getIsLoadingCreate);
     const isError = useSelector(cardSelector.getIsErrorCreate);
+
+    useEffect(() => {
+        resetHasClickedOnDelete();
+    }, [user])
 
     useEffect(() => {
         if(isLoading && hasClickedOnConfirm) {
@@ -50,6 +56,10 @@ export const NewCard = (props: NewCardProps) => {
             } as ArgsProps);
         }
     }, [isLoading, isError])
+
+    useEffect(() => {
+        setHasClickedOnConfirm(false);
+    }, [])
 
     const dispatch = useDispatch();
     return (

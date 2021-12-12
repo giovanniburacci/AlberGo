@@ -25,7 +25,7 @@ describe('Prenotazione tests', () => {
 
     const prenotazioneStub = getFatturaStub();
     it('Prenotazione gets properly loaded', () => {
-        const prenotazione = render(<Prenotazione prenotazione={prenotazioneStub} />)
+        const prenotazione = render(<Prenotazione closeDrawer={() => null} prenotazione={prenotazioneStub} />)
         const nome = prenotazione.getByPlaceholderText('Nome').innerText;
         const cognome = prenotazione.getByPlaceholderText('Cognome').innerText;
         const telefono = prenotazione.getByPlaceholderText('Telefono').innerText;
@@ -41,7 +41,7 @@ describe('Prenotazione tests', () => {
     });
 
     it('Stanza can be deleted', () => {
-        const prenotazione = render(<Prenotazione prenotazione={prenotazioneStub} />)
+        const prenotazione = render(<Prenotazione closeDrawer={() => null} prenotazione={prenotazioneStub} />)
 
         const deleteButton = prenotazione.getByText('Elimina');
 
@@ -77,7 +77,7 @@ describe('Prenotazione tests', () => {
     });
 
     it('Prenotazione can be edited', () => {
-        const prenotazione = render(<Prenotazione prenotazione={prenotazioneStub} />)
+        const prenotazione = render(<Prenotazione closeDrawer={() => null} prenotazione={prenotazioneStub} />)
 
         const editButton = prenotazione.getByText('Modifica');
 

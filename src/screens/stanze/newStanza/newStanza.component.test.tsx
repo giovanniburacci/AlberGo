@@ -32,7 +32,7 @@ describe('Dettaglio stanza tests', () => {
     });
 
     it('Can create new stanza', async () => {
-        const dettaglioStanza = render(<NewStanza />)
+        const dettaglioStanza = render(<NewStanza closeDrawer={() => null}/>)
         const numStanza = dettaglioStanza.getByPlaceholderText('Numero stanza');
         const descrizione = dettaglioStanza.getByPlaceholderText('Descrizione');
         const metriQuadri = dettaglioStanza.getByPlaceholderText('Metri quadri');

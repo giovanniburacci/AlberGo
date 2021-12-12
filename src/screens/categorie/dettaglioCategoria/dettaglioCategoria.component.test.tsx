@@ -25,7 +25,7 @@ describe('Dettaglio stanza tests', () => {
 
     const categoriaStub = getCategorieStub()[0];
     it('DettaglioCategoria gets properly loaded', () => {
-        const dettaglioCategoria = render(<DettaglioCategoria categoria={categoriaStub} />)
+        const dettaglioCategoria = render(<DettaglioCategoria categoria={categoriaStub} closeDrawer={() => null}/>)
         const nome = dettaglioCategoria.getByPlaceholderText('Nome').innerText;
         const descrizione = dettaglioCategoria.getByPlaceholderText('Descrizione').innerText;
         const prezzo = dettaglioCategoria.getByPlaceholderText('Prezzo').innerText;
@@ -43,7 +43,7 @@ describe('Dettaglio stanza tests', () => {
     });
 
     it('DettaglioCategoria can be edited', () => {
-        const dettaglioCategoria = render(<DettaglioCategoria categoria={categoriaStub} />)
+        const dettaglioCategoria = render(<DettaglioCategoria categoria={categoriaStub} closeDrawer={() => null}/>)
         const prezzo = dettaglioCategoria.getByPlaceholderText('Prezzo');
 
         fireEvent.change(prezzo, {
@@ -96,8 +96,8 @@ describe('Dettaglio stanza tests', () => {
 
     });
 
-    it('Servizio can be deleted', () => {
-        const servizio = render(<DettaglioCategoria categoria={categoriaStub} />)
+    it('DettaglioCategoria can be deleted', () => {
+        const servizio = render(<DettaglioCategoria categoria={categoriaStub} closeDrawer={() => null}/>)
         const deleteButton = servizio.getByText('Elimina');
 
         fireEvent.click(deleteButton);

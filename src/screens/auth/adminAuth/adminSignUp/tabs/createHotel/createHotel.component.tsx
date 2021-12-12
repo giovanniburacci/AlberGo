@@ -65,6 +65,16 @@ export const CreateHotel = (props:CreateHotelProps) => {
                 />
             </div>
 
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newHotel?.codiceHotel) ? 'error-input' : ''}`}>
+                <Title level={5}>
+                    Codice hotel
+                </Title>
+                <Input
+                    placeholder="Codice hotel"
+                    value={newHotel?.codiceHotel}
+                    onChange={(value) => {setNewHotel('codiceHotel',value.target.value)}}/>
+            </div>
+
             <div className={`${componentClassName}__inputgroup ${(hasClickedOnConfirm && !newHotel?.publicKey) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Chiave account Stripe

@@ -61,6 +61,7 @@ export interface HotelDTO {
     stelle: Stelle
     descrizione: string,
     telefono: string,
+    codiceHotel: string,
     publicKey: string
 }
 

@@ -35,7 +35,6 @@ export const createAdmin = async (bean: AdminRegisterBean) => {
         })
     }
 
-    // todo add case of already existing hotel
 }
 
 export const createUser = async (user: Partial<ClienteDTO>): Promise<AxiosResponse<number>> => {

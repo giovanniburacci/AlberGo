@@ -26,7 +26,7 @@ describe('Dettaglio stanza tests', () => {
     const stanzaStub = getStanzeStub()[0];
 
     it('Stanza gets properly loaded', () => {
-        const dettaglioStanza = render(<DettaglioStanza stanza={stanzaStub} resetFilters={() => -1}/>)
+        const dettaglioStanza = render(<DettaglioStanza stanza={stanzaStub} resetFilters={() => -1} closeDrawer={() => null}/>)
         const numStanza = dettaglioStanza.getByPlaceholderText('Numero stanza').innerText;
         const descrizione = dettaglioStanza.getByPlaceholderText('Descrizione').innerText;
         const metriQuadri = dettaglioStanza.getByPlaceholderText('Metri quadri').innerText;
@@ -38,7 +38,7 @@ describe('Dettaglio stanza tests', () => {
     });
 
     it('Stanza can be edited', () => {
-        const dettaglioStanza = render(<DettaglioStanza stanza={stanzaStub} resetFilters={() => -1}/>)
+        const dettaglioStanza = render(<DettaglioStanza stanza={stanzaStub} resetFilters={() => -1} closeDrawer={() => null}/>)
 
         const descrizioneInput = dettaglioStanza.getByPlaceholderText('Descrizione');
         const editButton = dettaglioStanza.getByText('Modifica');
@@ -91,7 +91,7 @@ describe('Dettaglio stanza tests', () => {
     });
 
     it('Stanza can be deleted', () => {
-        const dettaglioStanza = render(<DettaglioStanza stanza={stanzaStub} resetFilters={() => -1}/>)
+        const dettaglioStanza = render(<DettaglioStanza stanza={stanzaStub} resetFilters={() => -1} closeDrawer={() => null}/>)
 
         const deleteButton = dettaglioStanza.getByText('Elimina');
 

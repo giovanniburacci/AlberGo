@@ -30,6 +30,10 @@ const getIsLoadingUserLogin = (state:RootState) => state.login.isLoadingUserLogi
 
 const getIsErrorUserLogin = (state:RootState) => state.login.isErrorUserLogin;
 
+const getIsLoadingRegister = (state:RootState) => state.login.isLoadingRegister;
+
+const getIsErrorRegister = (state:RootState) => state.login.isErrorRegister;
+
 export const authSelector = {
     getAdminToken,
     getUserToken,
@@ -45,5 +49,7 @@ export const authSelector = {
     getIsErrorAdminLogin,
     getIsErrorUserLogin,
     getAdminExpiration,
-    getUserExpiration
+    getUserExpiration,
+    getIsLoadingRegister,
+    getIsErrorRegister
 }

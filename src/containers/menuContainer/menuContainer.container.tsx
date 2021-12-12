@@ -37,7 +37,8 @@ let renderCount = 0;
 export const MenuContainer = (props:MenuContainerProps) => {
     const {isCollapsed, isAdmin} = props;
     const history = useHistory();
-    const menuOptions: Option[] = isAdmin ? [{
+    const menuOptions: Option[] = isAdmin ?
+        [{
         title: 'Prenotazioni',
         icon: <ContactsOutlined style={{fontSize: isCollapsed ? '32px' : 'unset'}}/>,
         path: '/'
