@@ -116,11 +116,13 @@ export const Prenotazione = (props:PrenotazioneProps) => {
             idStanza: prenotazione.stanza.id,
             idHotel: prenotazione.hotel.id
         });
-        dispatch(clientiActions.fetchClienti(idHotel))
-        dispatch(stanzeActions.fetchStanze(idHotel))
-        dispatch(serviziActions.fetchServiziDisponibiliByPrenotazione(prenotazione.prenotazione.id))
-        dispatch(serviziActions.fetchServiziSceltiByPrenotazione(prenotazione.prenotazione.id))
-    }, [prenotazione]);
+        if(idHotel) {
+            dispatch(clientiActions.fetchClienti(idHotel))
+            dispatch(stanzeActions.fetchStanze(idHotel))
+            dispatch(serviziActions.fetchServiziDisponibiliByPrenotazione(prenotazione.prenotazione.id))
+            dispatch(serviziActions.fetchServiziSceltiByPrenotazione(prenotazione.prenotazione.id))
+        }
+    }, [prenotazione, idHotel]);
 
 
     useEffect(() => {

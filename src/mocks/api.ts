@@ -3,6 +3,7 @@ import {CardDataDTO} from '../models/models';
 import {mockedCard} from './stubs/card';
 
 let callCount = 0;
+
 export const login = async ():Promise<Partial<LoginData>> => {
     return await new Promise((resolve,reject) => {
         setTimeout(() => {

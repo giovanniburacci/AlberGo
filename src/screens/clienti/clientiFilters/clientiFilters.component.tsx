@@ -37,21 +37,23 @@ const ClientiFilters = () => {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        timeout = setTimeout(() => {
-            if (!searchValue) {
-                if (renderCount !== 0) {
-                    dispatch(clientiActions.fetchClienti(idHotel))
+        if(idHotel) {
+            timeout = setTimeout(() => {
+                if (!searchValue) {
+                    if (renderCount !== 0) {
+                        dispatch(clientiActions.fetchClienti(idHotel))
+                    }
+                } else {
+                    dispatch(clientiActions.fetchFilteredClienti({
+                        nome: utenteFilter === UtenteFilter.NOME ? searchValue : '',
+                        cognome: utenteFilter === UtenteFilter.COGNOME ? searchValue : '',
+                        idHotel
+                    }))
+                    renderCount++;
                 }
-            } else {
-                dispatch(clientiActions.fetchFilteredClienti({
-                    nome: utenteFilter === UtenteFilter.NOME ? searchValue : '',
-                    cognome: utenteFilter === UtenteFilter.COGNOME ? searchValue : '',
-                    idHotel
-                }))
-                renderCount++;
-            }
-        }, 500)
-    }, [searchValue])
+            }, 500)
+        }
+    }, [idHotel])
 
     useEffect(() => {
         return () => {

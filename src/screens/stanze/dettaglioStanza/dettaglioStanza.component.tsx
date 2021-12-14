@@ -101,8 +101,10 @@ const DettaglioStanza = (props:PrenotazioneProps) => {
     }, [isLoadingDelete, isErrorDelete])
 
     useEffect(() => {
-        dispatch(categorieActions.fetchCategorie(idHotel))
-    }, [stanza]);
+        if(idHotel) {
+            dispatch(categorieActions.fetchCategorie(idHotel))
+        }
+    }, [stanza, idHotel]);
 
     useEffect(() => {
         if(!isEqual(stanza, newStanza)) {

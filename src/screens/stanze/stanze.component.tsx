@@ -42,8 +42,10 @@ const Stanze = () => {
     const [dateFilter, setDateFilter] = useState<[moment.Moment,moment.Moment] | null>();
 
     useEffect( () => {
-        dispatch(stanzeActions.fetchStanze(idHotel))
-    }, [])
+        if(idHotel) {
+            dispatch(stanzeActions.fetchStanze(idHotel))
+        }
+    }, [idHotel])
 
     useEffect(() => {
         if(!stanze || stanze.length === 0) {

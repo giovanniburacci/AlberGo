@@ -27,24 +27,26 @@ const StanzeFilters = (props: StanzeFilterProps) => {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        if(dateFilter) {
-            const [dataInizio, dataFine] = dateFilter;
-            if (dataInizio && dataFine) {
-                // @ts-ignore
-                dispatch(stanzeActions.fetchStanzeWithDates({
-                    dataInizio,
-                    dataFine,
-                    idCategoria: selectedCategoria?.id,
-                    idHotel
-                }));
-                renderCount ++;
-            }
-        } else { // caso di nessun filtro
-            if(renderCount !== 0) {
-                dispatch(stanzeActions.fetchStanze(1)) //handle hotel id
+        if(idHotel) {
+            if(dateFilter) {
+                const [dataInizio, dataFine] = dateFilter;
+                if (dataInizio && dataFine) {
+                    // @ts-ignore
+                    dispatch(stanzeActions.fetchStanzeWithDates({
+                        dataInizio,
+                        dataFine,
+                        idCategoria: selectedCategoria?.id,
+                        idHotel
+                    }));
+                    renderCount ++;
+                }
+            } else { // caso di nessun filtro
+                if(renderCount !== 0) {
+                    dispatch(stanzeActions.fetchStanze(idHotel)) //handle hotel id
+                }
             }
         }
-    }, [dateFilter])
+    }, [dateFilter, idHotel])
 
     useEffect(() => {
         return () => {
@@ -57,7 +59,9 @@ const StanzeFilters = (props: StanzeFilterProps) => {
     }, [selectedCategoria])
 
     if(!listaCategorie) {
-        dispatch(categorieActions.fetchCategorie(idHotel))
+        if(idHotel) {
+            dispatch(categorieActions.fetchCategorie(idHotel))
+        }
         return <Spin/>
     }
 

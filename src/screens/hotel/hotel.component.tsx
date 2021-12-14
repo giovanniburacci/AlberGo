@@ -36,8 +36,10 @@ const Hotel = () => {
     const idHotel = useSelector(hotelSelector.getHotelId)
 
     useEffect(() => {
-        dispatch(serviziActions.fetchServizi(idHotel))
-    }, [])
+        if(idHotel) {
+            dispatch(serviziActions.fetchServizi(idHotel))
+        }
+    }, [idHotel])
 
 
     return (

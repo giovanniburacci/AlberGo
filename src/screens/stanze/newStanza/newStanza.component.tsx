@@ -68,8 +68,10 @@ const NewStanza = (props: NewStanzaProps) => {
     }, [isLoading, isError])
 
     useEffect(() => {
-        dispatch(categorieActions.fetchCategorie(idHotel))
-    }, [])
+        if(idHotel) {
+            dispatch(categorieActions.fetchCategorie(idHotel))
+        }
+    }, [idHotel])
 
     const changeNumeroStanza = (value:Key) => {
         const newNumero = Number(value);

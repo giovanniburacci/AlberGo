@@ -2,9 +2,10 @@ import React, {useEffect, useState} from 'react';
 import OnlyAccount from '../../tabs/onlyAccount/onlyAccount.component';
 import {AdminCreation} from '../../../types';
 import {Button, message} from 'antd'
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {authSelector} from '../../../../../../store/auth/auth.selector';
 import {ArgsProps} from 'antd/es/message';
+import loginActions from '../../../../../../store/auth/auth.action';
 
 interface AccountCreationProps {
     closeModal: () => void
@@ -15,7 +16,7 @@ export const AccountCreation = (props: AccountCreationProps) => {
     const [newAdmin, setNewAdmin] = useState<Partial<AdminCreation>>();
     const [hotelKey, setHotelKey] = useState<string>()
     const [hasClickedOnConfirm, setHasClickedOnConfirm] = useState<boolean>(false);
-
+    const dispatch = useDispatch();
     const isLoading = useSelector(authSelector.getIsLoadingRegister);
     const isError = useSelector(authSelector.getIsErrorRegister);
 
@@ -66,6 +67,11 @@ export const AccountCreation = (props: AccountCreationProps) => {
                 type={'primary'}
                 onClick={() => {
                     setHasClickedOnConfirm(true);
+                    if(newAdmin && newAdmin.nome && newAdmin.cognome && newAdmin.password && newAdmin.username && hotelKey)
+                    dispatch(loginActions.adminRegister({
+                        admin: newAdmin,
+                        codiceHotel: hotelKey
+                    }))
                 }}>
                 Registrati
             </Button>

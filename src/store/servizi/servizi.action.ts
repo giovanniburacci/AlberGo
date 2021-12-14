@@ -86,8 +86,10 @@ const addServizioToPrenotazione = createAsyncThunk(serviziLabels.addServizioToPr
     try {
         const {prenotazioneId, servizioId} = bean;
         const state = thunkAPI.getState() as RootState;
-        const hotelId = state.hotel.hotel.id;
-        const resp = await insertServizioIntoPrenotazione(servizioId, prenotazioneId, hotelId)
+        const hotelId = state.hotel.hotel && state.hotel.hotel.id;
+        if(hotelId) {
+            const resp = await insertServizioIntoPrenotazione(servizioId, prenotazioneId, hotelId);
+        }
         thunkAPI.dispatch(fetchServiziDisponibiliByPrenotazione(prenotazioneId));
         thunkAPI.dispatch(fetchServiziSceltiByPrenotazione(prenotazioneId));
     } catch(e) {

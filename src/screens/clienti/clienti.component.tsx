@@ -43,8 +43,10 @@ const Clienti = () => {
     const idHotel = useSelector(hotelSelector.getHotelId)
 
     useEffect(() => {
-        dispatch(clientiActions.fetchClienti(idHotel))
-    }, [])
+        if(idHotel) {
+            dispatch(clientiActions.fetchClienti(idHotel))
+        }
+    }, [idHotel])
 
     const selectCliente = (record:ClienteDTO) => {
         setSelectedCliente(record);

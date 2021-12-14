@@ -19,21 +19,23 @@ const CategorieBar = (props:CategorieBarProps) => {
     const dispatch = useDispatch();
     const hotelId = useSelector(hotelSelector.getHotelId)
     useEffect(() => {
-        timeout = setTimeout(() => {
-            if(!searchCategoria) {
-                if(renderCount !== 0) {
-                    dispatch(categorieActions.fetchCategorie(hotelId))
-                }
-            } else {
-                dispatch(categorieActions.fetchFilteredCategorie({
-                        idHotel: hotelId,
-                        nome: searchCategoria
+        if (hotelId) {
+            timeout = setTimeout(() => {
+                if(!searchCategoria) {
+                    if(renderCount !== 0) {
+                        dispatch(categorieActions.fetchCategorie(hotelId))
                     }
-                ))
-                renderCount ++;
-            }
-        }, 500)
-    }, [searchCategoria])
+                } else {
+                    dispatch(categorieActions.fetchFilteredCategorie({
+                            idHotel: hotelId,
+                            nome: searchCategoria
+                        }
+                    ))
+                    renderCount ++;
+                }
+            }, 500)
+        }
+    }, [searchCategoria, hotelId])
 
     useEffect(() => {
         return () => {

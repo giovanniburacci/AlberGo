@@ -39,23 +39,25 @@ const PrenotazioniFilters = () => {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        timeout = setTimeout(() => {
-            if(!searchFilter && !dateFilter) {
-                if(renderCount !== 0) {
-                    dispatch(prenotazioniActions.fetchPrenotazioni(idHotel))
+        if(idHotel) {
+            timeout = setTimeout(() => {
+                if(!searchFilter && !dateFilter) {
+                    if(renderCount !== 0) {
+                        dispatch(prenotazioniActions.fetchPrenotazioni(idHotel))
+                    }
+                } else {
+                    dispatch(prenotazioniActions.fetchFilteredPrenotazioni({
+                        nomeCliente: utenteFilter === UtenteFilter.NOME ? searchFilter : '',
+                        cognomeCliente: utenteFilter !== UtenteFilter.NOME ? searchFilter : '',
+                        dataInizio: dateFilter ? ''+dateFilter[0].toISOString() : '',
+                        dataFine: dateFilter ? ''+dateFilter[1].toISOString() : '',
+                        idHotel
+                    }));
+                    renderCount ++;
                 }
-            } else {
-                dispatch(prenotazioniActions.fetchFilteredPrenotazioni({
-                    nomeCliente: utenteFilter === UtenteFilter.NOME ? searchFilter : '',
-                    cognomeCliente: utenteFilter !== UtenteFilter.NOME ? searchFilter : '',
-                    dataInizio: dateFilter ? ''+dateFilter[0].toISOString() : '',
-                    dataFine: dateFilter ? ''+dateFilter[1].toISOString() : '',
-                    idHotel
-                }));
-                renderCount ++;
-            }
-        }, 500)
-    }, [searchFilter, dateFilter, utenteFilter])
+            }, 500)
+        }
+    }, [searchFilter, dateFilter, utenteFilter, idHotel])
 
     useEffect(() => {
         return () => {

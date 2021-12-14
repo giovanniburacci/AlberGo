@@ -10,7 +10,8 @@ const enum authEndpoints {
     searchAdmin = 'amministratore/dettaglio/username',
     searchUser = 'cliente/dettaglio/username',
     userRegister = 'cliente/register',
-    createHotel = 'hotel/create'
+    createHotel = 'hotel/create',
+    searchCodiceHotel = 'hotel/searchCodiceHotel'
 }
 
 interface AdminRegisterBean {
@@ -65,3 +66,13 @@ export const searchUser = async (username: string): Promise<AxiosResponse<Client
         }
     })
 }
+
+export const searchHotelByCodiceHotel = async (codiceHotel: string): Promise<AxiosResponse<HotelDTO>> => {
+    return axios.get(localhostURL + authEndpoints.searchCodiceHotel,{
+        params: {
+            codiceHotel
+        }
+    })
+}
+
+

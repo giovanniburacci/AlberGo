@@ -1,10 +1,12 @@
 import {createAction, createAsyncThunk} from '@reduxjs/toolkit';
-import {createUser, login, searchAdmin, searchUser} from '../../api/auth.service';
+import {createUser, login, searchAdmin, searchHotelByCodiceHotel, searchUser} from '../../api/auth.service';
 import {AmministratoreDTO, CardDataDTO, ClienteDTO, HotelDTO} from '../../models/models';
 import {createAdmin, createHotel} from '../../api/auth.service';
 import {LoginBean} from '../../models/login';
 import axios from 'axios';
 import {createCard} from '../../api/stripe.service';
+import {searchHotel, searchHotels} from '../../api/hotels.service';
+import hotelActions from '../hotel/hotel.action';
 
 const enum LOGIN_ACTIONS {
     adminLogin = 'adminLogin/',
@@ -17,8 +19,8 @@ const enum LOGIN_ACTIONS {
 
 interface AdminRegisterActionBean {
     admin: Partial<AmministratoreDTO>,
-    hotel: Partial<HotelDTO>,
-    codiceHotel?: number
+    hotel?: Partial<HotelDTO>,
+    codiceHotel?: string
 }
 
 interface UserRegisterActionBean {
@@ -33,6 +35,8 @@ const adminLoginRequest = createAsyncThunk(LOGIN_ACTIONS.adminLogin, async (bean
             axios.defaults.headers['Authorization'] = 'Bearer ' + tokenInfo.access_token;
         }
         const amministratore = (await searchAdmin(bean.username)).data;
+        const hotel = (await searchHotel(amministratore.idHotel)).data
+        thunkAPI.dispatch(hotelActions.storeHotel(hotel))
         tokenInfo.token_expiration = tokenInfo.token_expiration.substring(0,19)
         return {
             tokenInfo,
@@ -71,6 +75,14 @@ const adminRegister = createAsyncThunk(LOGIN_ACTIONS.adminRegister, async (bean:
             await createAdmin({
                 admin,
                 idHotel: newHotel.id
+            })
+        }
+
+        if(codiceHotel) {
+            const resp = (await searchHotelByCodiceHotel(codiceHotel)).data;
+            await createAdmin({
+                admin,
+                idHotel: resp.id
             })
         }
     } catch(e) {

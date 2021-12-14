@@ -50,13 +50,13 @@ export const PrenotazioniList = (props:PrenotazioniListProps) => {
 
     const dispatch = useDispatch();
     useEffect( () => {
-        if(isAdmin) {
+        if(isAdmin && idHotel) {
             dispatch(prenotazioniActions.fetchPrenotazioni(idHotel));
         } else {
             console.log(idUser);
             dispatch(prenotazioniActions.fetchPrenotazioniByCliente(idUser!))
         }
-    }, [isAdmin])
+    }, [isAdmin, idHotel])
 
     // @ts-ignore
     return (

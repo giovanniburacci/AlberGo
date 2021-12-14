@@ -40,10 +40,10 @@ const Categorie = () => {
 
     // todo gestire loading ed error
     useEffect(() => {
-        if(!isLoading) {
+        if(!isLoading && hotelId) {
             dispatch(categorieActions.fetchCategorie(hotelId));
         }
-    },[])
+    },[hotelId])
 
     useEffect(() => {
         if(categorie && categorie.length > 0 && numeroStanze) {
