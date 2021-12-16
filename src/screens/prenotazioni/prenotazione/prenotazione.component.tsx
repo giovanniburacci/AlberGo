@@ -14,6 +14,7 @@ import {isEqual} from 'lodash';
 import serviziSelector from '../../../store/servizi/servizi.selector';
 import hotelSelector from '../../../store/hotel/hotel.selector';
 import {ArgsProps} from 'antd/es/message';
+
 const componentClassName = 'Prenotazione';
 
 interface PrenotazioneProps {
@@ -121,8 +122,6 @@ export const Prenotazione = (props:PrenotazioneProps) => {
         } else {
             fine = new Date(prenotazione.prenotazione.dataFine).getTime();
         }
-        Math.round(inizio);
-        Math.round(fine);
 
         prezzo = Math.round(prenotazione.categoria.prezzo * Math.round((fine-inizio)/(1000*3600*24)));
         console.log(prezzo);
@@ -157,11 +156,20 @@ export const Prenotazione = (props:PrenotazioneProps) => {
         }
     }, [newPrenotazione])
 
-    const calcolaPrezzo = () => {
-        console.log(prenotazione.prenotazione.dataInizio, prenotazione.prenotazione.dataFine)
-        const giorni = (new Date(newPrenotazione!.dataFine!).getTime() - new Date(prenotazione.prenotazione.dataInizio).getTime());
+    const isPrenotazioneBlocked = (): boolean => {
+        const dataAttuale = new Date().getTime();
+        const dataInizioPrenotazione = new Date(prenotazione.prenotazione.dataInizio).getTime();
+        if(dataAttuale > dataInizioPrenotazione) {
+            return true;
+        }
+        const giorni = Math.round((dataInizioPrenotazione-dataAttuale)/(1000*3600*24));
 
+        if(giorni <= prenotazione.categoria.giorniBlocco) {
+            return true;
+        }
+        return false;
     }
+
     return (
         <div className={`${componentClassName}`}>
             <div className={`${componentClassName}__inputgroup`}>
@@ -209,6 +217,7 @@ export const Prenotazione = (props:PrenotazioneProps) => {
                 <Title level={5}>Data check-in</Title>
                 <DatePicker
                     className={`${componentClassName}__inputgroup__datepicker`}
+                    disabled={isPrenotazioneBlocked()}
                     value={newPrenotazione && moment(newPrenotazione.dataInizio)}
                     onChange={(date) => {
                         if(date) {
@@ -224,6 +233,7 @@ export const Prenotazione = (props:PrenotazioneProps) => {
             <div className={`${componentClassName}__inputgroup`}>
                 <Title level={5}>Data check-out</Title>
                 <DatePicker
+                    disabled={isPrenotazioneBlocked()}
                     className={`${componentClassName}__inputgroup__datepicker`}
                     value={newPrenotazione && moment(newPrenotazione.dataFine)}
                     onChange={(date) => {
@@ -254,6 +264,7 @@ export const Prenotazione = (props:PrenotazioneProps) => {
                 <Select
                     style={{width: '100%'}}
                     showSearch
+                    disabled={isPrenotazioneBlocked()}
                     placeholder="Servizi"
                     optionFilterProp="children"
                     filterOption={(input, option) =>
@@ -294,22 +305,19 @@ export const Prenotazione = (props:PrenotazioneProps) => {
                 ))}
             </div>
 
-            <div>
-                {typeof idHotel === 'undefined' &&
-
-                <div className={`${componentClassName}__inputgroup`}>
-                    <Title level={5}>Prezzo</Title>
-                    <Input
-                        placeholder={'Prezzo'}
-                        disabled={true}
-                        value={prezzo}/>
-                </div>}
+            <div className={`${componentClassName}__inputgroup`}>
+                <Title level={5}>Prezzo</Title>
+                <Input
+                    placeholder={'Prezzo'}
+                    addonAfter={'€'}
+                    disabled={true}
+                    value={prezzo}/>
             </div>
 
             <Button
                 size={'large'}
                 className={isMakingChanges ? 'button-edit' : ''}
-                disabled={!isMakingChanges}
+                disabled={!isMakingChanges || isPrenotazioneBlocked()}
                 onClick={() => {
                     setHasClickedOnEdit(true);
                     const oldPrenotazione = prenotazione.prenotazione;
@@ -326,6 +334,7 @@ export const Prenotazione = (props:PrenotazioneProps) => {
             <Button
                 size={'large'}
                 className={'button-delete'}
+                disabled={isPrenotazioneBlocked()}
                 onClick={() => {
                     setHasClickedOnDelete(true);
                     dispatch(prenotazioniActions.removePrenotazione(prenotazione.prenotazione));
