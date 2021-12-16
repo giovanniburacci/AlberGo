@@ -111,16 +111,16 @@ const NuovaPrenotazione = (props: NuovaPrenotazioneProps) => {
 
     useEffect(() => {
         if(idHotel) {
-            if(!!hotel) {
-                dispatch(stanzeActions.fetchStanze(hotel.id))
-                dispatch(serviziActions.fetchServizi(hotel.id));
-            } else {
-                dispatch(clientiActions.fetchClienti(idHotel))
-                dispatch(stanzeActions.fetchStanze(idHotel))
-                dispatch(serviziActions.fetchServizi(idHotel))
-            }
+            dispatch(stanzeActions.fetchStanze(idHotel))
+            dispatch(serviziActions.fetchServizi(idHotel))
+            dispatch(clientiActions.fetchClienti(idHotel))
+            return ;
         }
-    }, [idHotel]);
+        if(hotel) {
+            dispatch(stanzeActions.fetchStanze(hotel.id))
+            dispatch(serviziActions.fetchServizi(hotel.id))
+        }
+    }, [idHotel, hotel]);
 
     useEffect(() => {
         if(isLoading && hasClickedOnConfirm) {

@@ -32,7 +32,7 @@ const Stanze = () => {
     const dispatch = useDispatch();
     const stanze = useSelector(stanzeSelector.getStanze)
     const isLoading = useSelector(stanzeSelector.getIsLoading);
-    const isError = useSelector(stanzeSelector.getIsError); //todo gestire loading ed error
+    const isError = useSelector(stanzeSelector.getIsError);
     const idHotel = useSelector(hotelSelector.getHotelId)
     const categorieFilter = useSelector(stanzeSelector.getCategoriaFilter)
     const [dataPie,setDataPie] = useState<{}>();

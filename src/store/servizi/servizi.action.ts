@@ -25,7 +25,8 @@ const serviziLabels = {
 
 interface ServizioInPrenotazioneBean {
     prenotazioneId: number,
-    servizioId:number
+    servizioId: number,
+    hotelId: number
 }
 
 const fetchServizi = createAsyncThunk(serviziLabels.fetchServizi, async (hotelId:number) => {
@@ -84,12 +85,9 @@ const removeServizioFromPrenotazione = createAsyncThunk(serviziLabels.removeServ
 
 const addServizioToPrenotazione = createAsyncThunk(serviziLabels.addServizioToPrenotazione, async (bean:ServizioInPrenotazioneBean, thunkAPI) => {
     try {
-        const {prenotazioneId, servizioId} = bean;
+        const {prenotazioneId, servizioId, hotelId} = bean;
         const state = thunkAPI.getState() as RootState;
-        const hotelId = state.hotel.hotel && state.hotel.hotel.id;
-        if(hotelId) {
-            const resp = await insertServizioIntoPrenotazione(servizioId, prenotazioneId, hotelId);
-        }
+        const resp = await insertServizioIntoPrenotazione(servizioId, prenotazioneId, hotelId);
         thunkAPI.dispatch(fetchServiziDisponibiliByPrenotazione(prenotazioneId));
         thunkAPI.dispatch(fetchServiziSceltiByPrenotazione(prenotazioneId));
     } catch(e) {

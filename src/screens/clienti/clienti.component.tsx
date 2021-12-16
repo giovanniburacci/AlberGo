@@ -38,7 +38,7 @@ const Clienti = () => {
     const [selectedCliente, setSelectedCliente] = useState<ClienteDTO | undefined>();
 
     const isLoading = useSelector(clientiSelector.getIsLoading);
-    const isError = useSelector(clientiSelector.getIsError); //todo gestire loading ed error
+    const isError = useSelector(clientiSelector.getIsError);
     const clienti = useSelector(clientiSelector.getClienti);
     const idHotel = useSelector(hotelSelector.getHotelId)
 

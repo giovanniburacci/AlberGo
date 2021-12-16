@@ -33,7 +33,7 @@ export const Prenotazione = (props:PrenotazioneProps) => {
     const [isMakingChanges, setIsMakingChanges] = useState<boolean>(false);
     const [hasClickedOnEdit, setHasClickedOnEdit] = useState<boolean>(false);
     const [hasClickedOnDelete, setHasClickedOnDelete] = useState<boolean>(false);
-
+    const [prezzo, setPrezzo] = useState<number>()
     const isLoadingEdit = useSelector(prenotazioniSelector.getIsLoadingEdit);
     const isErrorEdit = useSelector(prenotazioniSelector.getIsErrorEdit);
     const isLoadingDelete = useSelector(prenotazioniSelector.getIsLoadingDelete);
@@ -108,6 +108,30 @@ export const Prenotazione = (props:PrenotazioneProps) => {
     }, [isLoadingDelete, isErrorDelete])
 
     useEffect(() => {
+        let inizio, fine, prezzo: number;
+
+        if(newPrenotazione && newPrenotazione.dataInizio) {
+            inizio = new Date(newPrenotazione.dataInizio).getTime();
+        } else {
+            inizio = new Date(prenotazione.prenotazione.dataInizio).getTime();
+        }
+
+        if(newPrenotazione && newPrenotazione.dataFine) {
+            fine = new Date(newPrenotazione.dataFine).getTime();
+        } else {
+            fine = new Date(prenotazione.prenotazione.dataFine).getTime();
+        }
+        Math.round(inizio);
+        Math.round(fine);
+
+        prezzo = Math.round(prenotazione.categoria.prezzo * Math.round((fine-inizio)/(1000*3600*24)));
+        console.log(prezzo);
+        if(serviziScelti) {
+            serviziScelti.forEach(s => {prezzo += s.prezzo});
+        }
+        setPrezzo(prezzo);
+    }, [newPrenotazione?.dataInizio, newPrenotazione?.dataFine, prenotazione, serviziScelti])
+    useEffect(() => {
         setNewPrenotazione({
             id: prenotazione.prenotazione.id,
             dataInizio: prenotazione.prenotazione.dataInizio,
@@ -119,9 +143,9 @@ export const Prenotazione = (props:PrenotazioneProps) => {
         if(idHotel) {
             dispatch(clientiActions.fetchClienti(idHotel))
             dispatch(stanzeActions.fetchStanze(idHotel))
-            dispatch(serviziActions.fetchServiziDisponibiliByPrenotazione(prenotazione.prenotazione.id))
-            dispatch(serviziActions.fetchServiziSceltiByPrenotazione(prenotazione.prenotazione.id))
         }
+        dispatch(serviziActions.fetchServiziDisponibiliByPrenotazione(prenotazione.prenotazione.id))
+        dispatch(serviziActions.fetchServiziSceltiByPrenotazione(prenotazione.prenotazione.id))
     }, [prenotazione, idHotel]);
 
 
@@ -132,6 +156,12 @@ export const Prenotazione = (props:PrenotazioneProps) => {
             setIsMakingChanges(false);
         }
     }, [newPrenotazione])
+
+    const calcolaPrezzo = () => {
+        console.log(prenotazione.prenotazione.dataInizio, prenotazione.prenotazione.dataFine)
+        const giorni = (new Date(newPrenotazione!.dataFine!).getTime() - new Date(prenotazione.prenotazione.dataInizio).getTime());
+
+    }
     return (
         <div className={`${componentClassName}`}>
             <div className={`${componentClassName}__inputgroup`}>
@@ -233,7 +263,8 @@ export const Prenotazione = (props:PrenotazioneProps) => {
                         if(value) {
                             dispatch(serviziActions.addServizioToPrenotazione({
                                 prenotazioneId: (newPrenotazione && newPrenotazione.id) || prenotazione.prenotazione.id,
-                                servizioId: value as number
+                                servizioId: value as number,
+                                hotelId: prenotazione.hotel.id
                             }))
                         }}}
                 >
@@ -253,7 +284,8 @@ export const Prenotazione = (props:PrenotazioneProps) => {
                         key={s.id}
                         onClose={() => {dispatch(serviziActions.removeServizioFromPrenotazione({
                             prenotazioneId: (newPrenotazione && newPrenotazione.id) || prenotazione.prenotazione.id,
-                            servizioId: s.id
+                            servizioId: s.id,
+                            hotelId: prenotazione.hotel.id
                         }))}}
                         closable
                     >
@@ -262,13 +294,28 @@ export const Prenotazione = (props:PrenotazioneProps) => {
                 ))}
             </div>
 
+            <div>
+                {typeof idHotel === 'undefined' &&
+
+                <div className={`${componentClassName}__inputgroup`}>
+                    <Title level={5}>Prezzo</Title>
+                    <Input
+                        placeholder={'Prezzo'}
+                        disabled={true}
+                        value={prezzo}/>
+                </div>}
+            </div>
+
             <Button
                 size={'large'}
                 className={isMakingChanges ? 'button-edit' : ''}
                 disabled={!isMakingChanges}
                 onClick={() => {
                     setHasClickedOnEdit(true);
-                    if(newPrenotazione) {
+                    const oldPrenotazione = prenotazione.prenotazione;
+                    if(newPrenotazione && (newPrenotazione.dataFine || oldPrenotazione.dataFine) && (newPrenotazione.dataInizio || oldPrenotazione.dataInizio) &&
+                        (newPrenotazione.idStanza || oldPrenotazione.idStanza) && (newPrenotazione.idCliente || oldPrenotazione.idCliente) &&
+                        (newPrenotazione.idHotel || oldPrenotazione.idHotel)) {
                         dispatch(prenotazioniActions.editPrenotazione({
                             ...prenotazione.prenotazione,
                             ...newPrenotazione,

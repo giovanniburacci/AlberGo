@@ -52,12 +52,13 @@ const Hotel = () => {
                             <Descriptions.Item label="Stelle" ><Rate disabled defaultValue={hotel.stelle}  /></Descriptions.Item>
                             <Descriptions.Item label="Indirizzo" span={3}>{hotel.indirizzo}</Descriptions.Item>
                             <Descriptions.Item label="Descrizione" span={3}>{hotel.descrizione}</Descriptions.Item>
+                            <Descriptions.Item label="Codice hotel" span={3}>{hotel.codiceHotel}</Descriptions.Item>
                         </Descriptions>
                         <div className={`${componentClassName}__column__anagrafica`}>
                             <Descriptions title="Anagrafica dell'amministratore" bordered>
                                 <Descriptions.Item label="Nome" span={2}>{admin.nome}</Descriptions.Item>
                                 <Descriptions.Item label="Cognome" >{admin.cognome}</Descriptions.Item>
-                                <Descriptions.Item label="username" span={3}>{admin.username}</Descriptions.Item>
+                                <Descriptions.Item label="Username" span={3}>{admin.username}</Descriptions.Item>
                             </Descriptions>
                         </div>
                     </div>

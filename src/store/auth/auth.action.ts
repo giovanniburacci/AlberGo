@@ -36,7 +36,7 @@ const adminLoginRequest = createAsyncThunk(LOGIN_ACTIONS.adminLogin, async (bean
         }
         const amministratore = (await searchAdmin(bean.username)).data;
         const hotel = (await searchHotel(amministratore.idHotel)).data
-        thunkAPI.dispatch(hotelActions.storeHotel(hotel))
+        thunkAPI.dispatch(hotelActions.storeHotel(hotel)) //todo store hotel in localstorage
         tokenInfo.token_expiration = tokenInfo.token_expiration.substring(0,19)
         return {
             tokenInfo,

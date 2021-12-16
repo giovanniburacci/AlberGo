@@ -50,6 +50,7 @@ export const PrenotazioniList = (props:PrenotazioniListProps) => {
 
     const dispatch = useDispatch();
     useEffect( () => {
+        console.log(isAdmin, idHotel);
         if(isAdmin && idHotel) {
             dispatch(prenotazioniActions.fetchPrenotazioni(idHotel));
         } else {

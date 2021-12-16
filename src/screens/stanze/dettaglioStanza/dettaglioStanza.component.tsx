@@ -148,7 +148,7 @@ const DettaglioStanza = (props:PrenotazioneProps) => {
                     descrizione: val.target.value
                 }))}} value={newStanza.descrizione}/>
             </div>
-            <div className={`${componentClassName}__inputgroup ${(hasClickedOnEdit && !newStanza.metriQuadri) ? 'error-input' : ''}`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnEdit && !newStanza.metriQuadri) ? 'error-input' : ''} mb`}>
                 <Title level={5}>
                     Metri quadri
                 </Title>

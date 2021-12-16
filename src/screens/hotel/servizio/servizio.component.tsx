@@ -21,7 +21,7 @@ export const Servizio = (props:ServizioProps) => {
 
     const dispatch = useDispatch();
 
-    const [newServizio, setNewServizio] = useState<Partial<ServizioDTO>>();
+    const [newServizio, setNewServizio] = useState<Partial<ServizioDTO>>(servizio);
     const [isMakingChanges, setIsMakingChanges] = useState<boolean>(false);
     const [hasClickedOnEdit, setHasClickedOnEdit] = useState<boolean>(false);
     const [hasClickedOnDelete, setHasClickedOnDelete] = useState<boolean>(false);
@@ -109,7 +109,7 @@ export const Servizio = (props:ServizioProps) => {
 
     return (
         <div className={`${componentClassName}`}>
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnEdit && !newServizio.nome) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Nome
                 </Title>
@@ -127,7 +127,7 @@ export const Servizio = (props:ServizioProps) => {
                     }}
                 />
             </div>
-            <div className={`${componentClassName}__inputgroup`}>
+            <div className={`${componentClassName}__inputgroup ${(hasClickedOnEdit && !newServizio.prezzo) ? 'error-input' : ''}`}>
                 <Title level={5}>
                     Prezzo
                 </Title>
@@ -152,7 +152,7 @@ export const Servizio = (props:ServizioProps) => {
                 disabled={!isMakingChanges}
                 onClick={() => {
                     setHasClickedOnEdit(true);
-                    if(newServizio) {
+                    if(newServizio?.nome && newServizio.prezzo) {
                         dispatch(serviziActions.editServizio({
                             ...servizio,
                             ...newServizio,
@@ -164,8 +164,8 @@ export const Servizio = (props:ServizioProps) => {
                 size={'large'}
                 className={'button-delete'}
                 onClick={() => {
-                    setHasClickedOnDelete(true);
-                    dispatch(serviziActions.removeServizio(servizio));
+                    setHasClickedOnDelete(true)
+                        dispatch(serviziActions.removeServizio(servizio));
                 }}
             >Elimina</Button>
         </div>

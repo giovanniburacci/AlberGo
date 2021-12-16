@@ -38,7 +38,6 @@ const Categorie = () => {
         }
     }
 
-    // todo gestire loading ed error
     useEffect(() => {
         if(!isLoading && hotelId) {
             dispatch(categorieActions.fetchCategorie(hotelId));

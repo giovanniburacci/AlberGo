@@ -41,3 +41,14 @@
     border: 1px solid red;
   }
 }
+
+.ant-tag, .anticon-down, .anticon-up {
+  svg {
+    fill: black;
+  }
+}
+
+.button-delete {
+  background: red;
+  color: white;
+}

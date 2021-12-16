@@ -7,6 +7,7 @@ import {
 } from '../../api/prenotazioni.service';
 import {FilterBean, PrenotazioneDTO, ServizioDTO} from '../../models/models';
 import {insertServizioIntoPrenotazione} from '../../api/servizi.service';
+import {RootState} from '../reducer.config';
 
 interface AddPrenotazioneBean {
     prenotazione: Partial<PrenotazioneDTO>,
@@ -57,8 +58,14 @@ const addPrenotazione = createAsyncThunk(prenotazioniLabels.addPrenotazione, asy
         for(const s of servizi) {
             await insertServizioIntoPrenotazione(s.id, resp.data.id, prenotazione.idHotel!)
         }
+        const state = thunkAPI.getState() as RootState;
+        const isAdmin = !!state.login.amministratore
         if(prenotazione.idHotel) {
-            thunkAPI.dispatch(fetchPrenotazioni(prenotazione.idHotel));
+            if(isAdmin) {
+                thunkAPI.dispatch(fetchPrenotazioni(prenotazione.idHotel));
+            } else {
+                thunkAPI.dispatch(fetchPrenotazioniByCliente(prenotazione.idHotel))
+            }
         }
         return resp.data;
     } catch(e) {
@@ -70,7 +77,13 @@ const addPrenotazione = createAsyncThunk(prenotazioniLabels.addPrenotazione, asy
 const editPrenotazione = createAsyncThunk(prenotazioniLabels.editPrenotazione, async (prenotazione: PrenotazioneDTO, thunkAPI) => {
     try {
         await updatePrenotazione(prenotazione)
-        thunkAPI.dispatch(fetchPrenotazioni(prenotazione.idHotel));
+        const state = thunkAPI.getState() as RootState;
+        const isAdmin = !!state.login.amministratore
+        if(isAdmin) {
+            thunkAPI.dispatch(fetchPrenotazioni(prenotazione.idHotel));
+        } else {
+            thunkAPI.dispatch(fetchPrenotazioniByCliente(prenotazione.idHotel))
+        }
     } catch(e) {
         console.log('editPrenotazione request failed')
         throw e;
@@ -80,8 +93,12 @@ const editPrenotazione = createAsyncThunk(prenotazioniLabels.editPrenotazione, a
 const removePrenotazione = createAsyncThunk(prenotazioniLabels.removePrenotazione, async (prenotazione: PrenotazioneDTO, thunkAPI) => {
     try {
         await deletePrenotazione(prenotazione.id)
-        if(prenotazione.idHotel) {
+        const state = thunkAPI.getState() as RootState;
+        const isAdmin = !!state.login.amministratore
+        if(isAdmin) {
             thunkAPI.dispatch(fetchPrenotazioni(prenotazione.idHotel));
+        } else {
+            thunkAPI.dispatch(fetchPrenotazioniByCliente(prenotazione.idHotel))
         }
         return;
     } catch(e) {
