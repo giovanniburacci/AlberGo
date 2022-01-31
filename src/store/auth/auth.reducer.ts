@@ -136,6 +136,24 @@ export const authReducer = {
                 isLoadingRegister: false,
                 isErrorRegister: false
             }
+        }).addCase(loginActions.userRegister.pending, (state) => {
+            return {
+                ...state,
+                isLoadingRegister: true,
+                isErrorRegister: false
+            }
+        }).addCase(loginActions.userRegister.rejected, (state) => {
+            return {
+                ...state,
+                isLoadingRegister: false,
+                isErrorRegister: true
+            }
+        }).addCase(loginActions.userRegister.fulfilled, (state) => {
+            return {
+                ...state,
+                isLoadingRegister: false,
+                isErrorRegister: false
+            }
         })
     })
 }

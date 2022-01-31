@@ -84,7 +84,7 @@ export const UserAuth = () => {
                    destroyOnClose={true}
                    maskClosable={true}
                    onCancel={() => setIsSigningUp(false)}>
-                <UserSignUp />
+                <UserSignUp closeModal={() => setIsSigningUp(false)}/>
             </Modal>
         </>
     )

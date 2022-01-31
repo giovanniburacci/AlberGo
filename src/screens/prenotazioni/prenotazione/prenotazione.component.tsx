@@ -123,7 +123,7 @@ export const Prenotazione = (props:PrenotazioneProps) => {
             fine = new Date(prenotazione.prenotazione.dataFine).getTime();
         }
 
-        prezzo = Math.round(prenotazione.categoria.prezzo * Math.round((fine-inizio)/(1000*3600*24)));
+        prezzo = Math.round(prenotazione.categoria.prezzo * Math.round((fine-inizio+1)/(1000*3600*24)));
         console.log(prezzo);
         if(serviziScelti) {
             serviziScelti.forEach(s => {prezzo += s.prezzo});

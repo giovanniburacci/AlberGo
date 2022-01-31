@@ -174,7 +174,7 @@ const NewStanza = (props: NewStanzaProps) => {
                 if(newStanza && newStanza.numeroStanza && newStanza.descrizione && newStanza.idCategoria && newStanza.metriQuadri) {
                     dispatch(stanzeActions.addStanza({
                         ...newStanza,
-                        idHotel: 1
+                        idHotel
                     }))
                 }
             }}>Conferma</Button>

@@ -1,23 +1,62 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Title from 'antd/es/typography/Title';
-import {Button, Input} from 'antd';
+import {Button, Input, message} from 'antd';
 import {CardDataDTO, ClienteDTO} from '../../../../models/models';
 import Cards from 'react-credit-cards'
 import './userSignUp.scss'
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import loginActions from '../../../../store/auth/auth.action';
+import {ArgsProps} from 'antd/es/message';
+import {authSelector} from '../../../../store/auth/auth.selector';
 
 interface UserCreation extends ClienteDTO {
     password: string
 }
 const componentClassName = 'UserSignUp'
 
-export const UserSignUp = () => {
+interface UserSignUpProps {
+    closeModal: () => void
+}
+export const UserSignUp = (props:UserSignUpProps) => {
+    const {closeModal} = props;
     const [newUser, setNewUser] = useState<Partial<UserCreation>>();
     const [cardData, setCardData] = useState<Partial<CardDataDTO>>();
     const [hasClickedOnConfirm, setHasClickedOnConfirm] = useState<boolean>(false);
 
     const dispatch = useDispatch();
+    const isLoading = useSelector(authSelector.getIsLoadingRegister)
+    const isError = useSelector(authSelector.getIsErrorRegister)
+
+    useEffect(() => {
+        if(isLoading && hasClickedOnConfirm) {
+            message.destroy('success');
+            message.destroy('error');
+            message.loading({
+                duration: 3,
+                key: 'loading',
+                content: 'Sto creando l\'account...'
+            } as ArgsProps);
+        }
+        else if(isError && hasClickedOnConfirm) {
+            message.destroy('loading');
+            message.destroy('success');
+            message.error({
+                duration: 3,
+                key: 'error',
+                content: 'Errore nella creazione dell\'account !'
+            } as ArgsProps);
+        }
+        else if(!isLoading && !isError && hasClickedOnConfirm) {
+            message.destroy('loading');
+            message.destroy('error');
+            message.success({
+                duration: 3,
+                key: 'success',
+                content: 'Account creato con successo!'
+            } as ArgsProps);
+            closeModal();
+        }
+    }, [isLoading, isError])
 
     return (
         <div className={`${componentClassName}`}>
